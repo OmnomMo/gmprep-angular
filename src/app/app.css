@@ -1,35 +1,47 @@
 nav {
-	display: flex;
-	flex-direction: row;
+	display: grid;
+	column-gap: 3em;
+	grid-template-columns: 1fr 2fr 1fr;
 	justify-content: center;
 	position: sticky;
-	width: 100%;
 	background-color: rgb(39, 39, 39);
 }
 
-nav .navElement {
+.nav-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+}
+
+nav .user-display {
+	margin: 1em;
+	width: 100%;
+}
+
+.nav-buttons .navElement {
 	padding: 1em;
 	color: White;
 	text-decoration: none;
-	
+
 }
 
-nav .navButton {
+.nav-buttons .navButton {
 	margin-left: 3em;
 }
 
-nav .active {
+.nav-buttons .active {
 	background-color: cyan;
 	color: black;
 }
 
-nav .disabled-link {
+.nav-buttons .disabled-link {
 	color: rgba(158, 158, 158, 0.425);
 	pointer-events: none;
 	cursor: default;
 }
 
-nav .loginElement {
+.nav-buttons .loginElement {
 	margin-left: 3em
 }
 
@@ -39,4 +51,3 @@ nav .loginElement {
 .content {
 	padding: 5em;
 }
-

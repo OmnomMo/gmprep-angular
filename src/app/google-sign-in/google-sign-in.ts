@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth';
 import { HttpClient } from '@angular/common/http';
+import { GMUser } from '../models/user';
 
 declare const google: any;
 
@@ -9,11 +10,11 @@ declare const google: any;
 	templateUrl: './google-sign-in.html',
 	styleUrls: ['./google-sign-in.css']
 })
-export class GoogleSignInComponent implements OnInit {
+export class GoogleSignInComponent implements AfterViewInit {
 
 	constructor(private authService: AuthService, private http: HttpClient) { }
 
-	ngOnInit(): void {
+	ngAfterViewInit(): void {
 		this.initializeGoogleSignIn();
 	}
 
@@ -38,13 +39,12 @@ export class GoogleSignInComponent implements OnInit {
 
 		this.http.post(`http://localhost:5140/Users/login/${userToken}`, {})
 			.subscribe({
-				next: () => {
+				next: (response) => {
 					console.log("Login Success!");
-					this.authService.setAuthState(true);
+					this.authService.setAuthenticated(userToken, response as GMUser);
 				},
 				error: (err) => {
 					console.log("Login ERROR: " + err);
-					this.authService.setAuthState(false);
 				}
 			})
 

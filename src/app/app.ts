@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth';
+import { GMUser } from './models/user';
 
 @Component({
 	selector: 'app-root',
@@ -11,7 +12,7 @@ import { AuthService } from './auth';
 })
 export class App {
 
-	constructor(private authService : AuthService, private router: Router) {
+	constructor(protected authService : AuthService, private router: Router) {
 		var _self = this;
 		authService.authState$.subscribe({
 			next(state) {
@@ -19,11 +20,17 @@ export class App {
 				_self.loginStateChanged(test);
 			}
 		})
+		authService.user$.subscribe({
+			next(user) {
+				_self.user.set(user);
+			}
+		})
 	}
 
 	protected readonly title = signal('gmprep');
 	navButtonState = signal('disabled-link');
 	loggedIn = signal(false);
+	user = signal<GMUser | null>(null);
 
 	loginStateChanged(state : boolean) {
 		if (state) {
