@@ -1,7 +1,42 @@
-.active {
-	background-color: cyan;
+nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: sticky;
+	width: 100%;
+	background-color: rgb(39, 39, 39);
 }
 
-.disabled-link {
-	color: rgba(77, 77, 77, 0.13);
+nav .navElement {
+	padding: 1em;
+	color: White;
+	text-decoration: none;
+	
 }
+
+nav .navButton {
+	margin-left: 3em;
+}
+
+nav .active {
+	background-color: cyan;
+	color: black;
+}
+
+nav .disabled-link {
+	color: rgba(158, 158, 158, 0.425);
+	pointer-events: none;
+	cursor: default;
+}
+
+nav .loginElement {
+	margin-left: 3em
+}
+
+
+
+
+.content {
+	padding: 5em;
+}
+

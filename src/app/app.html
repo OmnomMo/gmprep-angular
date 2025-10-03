@@ -1,53 +1,32 @@
-
 <main class="main">
-  <div class="content">
-    <nav>
+	<nav>
 		<ul>
-			<li>
-				<a 
-					routerLink="/login"
-					routerLinkActive="active"
-					ariaCurrentWhenActive="page">
-					Login
-				</a>
-			</li>
-			<li>
-				<a 
-					routerLink="/campaignselection"
-					routerLinkActive="active"
-					[class]="navButtonState()"
-					ariaCurrentWhenActive="page">
-					Select Campaign
-				</a>
-			</li>
-			<li>
-				<a 
-					routerLink="/mapselection"
-					routerLinkActive="active"
-					[class]="navButtonState()"
-					ariaCurrentWhenActive="page">
-					Select Map
-				</a>
-			</li>
-			<li>
-				<a 
-					routerLink="/map"
-					routerLinkActive="active"
-					[class]="navButtonState()"
-					ariaCurrentWhenActive="page">
-					Map
-				</a>
-			</li>
-			<li>
-				<button (click)="logout()">
-					Log Out
-				</button>
-			</li>
+
+			<a routerLink="/campaignselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
+				ariaCurrentWhenActive="page">
+				Select Campaign
+			</a>
+			<a routerLink="/mapselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
+				ariaCurrentWhenActive="page">
+				Select Map
+			</a>
+			<a routerLink="/map" routerLinkActive="active" [class]="navButtonState()" ariaCurrentWhenActive="page"
+				class="navElement">
+				Map
+			</a>
+			@if (loggedIn()) {
+			<button (click)="logout()" class="navButton">
+				Log Out
+			</button>
+			} @else {
+			<a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page" class="navElement loginElement">
+				Login
+			</a>
+			}
+
 		</ul>
 	</nav>
-  </div>
-<router-outlet />
+	<div class="content">
+		<router-outlet />
+	</div>
 </main>
-
-
-

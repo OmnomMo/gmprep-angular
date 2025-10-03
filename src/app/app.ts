@@ -23,12 +23,15 @@ export class App {
 
 	protected readonly title = signal('gmprep');
 	navButtonState = signal('disabled-link');
+	loggedIn = signal(false);
 
 	loginStateChanged(state : boolean) {
 		if (state) {
 			this.navButtonState.set('enabled-link');
+			this.loggedIn.set(true);
 		} else {
 			this.navButtonState.set('disabled-link');
+			this.loggedIn.set(false);
 		}
 	}
 
