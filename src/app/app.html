@@ -15,6 +15,7 @@
 				<a 
 					routerLink="/campaignselection"
 					routerLinkActive="active"
+					[class]="navButtonState()"
 					ariaCurrentWhenActive="page">
 					Select Campaign
 				</a>
@@ -23,6 +24,7 @@
 				<a 
 					routerLink="/mapselection"
 					routerLinkActive="active"
+					[class]="navButtonState()"
 					ariaCurrentWhenActive="page">
 					Select Map
 				</a>
@@ -31,9 +33,15 @@
 				<a 
 					routerLink="/map"
 					routerLinkActive="active"
+					[class]="navButtonState()"
 					ariaCurrentWhenActive="page">
 					Map
 				</a>
+			</li>
+			<li>
+				<button (click)="logout()">
+					Log Out
+				</button>
 			</li>
 		</ul>
 	</nav>
