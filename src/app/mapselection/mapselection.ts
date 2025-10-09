@@ -4,7 +4,7 @@ import { CampaignService } from '../campaign-service';
 import { MapService } from '../map-service';
 import { AuthService } from '../auth';
 import { AsyncPipe } from '@angular/common';
-import { Map } from '../models/map';
+import { GMMap } from '../models/map';
 import { BigButton } from '../big-button/big-button';
 
 @Component({
@@ -24,6 +24,8 @@ export class MapSelection {
 		public auth : AuthService,
 	) {
 
+		this.mapsLoaded.set(false);
+
 		this.campaignService.campaignsLoaded$.subscribe({
 			next: (value) => {
 				if (value) {
@@ -40,6 +42,11 @@ export class MapSelection {
 			this.requestMaps()
 		}
 
+	}
+
+	startCreateMap() {
+		this.mapService.editedMap = null;
+		this.router.navigate(["/createmap"]);
 	}
 
 	requestMaps() {
@@ -60,7 +67,7 @@ export class MapSelection {
 	}
 
 	getMapImageStyle(id : number) {
-		var link : string = this.mapService.getMap(id)!.imagePath;
+		var link : string = this.mapService.getMap(id)!.externalImageUrl;
 		if (link == "") {
 			return `background-color: DarkSlateGrey;`
 		}
@@ -68,15 +75,30 @@ export class MapSelection {
 	}
 
 	mapEdited(id: number) {
-
+		var map : GMMap | null = this.mapService.getMap(id);
+		if (map == null) {
+			throw new Error("Cannot edit map!");
+		}
+		this.mapService.editedMap = map;
+		this.router.navigate(["/createmap"]);
 	}
 
 	mapDeleted(id: number) {
 
+		this.mapService.deleteMap(id).subscribe({
+			next: () => {
+				console.log("map deleted. reloading maps");
+				this.mapService.requestMaps();
+			},
+			error: (e) => {
+				throw new Error(e);
+			}
+		})
+
 	}
 
 	mapSelected(id: number) {
-		const map: Map | null = this.mapService.getMap(id);
+		const map: GMMap | null = this.mapService.getMap(id);
 
 		if (map == null) {
 			return

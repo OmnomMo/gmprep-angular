@@ -6,6 +6,7 @@ import { CampaignSelection } from './campaignselection/campaignselection';
 import { AuthGuard } from './auth-guard';
 import { CampaignGuard } from './campaign-guard';
 import { CreateCampaign } from './create-campaign/create-campaign';
+import { CreateMap } from './create-map/create-map';
 
 export const routes: Routes = [
 	{
@@ -36,6 +37,12 @@ export const routes: Routes = [
 		title: 'Campaign Creator',
 		component: CreateCampaign,
 		canActivate: [AuthGuard],
+	},
+	{
+		path: 'createmap',
+		title: 'Map Creator',
+		component: CreateMap,
+		canActivate: [AuthGuard, CampaignGuard],
 	},
 	{
 		path: '**',

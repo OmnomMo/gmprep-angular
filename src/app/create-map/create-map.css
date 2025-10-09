@@ -1,0 +1,15 @@
+.CreateMap {
+	margin: auto;
+	padding: 1em;
+	width: 30%;
+}
+
+.CreateMapForm {
+	display: flex;
+	flex-direction: column;
+	align-items:flex-start;
+}
+
+.CreateMapForm > * {
+	margin: 1em;
+}

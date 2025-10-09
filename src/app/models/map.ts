@@ -1,4 +1,4 @@
-export class Map {
+export class GMMap {
 	constructor(
 		public id: number,
 		public name: string,
