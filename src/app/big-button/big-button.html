@@ -1,0 +1,13 @@
+<div class="bigButton" (click)="clicked()" [style]="backgroundImageStyle()">
+	<div class="bigButtonFill"></div>
+	<div class="bigButtonContent">
+
+		<h3>{{this.title()}}</h3>
+		<p>{{this.description()}}</p>
+		<div class="subButtonContainer">
+			<button (click)="clickedEdit($event);" class="subButton"><img src='icons/wrench_icon.png'></button>
+			<button (click)="clickedDelete($event)" class="subButton"><img src='icons/delete_icon.png'></button>
+		</div>
+
+	</div>
+</div>

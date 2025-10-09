@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
-import { Map } from './map/map';
+import { MapView } from './map-view/map-view';
 import { Login } from './login/login';
 import { MapSelection } from './mapselection/mapselection';
 import { CampaignSelection } from './campaignselection/campaignselection';
 import { AuthGuard } from './auth-guard';
+import { CampaignGuard } from './campaign-guard';
+import { CreateCampaign } from './create-campaign/create-campaign';
 
 export const routes: Routes = [
 	{
@@ -15,7 +17,7 @@ export const routes: Routes = [
 		path:'mapselection',
 		title:'Select Map',
 		component: MapSelection,
-		canActivate: [AuthGuard],
+		canActivate: [AuthGuard, CampaignGuard],
 	},
 	{
 		path: 'campaignselection',
@@ -26,7 +28,13 @@ export const routes: Routes = [
 	{
 		path: 'map',
 		title:'Map',
-		component: Map,
+		component: MapView,
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'createcampaign',
+		title: 'Campaign Creator',
+		component: CreateCampaign,
 		canActivate: [AuthGuard],
 	},
 	{

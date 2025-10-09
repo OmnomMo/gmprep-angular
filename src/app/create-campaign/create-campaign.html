@@ -1,0 +1,16 @@
+<div class="CreateCampaign">
+	@if (submitting()) {
+		<p>Submitting Campaign...</p>
+	} @else {
+	<div class="CreateCampaignForm" [formGroup]="createCampaignForm">
+		<app-name-form-component label="Name" controlName="name" [formGroup]="createCampaignForm" />
+		<app-multiline-form-component label="Description" controlName="description" [formGroup]="createCampaignForm" />
+		<app-imagelink-form-component label="Campaign Image" controlName="imageLink" [formGroup]="createCampaignForm" />
+		<form [formGroup]="createCampaignForm" (submit)="onSubmit()">
+			<input type="submit" value="Submit">
+			<button (click)="abort()">Abort</button>
+		</form>
+	</div>
+	}
+
+</div>

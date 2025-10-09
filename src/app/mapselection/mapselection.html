@@ -1,1 +1,20 @@
-<p>mapselection works!</p>
+<div class="MapSelection">
+	@if (!mapsLoaded()) {
+		<p>Loading maps...</p>
+	} @else {
+		<ul class="mapButtonParent">
+			@for (map of (mapService.maps$ | async); track map) {
+				<app-big-button 
+					[title]="map.name"
+					[id]="map.id"
+					[description]="map.description"
+					[backgroundImageStyle]="getMapImageStyle(map.id)"
+					(onClick)="mapSelected(map.id)"
+					(onEdit)="mapEdited(map.id)"
+					(onDelete)="mapDeleted(map.id)"
+				/>
+			}
+		<li class="addButtonBig"><img src="icons/plus_icon.png" /></li>
+		</ul>
+	}
+</div>

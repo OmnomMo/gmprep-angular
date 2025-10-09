@@ -45,7 +45,19 @@ nav .user-display {
 	margin-left: 3em
 }
 
-
+.addButtonBig {
+	align-self: center;
+	display: flex;
+	align-content: center;
+	background-color: grey;
+	width: 4em;
+	height: 4em;
+	cursor: pointer;
+	padding: 1em;
+	margin: 2em;
+	list-style-type: none;
+	
+}
 
 
 .content {

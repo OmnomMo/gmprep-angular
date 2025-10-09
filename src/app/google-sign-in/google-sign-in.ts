@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AuthService } from '../auth';
 import { HttpClient } from '@angular/common/http';
 import { GMUser } from '../models/user';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 declare const google: any;
 
@@ -15,10 +16,36 @@ export class GoogleSignInComponent implements AfterViewInit {
 	constructor(private authService: AuthService, private http: HttpClient) { }
 
 	ngAfterViewInit(): void {
-		this.initializeGoogleSignIn();
+
+		console.log("checking for stored login token")
+		var userToken : string = this.authService.retrieveUserToken()
+		
+		
+		if (userToken == "") {
+			console.log("did not find token, initialize google login")
+			this.initializeGoogleSignIn();
+		} else {
+
+			var payload : JwtPayload = jwtDecode(userToken);
+
+			var now : number = Math.round((new Date()).getTime() / 1000);
+			var exp : number | undefined = payload.exp;
+
+			console.log(`login token expires in ${exp! - now} seconds`);
+
+			//token expired, initialize sign in
+			if (now > exp!) {
+				this.initializeGoogleSignIn();
+			} else {
+				this.signIn(userToken)
+			}
+		}
 	}
 
 	initializeGoogleSignIn() {
+
+
+
 		google.accounts.id.initialize({
 			client_id: '22535597810-ml4s14qa3sq76doaohsjkf3r1vjpv1jo.apps.googleusercontent.com',
 			callback: (response: any) => this.handleCredentialResponse(response)
@@ -37,6 +64,10 @@ export class GoogleSignInComponent implements AfterViewInit {
 		console.log('Encoded JWT ID token: ' + response.credential);
 		const userToken = response.credential;
 
+		this.signIn(userToken);
+	}
+
+	signIn(userToken : string) {
 		this.http.post(`http://localhost:5140/Users/login/${userToken}`, {})
 			.subscribe({
 				next: (response) => {
@@ -47,7 +78,6 @@ export class GoogleSignInComponent implements AfterViewInit {
 					console.log("Login ERROR: " + err);
 				}
 			})
-
 	}
 
 }

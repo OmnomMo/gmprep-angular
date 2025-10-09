@@ -1,0 +1,7 @@
+@import '../app.css';
+
+.mapButtonParent {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
