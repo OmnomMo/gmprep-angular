@@ -36,7 +36,7 @@ export class GoogleSignInComponent implements AfterViewInit {
 
 			//token expired, initialize sign in
 			if (now > exp!) {
-				this.waitForGoogle(() => this.initializeGoogleSignIn);
+				this.waitForGoogle(this.initializeGoogleSignIn);
 			} else {
 				this.signIn(userToken)
 			}
@@ -49,16 +49,16 @@ export class GoogleSignInComponent implements AfterViewInit {
 		var interval = setInterval(() => {
 			console.log("google is not defined yet. wait for google")
 			if (google != null && google != undefined) {
-				("google found, proceed!")
+				console.log("google found, proceed!")
 				clearInterval(interval)
 				callback();
-			}
-		}, 100);
+			} 
+		}, 300);
 	}
 
 	initializeGoogleSignIn() {
 
-
+		console.log("initialize google signin");
 
 		google.accounts.id.initialize({
 			client_id: '22535597810-ml4s14qa3sq76doaohsjkf3r1vjpv1jo.apps.googleusercontent.com',
