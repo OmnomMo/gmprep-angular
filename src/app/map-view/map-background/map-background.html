@@ -1,0 +1,9 @@
+@if (selectedMap() != null && selectedMap != undefined) {
+<div class="mapBackgroundContainer">
+	<div class="mapScrollContainer" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mousemove)="onMouseMove($event)">
+		<img [src]="selectedMap()!.externalImageUrl" class="mapBackground" draggable="false">
+	</div>
+</div>
+} @else {
+<p>map load error</p>
+}

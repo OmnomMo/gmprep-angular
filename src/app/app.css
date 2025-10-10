@@ -1,4 +1,5 @@
 nav {
+	z-index: 100;
 	display: grid;
 	column-gap: 3em;
 	grid-template-columns: 1fr 2fr 1fr;

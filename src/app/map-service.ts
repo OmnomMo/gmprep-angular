@@ -27,6 +27,19 @@ export class MapService {
 				}
 			}
 		})
+
+		if (campaignService.areCampaignsLoaded()) {
+			this.initializeMaps()
+		}
+		campaignService.campaignsLoaded$.subscribe({
+			next: (loaded) => {
+				if (loaded) {
+					console.log("Campaigns loaded. start loading map data")
+					this.initializeMaps()
+				}
+			}
+		});
+		campaignService.requestCampaigns();
 	}
 
 	private maps = new BehaviorSubject<GMMap[]>([])
@@ -38,13 +51,27 @@ export class MapService {
 	private selectedMap = new BehaviorSubject<GMMap | null>(null);
 	selectedMap$ = this.selectedMap.asObservable();
 
-	editedMap : GMMap | null = null;
+	editedMap: GMMap | null = null;
 
-	areMapsLoaded() :boolean {
+	initializeMaps() {
+		console.log("initializing maps");
+		this.requestMaps()
+		this.mapsLoaded$.subscribe({
+			next: (loaded) => {
+				if (loaded) {
+					console.log("maps initialized. loading selected map data")
+					this.setSelectedMap(this.getSelectedMap());
+				}
+			}
+		})
+	}
+
+	areMapsLoaded(): boolean {
 		return this.mapsLoaded.getValue();
 	}
 
-	setSelectedMap(map : GMMap) {
+	setSelectedMap(map: GMMap | null) {
+		console.log("setting selected map: " + map);
 		this.selectedMap.next(map);
 		this.storeSelectedMap();
 	}
@@ -53,13 +80,15 @@ export class MapService {
 		if (this.selectedMap.getValue() != null) {
 			return this.selectedMap.getValue();
 		}
-
-		var map : GMMap | null = this.getMap(parseInt(window.localStorage.getItem("selectedMapID") ?? ""));
+		console.log("retrieving selected map data from local storage")
+		var map: GMMap | null = this.getMap(parseInt(window.localStorage.getItem("selectedMapID") ?? ""));
+		console.log("found map: " + map);
 		return map;
 	}
 
 	storeSelectedMap() {
-		var map : GMMap | null = this.selectedMap.getValue();
+		var map: GMMap | null = this.selectedMap.getValue();
+		console.log("storing selected map: " + map);
 		if (map == null) {
 			window.localStorage.setItem("selectedMapID", "");
 			return;
@@ -67,7 +96,7 @@ export class MapService {
 		window.localStorage.setItem("selectedMapID", map.id.toString());
 	}
 
-	getMap(id : number) : GMMap | null {
+	getMap(id: number): GMMap | null {
 		for (var map of this.maps.getValue()) {
 			if (map.id == id) {
 				return map;
@@ -76,7 +105,7 @@ export class MapService {
 		return null;
 	}
 
-	getMaps() : GMMap[] {
+	getMaps(): GMMap[] {
 		return this.maps.value;
 	}
 
@@ -102,18 +131,18 @@ export class MapService {
 
 	}
 
-	deleteMap(id : number) : Observable<object> {
+	deleteMap(id: number): Observable<object> {
 		var userToken: string = this.auth.getUserToken();
-		
 
-		if (userToken == "" ) {
+
+		if (userToken == "") {
 			throw new Error(`Cannot find usertoken`);
 		}
 
 		return this.http.post(this.urlBuilder.buildUrl(["campaigns", "maps", "delete", id.toString(), userToken]), {})
 	}
 
-	updateMap(map: GMMap) : Observable<object> {
+	updateMap(map: GMMap): Observable<object> {
 		var userToken: string = this.auth.getUserToken();
 		var campaign: Campaign | null = this.campaignService.getSelectedCampaign();
 

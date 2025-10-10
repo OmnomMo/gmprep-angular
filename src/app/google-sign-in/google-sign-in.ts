@@ -3,6 +3,7 @@ import { AuthService } from '../auth';
 import { HttpClient } from '@angular/common/http';
 import { GMUser } from '../models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { Observable, Subject } from 'rxjs';
 
 declare const google: any;
 
@@ -35,11 +36,24 @@ export class GoogleSignInComponent implements AfterViewInit {
 
 			//token expired, initialize sign in
 			if (now > exp!) {
-				this.initializeGoogleSignIn();
+				this.waitForGoogle(() => this.initializeGoogleSignIn);
 			} else {
 				this.signIn(userToken)
 			}
 		}
+	}
+
+	//sometimes google is not defined when we load the page. 
+	//HACK: wait until google is defined.
+	waitForGoogle(callback : () => void) {
+		var interval = setInterval(() => {
+			console.log("google is not defined yet. wait for google")
+			if (google != null && google != undefined) {
+				("google found, proceed!")
+				clearInterval(interval)
+				callback();
+			}
+		}, 100);
 	}
 
 	initializeGoogleSignIn() {
