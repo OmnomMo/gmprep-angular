@@ -5,6 +5,8 @@ import { AuthService } from '../../auth';
 import { Router } from '@angular/router';
 import { GMMap } from '../../models/map';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NodeService } from '../../node-service';
+import { MapNode } from '../../models/map-node';
 
 @Component({
   selector: 'app-map-background',
@@ -14,7 +16,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class MapBackground {
 
-	selectedMap : Signal<GMMap | null | undefined>
+	selectedMap : Signal<GMMap | null | undefined>;
+	nodes : Signal<MapNode[] | undefined>;
 	xOffset = signal<number>(0);
 	yOffset = signal<number>(0);
 	zoomPivotPositionX = signal<number>(0);
@@ -31,10 +34,15 @@ export class MapBackground {
 	constructor(
 		private campaignService : CampaignService,
 		private mapService : MapService,
+		private nodeService : NodeService,
 		private auth : AuthService,
 		private router : Router) {
 		
 		this.selectedMap = toSignal(mapService.selectedMap$);
+		this.nodes = toSignal(nodeService.nodes$);
+		nodeService.requestNodes(auth.getUserToken(), campaignService.getSelectedCampaign()!.id)
+
+
 	}
 
 	onMouseDown(e : MouseEvent) {
@@ -78,7 +86,7 @@ export class MapBackground {
 		var newZoom = this.zoom();
 
 		if (wheelEvent.deltaY < 0) {
-			newZoom *= 1.1;
+			newZoom *= 1.15;
 		} else {
 			newZoom *= 0.8;
 		}

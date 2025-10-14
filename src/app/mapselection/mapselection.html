@@ -3,7 +3,7 @@
 		<p>Loading maps...</p>
 	} @else {
 		<ul class="mapButtonParent">
-			@for (map of (mapService.maps$ | async); track map) {
+			@for (map of maps(); track map) {
 				<app-big-button 
 					[title]="map.name"
 					[id]="map.id"

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { GMMap } from './models/map';
 import { AuthService } from './auth';
 import { CampaignService } from './campaign-service';
@@ -14,32 +14,25 @@ import { UrlBuilder } from './utils/url-builder';
 export class MapService {
 
 	constructor(
-		public auth: AuthService,
-		public campaignService: CampaignService,
 		public http: HttpClient,
+		public campaignService: CampaignService,
+		public auth: AuthService,
 		public urlBuilder: UrlBuilder,
 	) {
-		auth.authState$.subscribe({
-			next: state => {
-				if (!state) {
-					console.log("User logged out. Clearing selected map")
-					this.selectedMap.next(null);
-				}
-			}
-		})
-
-		if (campaignService.areCampaignsLoaded()) {
-			this.initializeMaps()
-		}
-		campaignService.campaignsLoaded$.subscribe({
-			next: (loaded) => {
-				if (loaded) {
-					console.log("Campaigns loaded. start loading map data")
-					this.initializeMaps()
+		campaignService.selectedCampaign$.subscribe({
+			next: campaign => {
+				if (campaign != null) {
+					this.invalidateMaps(true);
 				}
 			}
 		});
-		campaignService.requestCampaigns();
+		auth.authState$.subscribe({
+			next: state => {
+				if (!state) {
+					this.invalidateMaps(true);
+				}
+			}
+		});
 	}
 
 	private maps = new BehaviorSubject<GMMap[]>([])
@@ -52,18 +45,11 @@ export class MapService {
 	selectedMap$ = this.selectedMap.asObservable();
 
 	editedMap: GMMap | null = null;
+	cachedUrl: string = "";
 
-	initializeMaps() {
-		console.log("initializing maps");
-		this.requestMaps()
-		this.mapsLoaded$.subscribe({
-			next: (loaded) => {
-				if (loaded) {
-					console.log("maps initialized. loading selected map data")
-					this.setSelectedMap(this.getSelectedMap());
-				}
-			}
-		})
+
+	getMapsLoaded(): Observable<boolean> {
+		return this.mapsLoaded$;
 	}
 
 	areMapsLoaded(): boolean {
@@ -86,7 +72,19 @@ export class MapService {
 		return map;
 	}
 
-	storeSelectedMap() {
+	invalidateMaps(invalidateCachedUrl : boolean = false) {
+		this.setSelectedMap(null);
+		this.mapsLoaded.next(false);
+
+		if (invalidateCachedUrl) {
+			this.cachedUrl ="";
+		}
+		if (this.cachedUrl != "") {
+			this.requestMapsByUrl(this.cachedUrl);
+		}
+	}
+
+	private storeSelectedMap() {
 		var map: GMMap | null = this.selectedMap.getValue();
 		console.log("storing selected map: " + map);
 		if (map == null) {
@@ -105,19 +103,30 @@ export class MapService {
 		return null;
 	}
 
-	getMaps(): GMMap[] {
-		return this.maps.value;
+	getMaps(userToken: string, campaign: Campaign): Observable<GMMap[]> {
+
+		if (!this.areMapsLoaded()) {
+			this.requestMaps(userToken, campaign);
+		}
+		return this.maps$;
 	}
 
-	requestMaps() {
-		var userToken: string = this.auth.getUserToken();
-		var campaign: Campaign | null = this.campaignService.getSelectedCampaign();
+	private requestMaps(userToken: string, campaign: Campaign) {
 
 		if (userToken == "" || campaign == null) {
 			throw new Error(`Cannot request campaign info for campaign ${campaign}.\nUser ${userToken}`)
 		}
+		this.cachedUrl = this.urlBuilder.buildUrl(["campaigns", "maps", campaign.id.toString(), userToken]);
+		this.requestMapsByUrl(this.cachedUrl);
+	}
 
-		this.http.get(this.urlBuilder.buildUrl(["campaigns", "maps", campaign.id.toString(), userToken]))
+	private requestMapsByUrl(url: string) {
+
+		if (url == "") {
+			throw new Error("Url empty");
+		}
+
+		this.http.get(url)
 			.subscribe({
 				next: (response) => {
 					console.log(response)
@@ -128,28 +137,47 @@ export class MapService {
 					throw new Error(e);
 				}
 			});
-
 	}
 
-	deleteMap(id: number): Observable<object> {
-		var userToken: string = this.auth.getUserToken();
-
+	deleteMap(userToken: string, id: number) {
 
 		if (userToken == "") {
 			throw new Error(`Cannot find usertoken`);
 		}
 
-		return this.http.post(this.urlBuilder.buildUrl(["campaigns", "maps", "delete", id.toString(), userToken]), {})
+		var request: Observable<Object> = this.http.post(this.urlBuilder.buildUrl(["campaigns", "maps", "delete", id.toString(), userToken]), {})
+		request.subscribe({
+			next: () => {
+				console.log("Map Deleted")
+				this.invalidateMaps();
+			},
+			error: e => {
+				throw new Error("Could not delete map: " + e);
+			}
+		})
 	}
 
-	updateMap(map: GMMap): Observable<object> {
-		var userToken: string = this.auth.getUserToken();
-		var campaign: Campaign | null = this.campaignService.getSelectedCampaign();
+	updateMap(userToken: string, campaign: Campaign, map: GMMap) {
+
+
+		console.log("updating map:");
+		console.log(map);
 
 		if (userToken == "" || campaign == null) {
 			throw new Error(`Cannot update map for campaign ${campaign}\nUsertoken: ${userToken}`);
 		}
 
-		return this.http.post(this.urlBuilder.buildUrl(["campaigns", "maps", "create", campaign.id.toString(), userToken]), map)
+		this.http.post(
+			this.urlBuilder.buildUrl(["campaigns", "maps", "create", campaign.id.toString(), userToken]),
+			map)
+			.subscribe({
+				next: () => {
+					this.invalidateMaps();
+				},
+				error: e => {
+					throw new Error("Could not update map: " + e);
+				}
+			})
+
 	}
 }

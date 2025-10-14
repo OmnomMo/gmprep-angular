@@ -3,6 +3,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth';
 import { GMUser } from './models/user';
+import { MapService } from './map-service';
+import { CampaignService } from './campaign-service';
 
 @Component({
 	selector: 'app-root',
@@ -12,7 +14,10 @@ import { GMUser } from './models/user';
 })
 export class App {
 
-	constructor(protected authService : AuthService, private router: Router) {
+	constructor(
+		protected authService : AuthService,
+		private router: Router,
+	) {
 		var _self = this;
 		authService.authState$.subscribe({
 			next(state) {

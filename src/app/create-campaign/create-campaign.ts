@@ -72,17 +72,8 @@ export class CreateCampaign implements OnDestroy{
 
 		this.submitting.set(true);
 
-		this.campaignService.updateCampaign(campaign).subscribe({
-			next: () => {
-				console.log("Successfully created new campaign!")
-				this.router.navigate(['/campaignselection'])
-			},
-			error: (e) => {
-				console.error(`Could not create campaign: ${e}`);
-				alert(e);
-				this.router.navigate(['/campaignselection'])
-			}
-		})
+		this.campaignService.updateCampaign(this.auth.getUserToken(), campaign);
+		this.router.navigate(['/campaignselection']);
 	}
 
 }

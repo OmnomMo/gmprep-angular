@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth';
 import { MapService } from '../map-service';
 import { GMMap } from '../models/map';
+import { CampaignService } from '../campaign-service';
 
 @Component({
   selector: 'app-create-map',
@@ -27,7 +28,9 @@ export class CreateMap {
 	constructor(
 		public router: Router,
 		public auth: AuthService,
-		public mapService: MapService) {
+		public mapService: MapService,
+		public campaignService: CampaignService,
+	) {
 
 		var editedMap : GMMap | null = mapService.editedMap;
 		
@@ -74,16 +77,7 @@ export class CreateMap {
 
 		this.submitting.set(true);
 
-		this.mapService.updateMap(map).subscribe({
-			next: () => {
-				console.log("Successfully created new map!")
-				this.router.navigate(['/mapselection'])
-			},
-			error: (e) => {
-				console.error(`Could not create map: ${e}`);
-				alert(e);
-				this.router.navigate(['/mapselection'])
-			}
-		})
+		this.mapService.updateMap(this.auth.getUserToken(), this.campaignService.getSelectedCampaign()!, map);
+		this.router.navigate(['/mapselection']);
 	}
 }

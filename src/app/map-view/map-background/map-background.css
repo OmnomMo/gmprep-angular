@@ -1,10 +1,10 @@
 .mapBackgroundContainer {
 	position: fixed;
-	top: 10%;
-	left: 10%;
-	bottom: 10%;
-	right: 10%;
-	background-color: aqua;
+	top: 0%;
+	left: 0%;
+	bottom: 0%;
+	right: 0%;
+	background-color: rgb(0, 0, 0);
 	clip-path: fill-box;
 }
 
@@ -16,7 +16,7 @@
 	max-width: 100%;
 	max-height: 100%;
 	position: fixed;
-	background-color: red;
+	background-color: rgb(0, 0, 0);
 }
 
 .mapScrollContainer {
@@ -29,7 +29,6 @@
 
 .mapBackground {
 	pointer-events: none;
-	opacity: 100%;
 	width: 100%;
 	position: relative;
 }

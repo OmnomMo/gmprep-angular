@@ -7,7 +7,12 @@ import { AuthGuard } from './auth-guard';
 import { CampaignGuard } from './campaign-guard';
 import { CreateCampaign } from './create-campaign/create-campaign';
 import { CreateMap } from './create-map/create-map';
+import { MapGuard } from './map-guard';
 
+
+//current setup for multiple guards that depend on each other:
+//The guards themselves call their prerequisites.
+//Example: Mapguard first calls Campaignguard which first calls AuthGuard
 export const routes: Routes = [
 	{
 		path: 'login',
@@ -18,7 +23,7 @@ export const routes: Routes = [
 		path:'mapselection',
 		title:'Select Map',
 		component: MapSelection,
-		canActivate: [AuthGuard, CampaignGuard],
+		canActivate: [CampaignGuard],
 	},
 	{
 		path: 'campaignselection',
@@ -30,7 +35,7 @@ export const routes: Routes = [
 		path: 'map',
 		title:'Map',
 		component: MapView,
-		canActivate: [AuthGuard],
+		canActivate: [MapGuard],
 	},
 	{
 		path: 'createcampaign',
@@ -42,7 +47,7 @@ export const routes: Routes = [
 		path: 'createmap',
 		title: 'Map Creator',
 		component: CreateMap,
-		canActivate: [AuthGuard, CampaignGuard],
+		canActivate: [CampaignGuard],
 	},
 	{
 		path: '**',

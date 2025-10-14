@@ -1,54 +1,34 @@
-import { Component, signal } from '@angular/core';
+import { Component, Signal, signal } from '@angular/core';
 import { CampaignService } from '../campaign-service';
 import { AuthService } from '../auth';
 import { Campaign } from '../models/campaign';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { BigButton } from '../big-button/big-button';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-campaignselection',
-  imports: [BigButton, AsyncPipe],
+  imports: [BigButton],
   templateUrl: './campaignselection.html',
   styleUrl: './campaignselection.css'
 })
 export class CampaignSelection {
 
-	campaignsLoaded = signal<boolean>(false);
+	campaignsLoaded: Signal<boolean | undefined>
+	campaigns: Signal<Campaign[] | undefined>
 
 	constructor(
 		public campaignService : CampaignService,
 		public auth : AuthService,
 		public router : Router,
 	) {
-		console.log("Campaign selection constructor");
-
-		if (campaignService.getCampaigns().length == 0) {
-			this.campaignsLoaded.set(false);
-		} else {
-			this.campaignsLoaded.set(true)
-		}
-		
-		try {
-
-			campaignService.requestCampaigns();
-			campaignService.campaigns$.subscribe({
-				next: value => this.campaignsUpdated(value),
-				error: err => console.error('Campaigns returned error: ' + err)
-			});
-			
-		} catch(e) {
-			console.error(e);
-		}
+		this.campaignsLoaded = toSignal(campaignService.getCampaignsLoaded());
+		this.campaigns = toSignal(campaignService.getCampaigns(auth.getUserToken()));
 	}
 
 	getImageStyle(campaign : Campaign): string {
 		return `background-image: url(${campaign.imageLink})`;
-	}
-
-	campaignsUpdated(campaigns: Campaign[]) {
-		this.campaignsLoaded.set(true);
-		console.log(campaigns);
 	}
 
 	campaignEdited(id: number) {
@@ -58,18 +38,7 @@ export class CampaignSelection {
 	}
 
 	campaignDeleted(id: number) {
-
-			this.campaignService.deleteCampaign(id).subscribe({
-			next: () => {
-				console.log("Campaign deleted!");
-				this.campaignService.requestCampaigns();
-			},
-			error: (e) => {
-				console.error(e);
-				throw new Error("could not delete campaign: ");
-			}
-		});
-		console.log("campaign deleted " + id);
+		this.campaignService.deleteCampaign(this.auth.getUserToken(), id)
 	}
 
 	createCampaign() {

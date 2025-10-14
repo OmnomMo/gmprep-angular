@@ -4,7 +4,7 @@
 	<div class="Loading">Loading Campaigns...</div>
 	} @else {
 	<ul class="campaignButtonParent">
-		@for(campaign of (campaignService.campaigns$ | async); track campaign) {
+		@for(campaign of campaigns(); track campaign) {
 			<app-big-button 
 				[id]="campaign.id"
 				[title]="campaign.name"
