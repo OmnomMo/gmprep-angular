@@ -38,11 +38,19 @@ export class MapBackground {
 		private auth : AuthService,
 		private router : Router) {
 		
-		this.selectedMap = toSignal(mapService.selectedMap$);
+		this.selectedMap = toSignal(mapService.getSelectedMapObserver());
 		this.nodes = toSignal(nodeService.nodes$);
 		nodeService.requestNodes(auth.getUserToken(), campaignService.getSelectedCampaign()!.id)
 
 
+	}
+
+	get imgSrc() : string {
+		var src : string | undefined = this.selectedMap()?.externalImageUrl;
+		if (src == undefined || src == "") {
+			src = '/empty_map.jpg';
+		}
+		return src!;
 	}
 
 	onMouseDown(e : MouseEvent) {

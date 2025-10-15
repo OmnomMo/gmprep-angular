@@ -72,8 +72,12 @@ export class MapService {
 		return map;
 	}
 
+	getSelectedMapObserver(): Observable<GMMap | null> {
+		this.setSelectedMap(this.getSelectedMap());
+		return this.selectedMap$;
+	}
+
 	invalidateMaps(invalidateCachedUrl : boolean = false) {
-		this.setSelectedMap(null);
 		this.mapsLoaded.next(false);
 
 		if (invalidateCachedUrl) {
@@ -95,6 +99,7 @@ export class MapService {
 	}
 
 	getMap(id: number): GMMap | null {
+		console.log("getting map with id " + id);
 		for (var map of this.maps.getValue()) {
 			if (map.id == id) {
 				return map;

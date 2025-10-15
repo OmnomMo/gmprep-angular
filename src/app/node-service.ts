@@ -29,12 +29,18 @@ export class NodeService {
 
 
 		this.http.get(this.urlBuilder.buildUrl(
-			[campaignId.toString(),
-			userToken]))
+			[
+				"nodes",
+				"all",
+				campaignId.toString(),
+				userToken
+			]))
 			.subscribe({
 				next: (value) => {
 					console.log("received nodes:");
 					console.log(value);
+					this.nodes.next(value as MapNode[]);
+					this.nodesLoaded.next(true);
 				},
 				error: (e) => {
 					console.error(e);

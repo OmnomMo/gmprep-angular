@@ -74,6 +74,13 @@ export class GoogleSignInComponent implements AfterViewInit {
 	}
 
 	handleCredentialResponse(response: any) {
+
+		console.log("handle credential response");
+
+		if (response == undefined) {
+			console.error("Google login response undefined");
+			alert("Google login response undefined");
+		}
 		// response.credential is the JWT token
 		console.log('Encoded JWT ID token: ' + response.credential);
 		const userToken = response.credential;

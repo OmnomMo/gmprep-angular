@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, GuardResult, MaybeAsync, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { CampaignService } from './campaign-service';
 import { MapService } from './map-service';
-import { BehaviorSubject, first, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
 import { CampaignGuard } from './campaign-guard';
 import { GuardExtension } from './guard-extension';
 import { AuthService } from './auth';
@@ -20,9 +20,9 @@ export class MapGuard implements CanActivate {
 		private authService: AuthService,
 		private campaignService: CampaignService,
 		private router: Router,
-		private campaignGuard : CampaignGuard,
-		private guardExtension : GuardExtension,
-		
+		private campaignGuard: CampaignGuard,
+		private guardExtension: GuardExtension,
+
 	) { }
 
 
@@ -30,13 +30,13 @@ export class MapGuard implements CanActivate {
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
-	): MaybeAsync<GuardResult>{
+	): MaybeAsync<GuardResult> {
 
 		console.log("MapGuard canActivate Called.")
 
 		var self = this;
 
-		this.isMapSet$.pipe(first()).subscribe({next: value => {console.log("Map Guard observable updated: " + value);}});
+		this.isMapSet$.pipe(first()).subscribe({ next: value => { console.log("Map Guard observable updated: " + value); } });
 
 		this.guardExtension.evaluateAfterPrerequisite(
 			this.campaignGuard,
@@ -61,18 +61,29 @@ export class MapGuard implements CanActivate {
 	//at this point we are sure that campaigns are already loaded
 	//returns observable(true) if selected map is set,
 	//returns observable(map selection url if not)
-	checkMaps(self: MapGuard){
+	checkMaps(self: MapGuard) {
 		if (self.mapService.areMapsLoaded()) {
 			self.checkSelectedMapSet(self);
 		} else {
-			self.mapService.getMaps(self.authService.getUserToken(), self.campaignService.getSelectedCampaign()!);
+			console.log("maps not loaded. requesting maps.");
+			self.mapService.getMaps(self.authService.getUserToken(), self.campaignService.getSelectedCampaign()!)
+				.subscribe({
+					next: (maps) => {
+						if (maps.length > 0) {
+							self.checkSelectedMapSet(self)
+						}
+					}
+				});
 		}
 	}
 
-	checkSelectedMapSet(self: MapGuard){
+	checkSelectedMapSet(self: MapGuard) {
+		console.log("maps loaded. check if selected map is set.");
 		if (self.mapService.getSelectedMap() != null) {
+			console.log("map set. Clearing Guard")
 			self.isMapSet.next(true);
 		} else {
+			console.log("map not set. returning to map selection.")
 			self.isMapSet.next(self.router.parseUrl('/mapselection'));
 		}
 	}
