@@ -3,7 +3,7 @@ import { AuthService } from './auth';
 import { CampaignService } from './campaign-service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MapNode } from './models/map-node';
+import { GmNode } from './models/map-node';
 import { UrlBuilder } from './utils/url-builder';
 
 @Injectable({
@@ -15,13 +15,13 @@ export class NodeService {
 		public urlBuilder : UrlBuilder,
 	) {}
 
-	nodes = new BehaviorSubject<MapNode[]>([]);
+	nodes = new BehaviorSubject<GmNode[]>([]);
 	nodes$ = this.nodes.asObservable();
 
 	nodesLoaded = new BehaviorSubject<boolean>(false);
 	nodesLoaded$ = this.nodesLoaded.asObservable();
 
-	requestNodes(userToken : string, campaignId : number) : Observable<MapNode[]> {
+	requestNodes(userToken : string, campaignId : number) : Observable<GmNode[]> {
 
 		if (userToken == "") {
 			throw new Error("User not authenticated");
@@ -39,7 +39,7 @@ export class NodeService {
 				next: (value) => {
 					console.log("received nodes:");
 					console.log(value);
-					this.nodes.next(value as MapNode[]);
+					this.nodes.next(value as GmNode[]);
 					this.nodesLoaded.next(true);
 				},
 				error: (e) => {

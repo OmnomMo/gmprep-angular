@@ -6,54 +6,59 @@ import { Router } from '@angular/router';
 import { GMMap } from '../../models/map';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NodeService } from '../../node-service';
-import { MapNode } from '../../models/map-node';
+import { GmNode, MapNode } from '../../models/map-node';
+import { MapIcon } from '../map-icon/map-icon';
 
 @Component({
-  selector: 'app-map-background',
-  imports: [],
-  templateUrl: './map-background.html',
-  styleUrl: './map-background.css'
+	selector: 'app-map-background',
+	imports: [MapIcon],
+	templateUrl: './map-background.html',
+	styleUrl: './map-background.css'
 })
 export class MapBackground {
 
-	selectedMap : Signal<GMMap | null | undefined>;
-	nodes : Signal<MapNode[] | undefined>;
+	selectedMap: Signal<GMMap | null | undefined>;
+	nodes: Signal<MapNode[] | undefined>;
 	xOffset = signal<number>(0);
 	yOffset = signal<number>(0);
 	zoomPivotPositionX = signal<number>(0);
 	zoomPivotPositionY = signal<number>(0);
 	zoom = signal<number>(1);
 
-	mouseDown : boolean = false;
-	mouseStartX : number = 0;
-	mouseStartY : number = 0;
-	xOffsetStart : number = 0;
-	yOffsetStart : number = 0;
-	
+	mouseDown: boolean = false;
+	mouseStartX: number = 0;
+	mouseStartY: number = 0;
+	xOffsetStart: number = 0;
+	yOffsetStart: number = 0;
+
 
 	constructor(
-		private campaignService : CampaignService,
-		private mapService : MapService,
-		private nodeService : NodeService,
-		private auth : AuthService,
-		private router : Router) {
-		
+		private campaignService: CampaignService,
+		private mapService: MapService,
+		private nodeService: NodeService,
+		private auth: AuthService,
+		private router: Router) {
+
 		this.selectedMap = toSignal(mapService.getSelectedMapObserver());
-		this.nodes = toSignal(nodeService.nodes$);
+		this.nodes = toSignal(mapService.mapNodes$);
 		nodeService.requestNodes(auth.getUserToken(), campaignService.getSelectedCampaign()!.id)
 
 
 	}
 
-	get imgSrc() : string {
-		var src : string | undefined = this.selectedMap()?.externalImageUrl;
+	get imgSrc(): string {
+		var src: string | undefined = this.selectedMap()?.externalImageUrl;
 		if (src == undefined || src == "") {
 			src = '/empty_map.jpg';
 		}
 		return src!;
 	}
 
-	onMouseDown(e : MouseEvent) {
+	getNodePositionStyle(mapNode : MapNode): string {
+		return `left: ${mapNode.locationX}px; top: ${mapNode.locationY}px;`;
+	}
+
+	onMouseDown(e: MouseEvent) {
 		this.mouseDown = true;
 		this.mouseStartX = e.clientX;
 		this.mouseStartY = e.clientY;
@@ -87,7 +92,7 @@ export class MapBackground {
 	onMouseWheel(e: Event) {
 
 
-		var wheelEvent : WheelEvent = e as WheelEvent;
+		var wheelEvent: WheelEvent = e as WheelEvent;
 		//console.log(wheelEvent.deltaY);
 
 
@@ -103,8 +108,8 @@ export class MapBackground {
 		newZoom = Math.max(1.0, Math.min(newZoom, 5.0));
 		//only adjust focus position if zooming in
 		if (newZoom - this.zoom() > 0.02) {
-			var target : Element = e!.target! as Element;
-			var child : Element = target.firstChild as Element;
+			var target: Element = e!.target! as Element;
+			var child: Element = target.firstChild as Element;
 			this.zoomPivotPositionX.set(wheelEvent.clientX - child.clientWidth / 2);
 			this.zoomPivotPositionY.set(wheelEvent.clientY - child.clientHeight / 2);
 		}

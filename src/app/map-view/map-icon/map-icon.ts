@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MapNode } from '../../models/map-node';
+import { GmNode, MapNode } from '../../models/map-node';
 
 @Component({
   selector: 'app-map-icon',

@@ -1,1 +1,6 @@
-<img [src]="node().mapIconPath" [width]="node().mapIconSize" [height]="node().mapIconSize" />
+<img
+	draggable="false"
+	[src]="'node_icons/' + node().node.mapIconPath"
+	[width]="node().node.mapIconSize"
+	[height]="node().node.mapIconSize"
+	/>

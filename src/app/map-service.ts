@@ -7,6 +7,7 @@ import { GMUser } from './models/user';
 import { Campaign } from './models/campaign';
 import { HttpClient } from '@angular/common/http';
 import { UrlBuilder } from './utils/url-builder';
+import { MapNode } from './models/map-node';
 
 @Injectable({
 	providedIn: 'root'
@@ -33,6 +34,11 @@ export class MapService {
 				}
 			}
 		});
+		this.selectedMap$.subscribe({
+			next: () => {
+				this.invalidateMapNodes();
+			}
+		})
 	}
 
 	private maps = new BehaviorSubject<GMMap[]>([])
@@ -40,6 +46,12 @@ export class MapService {
 
 	private mapsLoaded = new BehaviorSubject<boolean>(false);
 	mapsLoaded$ = this.mapsLoaded.asObservable();
+
+	private mapNodes = new BehaviorSubject<MapNode[]>([]);
+	mapNodes$ = this.mapNodes.asObservable();
+
+	private mapNodesLoaded = new BehaviorSubject<boolean>(false);
+	mapNodesLoaded$ = this.mapNodesLoaded.asObservable();
 
 	private selectedMap = new BehaviorSubject<GMMap | null>(null);
 	selectedMap$ = this.selectedMap.asObservable();
@@ -54,6 +66,14 @@ export class MapService {
 
 	areMapsLoaded(): boolean {
 		return this.mapsLoaded.getValue();
+	}
+
+	getMapNodesLoaded() : Observable<boolean> {
+		return this.mapNodesLoaded$;
+	}
+
+	areMapNodesLoaded() : boolean {
+		return this.mapNodesLoaded.getValue();
 	}
 
 	setSelectedMap(map: GMMap | null) {
@@ -88,6 +108,14 @@ export class MapService {
 		}
 	}
 
+	invalidateMapNodes() {
+		this.mapNodesLoaded.next(false);
+		this.mapNodes.next([]);
+		if (this.selectedMap.getValue() != null) {
+			this.requestMapNodes(this.auth.getUserToken(), this.selectedMap.getValue()!);
+		}
+	}
+
 	private storeSelectedMap() {
 		var map: GMMap | null = this.selectedMap.getValue();
 		console.log("storing selected map: " + map);
@@ -116,6 +144,10 @@ export class MapService {
 		return this.maps$;
 	}
 
+	getMapNodes(userToken : string, map: GMMap) {
+		
+	}
+
 	private requestMaps(userToken: string, campaign: Campaign) {
 
 		if (userToken == "" || campaign == null) {
@@ -142,6 +174,22 @@ export class MapService {
 					throw new Error(e);
 				}
 			});
+	}
+
+	private requestMapNodes(userToken: string, map: GMMap) {
+		var url: string = this.urlBuilder.buildUrl(["nodes", "mapnodes", map.id.toString(), userToken]);
+
+		this.http.get(url).subscribe({
+			next: value => {
+				console.log("received map nodes: ");
+				console.log(value);
+				this.mapNodes.next(value as MapNode[]);
+				this.mapNodesLoaded.next(true);
+			},
+			error: e => {
+				throw new Error(e);
+			}
+		});
 	}
 
 	deleteMap(userToken: string, id: number) {

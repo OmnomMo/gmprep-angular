@@ -1,4 +1,4 @@
-export class MapNode{
+export class GmNode{
 	constructor(
 		public id : number,
 		public name : string,
@@ -11,6 +11,15 @@ export class MapNode{
 		public secrets : Secret[] = [],
 		public links : NodeLink[] = [],
 	){}
+}
+
+export class MapNode{
+	constructor(
+		public id : number,
+		public node : GmNode,
+		public locationX : number,
+		public locationY : number,
+	) {}
 }
 
 export class CreatureInfo{
@@ -62,7 +71,7 @@ export class Secret{
 export class NodeLink{
 	constructor(
 		public id : number,
-		public nodeTo : MapNode
+		public nodeTo : GmNode
 	) {}
 }
 

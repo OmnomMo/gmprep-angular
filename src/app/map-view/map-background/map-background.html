@@ -10,6 +10,9 @@
 				'top: ' + (yOffset() - zoomPivotPositionY()) + 'px;' 
 				">
 			<img [src]="imgSrc" class="mapBackground" draggable="false">
+			@for (mapNode of nodes(); track mapNode) {
+				<app-map-icon [node]="mapNode" class="mapIcon" [style]="getNodePositionStyle(mapNode)"/>
+			}
 		</div>
 
 	</div>
