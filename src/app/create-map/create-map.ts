@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { NameFormComponent } from "../forms/name-form-component/name-form-component";
 import { MultilineFormComponent } from "../forms/multiline-form-component/multiline-form-component";
 import { ImagelinkFormComponent } from "../forms/imagelink-form-component/imagelink-form-component";
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth';
 import { MapService } from '../map-service';
@@ -18,10 +18,18 @@ import { CampaignService } from '../campaign-service';
 export class CreateMap {
 
 	createMapForm = new FormGroup({
-		name: new FormControl(''),
+		name: new FormControl('', [Validators.required]),
 		description: new FormControl(''),
 		imageLink: new FormControl(''),
 	})
+
+	get name() {
+		return this.createMapForm.get('name');
+	}
+
+	get submittable() : boolean {
+		return !this.createMapForm.get('name')?.invalid
+	}
 
 	submitting = signal<boolean>(false);
 

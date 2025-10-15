@@ -3,11 +3,14 @@
 		<p>Submitting Map...</p>
 	} @else {
 	<div class="CreateMapForm" [formGroup]="createMapForm">
-		<app-name-form-component label="Name" controlName="name" [formGroup]="createMapForm" />
+		<app-name-form-component label="Name" required controlName="name" [formGroup]="createMapForm" />
+		@if (name?.invalid && (name?.dirty || name?.touched)) {
+			<div class="formAlert">Name is required.</div>
+		}
 		<app-multiline-form-component label="Description" controlName="description" [formGroup]="createMapForm" />
 		<app-imagelink-form-component label="Map Image" controlName="imageLink" [formGroup]="createMapForm" />
 		<form [formGroup]="createMapForm" (submit)="onSubmit()">
-			<input type="submit" value="Submit">
+			<input type="submit" value="Submit" [disabled]="!submittable">
 			<button (click)="abort()">Abort</button>
 		</form>
 	</div>

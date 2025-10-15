@@ -2,7 +2,7 @@ import { Component, forwardRef, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth';
 import { CampaignService } from '../campaign-service';
-import { FormControl, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from "../forms/name-form-component/name-form-component";
 import { MultilineFormComponent } from "../forms/multiline-form-component/multiline-form-component";
 import { ImagelinkFormComponent } from "../forms/imagelink-form-component/imagelink-form-component";
@@ -18,10 +18,18 @@ export class CreateCampaign implements OnDestroy{
 
 
 	createCampaignForm = new FormGroup({
-		name: new FormControl(''),
+		name: new FormControl('', Validators.required),
 		description: new FormControl(''),
 		imageLink: new FormControl(''),
 	})
+
+	get name() {
+		return this.createCampaignForm.get('name');
+	}
+
+	get submittable() {
+		return !this.createCampaignForm.get('name')?.invalid
+	}
 
 	submitting = signal<boolean>(false);
 

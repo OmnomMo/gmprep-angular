@@ -20,6 +20,10 @@ nav .user-display {
 	width: 100%;
 }
 
+.formAlert {
+	color: red;
+}
+
 .nav-buttons .navElement {
 	padding: 1em;
 	color: White;
