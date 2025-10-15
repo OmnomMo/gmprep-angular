@@ -171,6 +171,8 @@ export class MapService {
 					this.mapsLoaded.next(true);
 				},
 				error: (e) => {
+					alert("Error fetching maps. Logging out");
+					this.auth.logout();
 					throw new Error(e);
 				}
 			});

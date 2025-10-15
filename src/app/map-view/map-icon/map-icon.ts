@@ -9,4 +9,9 @@ import { GmNode, MapNode } from '../../models/map-node';
 })
 export class MapIcon {
 	node = input.required<MapNode>();
+	widthFactor = input<number>(1);
+
+	getSize(): number {
+		return parseFloat(this.node().node.mapIconSize) * this.widthFactor();
+	}
 }

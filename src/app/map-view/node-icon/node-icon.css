@@ -1,0 +1,28 @@
+.nodeIconSidebar{
+	background-color: rgba(252, 252, 252, 0.075);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 0.5em;
+	padding: 0.5em;
+	list-style-type: none;
+	user-select: none;
+
+}
+.nodeIconSidebar:hover{
+	background-color: rgb(33, 30, 43);
+}
+
+.nodeIconSidebar > img{
+	max-width: 52px;
+	filter: brightness(85%);
+}
+
+.nodeIconSidebar:hover > img {
+	filter: brightness(100%);
+}
+
+
+.nodeIconSidebar > p{
+	margin-left: 2em;
+}

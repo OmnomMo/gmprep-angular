@@ -9,9 +9,18 @@
 				'left: ' + (xOffset() - zoomPivotPositionX()) + 'px;' +
 				'top: ' + (yOffset() - zoomPivotPositionY()) + 'px;' 
 				">
-			<img [src]="imgSrc" class="mapBackground" draggable="false">
+			<img
+				[src]="imgSrc"
+				class="mapBackground"
+				draggable="false"
+				(load)="onMapLoaded($event)">
 			@for (mapNode of nodes(); track mapNode) {
-				<app-map-icon [node]="mapNode" class="mapIcon" [style]="getNodePositionStyle(mapNode)"/>
+				<app-map-icon
+					[node]="mapNode"
+					class="mapIcon"
+					[style]="getNodePositionStyle(mapNode)"
+					[widthFactor]="widthFactor()"
+				/>
 			}
 		</div>
 

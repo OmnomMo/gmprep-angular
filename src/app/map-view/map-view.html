@@ -1,1 +1,9 @@
+<div class="sidebar sidebarLeft">Nodes:
+	<ul>
+		@for(gmNode of nodes(); track gmNode) {
+		<app-node-icon [node]="gmNode" (onDragStarted)="onDragStarted(gmNode)"/>
+		}
+	</ul>
+</div>
+<app-dragged-node [node]="draggedNode()" (dropped)="onDragStopped($event)"/>
 <app-map-background />

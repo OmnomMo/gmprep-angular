@@ -1,0 +1,7 @@
+.draggedNode{
+	position: absolute;
+	z-index: 100;
+	max-width: 64px;
+	max-height: 64px;
+	filter: drop-shadow(black 0.5em 0.5em 4px);
+}

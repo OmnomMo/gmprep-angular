@@ -1,0 +1,16 @@
+.sidebar{
+	z-index: 5;
+	position: absolute;
+	overflow-y: hidden;
+	top:0px;
+	bottom:0px;
+	width: 512px;
+	background-color: rgba(0, 0, 0, 0.822);
+	backdrop-filter: blur(10px);
+	padding: 1em;
+	padding-top: 5em;
+}
+
+.sidebarLeft{
+	left:0px;
+}

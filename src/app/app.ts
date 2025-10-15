@@ -5,6 +5,7 @@ import { AuthService } from './auth';
 import { GMUser } from './models/user';
 import { MapService } from './map-service';
 import { CampaignService } from './campaign-service';
+import { MouseTracker } from './utils/mouse-tracker';
 
 @Component({
 	selector: 'app-root',
@@ -17,6 +18,7 @@ export class App {
 	constructor(
 		protected authService : AuthService,
 		private router: Router,
+		private mouseTracker : MouseTracker,
 	) {
 		var _self = this;
 		authService.authState$.subscribe({
@@ -36,6 +38,10 @@ export class App {
 	navButtonState = signal('disabled-link');
 	loggedIn = signal(false);
 	user = signal<GMUser | null>(null);
+
+	onMouseMove(e : MouseEvent) {
+		this.mouseTracker.setMouseEvent(e);
+	}
 
 	loginStateChanged(state : boolean) {
 		if (state) {

@@ -1,4 +1,4 @@
-import { Component, Signal, signal } from '@angular/core';
+import { Component, HostListener, Signal, signal } from '@angular/core';
 import { CampaignService } from '../../campaign-service';
 import { MapService } from '../../map-service';
 import { AuthService } from '../../auth';
@@ -24,12 +24,16 @@ export class MapBackground {
 	zoomPivotPositionX = signal<number>(0);
 	zoomPivotPositionY = signal<number>(0);
 	zoom = signal<number>(1);
+	//factor between map width and window innerWidth
+	widthFactor = signal<number>(1);
+	
 
 	mouseDown: boolean = false;
 	mouseStartX: number = 0;
 	mouseStartY: number = 0;
 	xOffsetStart: number = 0;
 	yOffsetStart: number = 0;
+	mapWidth: number = 0;
 
 
 	constructor(
@@ -37,13 +41,21 @@ export class MapBackground {
 		private mapService: MapService,
 		private nodeService: NodeService,
 		private auth: AuthService,
-		private router: Router) {
+		private router: Router,
+		) {
 
 		this.selectedMap = toSignal(mapService.getSelectedMapObserver());
 		this.nodes = toSignal(mapService.mapNodes$);
 		nodeService.requestNodes(auth.getUserToken(), campaignService.getSelectedCampaign()!.id)
 
 
+
+	}
+
+	
+	@HostListener('window:resize', ['$event'])
+	onWindowResize(e: UIEvent) {
+		this.computeWidthFactor();
 	}
 
 	get imgSrc(): string {
@@ -55,7 +67,20 @@ export class MapBackground {
 	}
 
 	getNodePositionStyle(mapNode : MapNode): string {
-		return `left: ${mapNode.locationX}px; top: ${mapNode.locationY}px;`;
+
+		return `left: ${mapNode.locationX * this.widthFactor()}px; top: ${mapNode.locationY * this.widthFactor()}px;`;
+	}
+
+	onMapLoaded(e : Event) {
+		var target : HTMLImageElement = e.currentTarget as HTMLImageElement;
+		this.mapWidth = target.naturalWidth;
+		this.computeWidthFactor();
+	}
+
+	computeWidthFactor() {
+
+		this.widthFactor.set(window.innerWidth / this.mapWidth);
+		console.log("Width factor set: " +  this.widthFactor())
 	}
 
 	onMouseDown(e: MouseEvent) {
@@ -90,7 +115,6 @@ export class MapBackground {
 	}
 
 	onMouseWheel(e: Event) {
-
 
 		var wheelEvent: WheelEvent = e as WheelEvent;
 		//console.log(wheelEvent.deltaY);

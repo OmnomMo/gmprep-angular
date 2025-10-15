@@ -1,0 +1,9 @@
+@if (node() != null) {
+<img
+	[src]="'/node_icons/' + node()?.mapIconPath"
+	class="draggedNode"
+	draggable="false"
+	[style]="posStyle()"
+	(mouseup)="onMouseUp($event)"
+/>
+}

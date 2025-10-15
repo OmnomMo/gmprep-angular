@@ -1,6 +1,7 @@
 <img
 	draggable="false"
+	class="mapIcon"
 	[src]="'node_icons/' + node().node.mapIconPath"
-	[width]="node().node.mapIconSize"
-	[height]="node().node.mapIconSize"
+	[width]="getSize()"
+	[height]="getSize()"
 	/>
