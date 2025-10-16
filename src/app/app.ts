@@ -43,6 +43,10 @@ export class App {
 		this.mouseTracker.setMouseEvent(e);
 	}
 
+	onMouseUp(e: MouseEvent) {
+		this.mouseTracker.callMouseUp(e);
+	}
+
 	loginStateChanged(state : boolean) {
 		if (state) {
 			this.navButtonState.set('enabled-link');

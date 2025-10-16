@@ -1,6 +1,8 @@
-import { Component, HostListener, Input, input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
+import { Component, HostListener, Input, input, OnChanges, OnDestroy, output, signal, SimpleChanges } from '@angular/core';
 import { GmNode } from '../../models/map-node';
 import { MouseTracker } from '../../utils/mouse-tracker';
+import { Subscription } from 'rxjs';
+import { MapService } from '../../map-service';
 
 @Component({
   selector: 'app-dragged-node',
@@ -8,19 +10,31 @@ import { MouseTracker } from '../../utils/mouse-tracker';
   templateUrl: './dragged-node.html',
   styleUrl: './dragged-node.css'
 })
-export class DraggedNode implements OnChanges{
+export class DraggedNode implements OnChanges, OnDestroy{
 
 	posStyle = signal<string>("");
 	node = input<GmNode | null>(null);
-	dropped = output<MouseEvent>();
+
+	mouseUpSubscription: Subscription
 
 	constructor(
-		private mouseTracker : MouseTracker
-	) {}
+		private mouseTracker : MouseTracker,
+		private mapService : MapService,
+	) {
+
+		this.mouseUpSubscription =  mouseTracker.mouseUp$.subscribe({
+			next: e => {this.onMouseUp(e);},
+		})
+
+	}
 
 	//handles position of dragged node before onMouseMove event is called
 	ngOnChanges(changes: SimpleChanges): void {
 		this.onMouseMove(this.mouseTracker.e!)
+	}
+
+	ngOnDestroy(): void {
+		this.mouseUpSubscription?.unsubscribe();
 	}
 
 
@@ -37,8 +51,11 @@ export class DraggedNode implements OnChanges{
 	}
 
 	onMouseUp(e: MouseEvent) {
+		if (this.node() == null) {
+			return;
+		}
 		console.log("Dragged node mouse up");
-		this.dropped.emit(e);
+		this.mapService.dropMapNode(e, this.node()!);
 	}
 }
 

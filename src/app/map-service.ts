@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { GMMap } from './models/map';
 import { AuthService } from './auth';
 import { CampaignService } from './campaign-service';
@@ -7,7 +7,7 @@ import { GMUser } from './models/user';
 import { Campaign } from './models/campaign';
 import { HttpClient } from '@angular/common/http';
 import { UrlBuilder } from './utils/url-builder';
-import { MapNode } from './models/map-node';
+import { GmNode, MapNode } from './models/map-node';
 
 @Injectable({
 	providedIn: 'root'
@@ -55,6 +55,9 @@ export class MapService {
 
 	private selectedMap = new BehaviorSubject<GMMap | null>(null);
 	selectedMap$ = this.selectedMap.asObservable();
+
+	private mapNodeDropped = new Subject<NodeDropInfo>();
+	mapNodeDropped$ = this.mapNodeDropped.asObservable();
 
 	editedMap: GMMap | null = null;
 	cachedUrl: string = "";
@@ -144,6 +147,10 @@ export class MapService {
 		return this.maps$;
 	}
 
+	dropMapNode(e: MouseEvent, node: GmNode) {
+		this.mapNodeDropped.next(new NodeDropInfo(e, node));
+	}
+
 	getMapNodes(userToken : string, map: GMMap) {
 		
 	}
@@ -194,13 +201,50 @@ export class MapService {
 		});
 	}
 
+	createMapNode(userToken: string, map: GMMap, mapNode: MapNode) {
+
+		if (userToken == "") {
+			throw new Error(`Cannot find usertoken`);
+		}
+		var url: string = this.urlBuilder.buildUrl(["nodes", "createmapnode", map.id.toString(), userToken])
+
+		this.http.post(url, mapNode).subscribe({
+			next: () => {
+				console.log("Map Node added");
+				this.invalidateMapNodes();
+			},
+			error: e => {
+				throw new Error("Could not add map node: " + e);
+			}
+		})
+	}
+
+	deleteMapNode(userToken: string, map: GMMap, mapNode: MapNode) {
+
+		if (userToken == "") {
+			throw new Error(`Cannot find usertoken`);
+		}
+
+		var url: string = this.urlBuilder.buildUrl(["nodes", "deletemapnode", mapNode.id.toString(), userToken]);
+		this.http.post(url, {}).subscribe({
+			next: () =>{
+				console.log("MapNode deleted");
+				this.invalidateMapNodes();
+			},
+			error: e => {
+				throw new Error("Could not delete map node: " + e);
+			}
+		})
+	}
+
 	deleteMap(userToken: string, id: number) {
 
 		if (userToken == "") {
 			throw new Error(`Cannot find usertoken`);
 		}
 
-		var request: Observable<Object> = this.http.post(this.urlBuilder.buildUrl(["campaigns", "maps", "delete", id.toString(), userToken]), {})
+		var url: string = this.urlBuilder.buildUrl(["campaigns", "maps", "delete", id.toString(), userToken]);
+		var request: Observable<Object> = this.http.post(url, {})
 		request.subscribe({
 			next: () => {
 				console.log("Map Deleted")
@@ -235,4 +279,11 @@ export class MapService {
 			})
 
 	}
+}
+
+export class NodeDropInfo {
+	constructor(
+		public e: MouseEvent,
+		public node: GmNode,
+	) {}
 }

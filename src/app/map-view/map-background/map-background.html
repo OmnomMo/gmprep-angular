@@ -13,7 +13,9 @@
 				[src]="imgSrc"
 				class="mapBackground"
 				draggable="false"
-				(load)="onMapLoaded($event)">
+				(load)="onMapLoaded($event)"
+				(mousemove)="setLocalMapMousePos($event)"
+			/>
 			@for (mapNode of nodes(); track mapNode) {
 				<app-map-icon
 					[node]="mapNode"

@@ -1,37 +1,39 @@
 <main class="main">
-	<nav>
-		@if (user() != null) {
-		<p class="user-display">Logged in as: {{user()!.name}} </p>
-		} @else {
-		<p></p>
-		}
-		<div class="nav-buttons">
-			<a routerLink="/campaignselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
-				ariaCurrentWhenActive="page">
-				Select Campaign
-			</a>
-			<a routerLink="/mapselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
-				ariaCurrentWhenActive="page">
-				Select Map
-			</a>
-			<a routerLink="/map" routerLinkActive="active" [class]="navButtonState()" ariaCurrentWhenActive="page"
-				class="navElement">
-				Map
-			</a>
-			@if (loggedIn()) {
-			<button (click)="logout()" class="navButton">
-				Log Out
-			</button>
+	<div (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)">
+		<nav>
+			@if (user() != null) {
+			<p class="user-display">Logged in as: {{user()!.name}} </p>
 			} @else {
-			<a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
-				class="navElement loginElement">
-				Login
-			</a>
+			<p></p>
 			}
-		</div>
+			<div class="nav-buttons">
+				<a routerLink="/campaignselection" routerLinkActive="active" [class]="navButtonState()"
+					class="navElement" ariaCurrentWhenActive="page">
+					Select Campaign
+				</a>
+				<a routerLink="/mapselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
+					ariaCurrentWhenActive="page">
+					Select Map
+				</a>
+				<a routerLink="/map" routerLinkActive="active" [class]="navButtonState()" ariaCurrentWhenActive="page"
+					class="navElement">
+					Map
+				</a>
+				@if (loggedIn()) {
+				<button (click)="logout()" class="navButton">
+					Log Out
+				</button>
+				} @else {
+				<a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+					class="navElement loginElement">
+					Login
+				</a>
+				}
+			</div>
 
-	</nav>
-	<div class="content" (mousemove)="onMouseMove($event)">
-		<router-outlet />
+		</nav>
+		<div class="content">
+			<router-outlet />
+		</div>
 	</div>
 </main>
