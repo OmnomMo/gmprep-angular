@@ -1,7 +1,12 @@
-<img
-	draggable="false"
-	class="mapIcon"
-	[src]="'node_icons/' + node().node.mapIconPath"
-	[width]="getSize()"
-	[height]="getSize()"
+<div>
+	<img
+		draggable="false"
+		class="mapIcon"
+		[src]="'node_icons/' + node().node.mapIconPath"
+		[width]="getSize()"
+		[height]="getSize()"
+		(mousedown)="onMouseDown($event)"
+		(mouseleave)="onMouseLeave($event)"
+		(mouseup)="onMouseUp($event)"
 	/>
+</div>

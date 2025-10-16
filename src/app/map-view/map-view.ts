@@ -22,6 +22,7 @@ export class MapView implements OnDestroy{
 	draggedNode = signal<GmNode | null>(null);
 
 	nodeDroppedSubscription : Subscription
+	nodeDraggedSubscription : Subscription
 
 	constructor(
 		private auth : AuthService,
@@ -34,6 +35,11 @@ export class MapView implements OnDestroy{
 		this.nodeDroppedSubscription = mapService.mapNodeDropped$.subscribe({
 			next: () => {
 				this.draggedNode.set(null);
+			}
+		});
+		this.nodeDraggedSubscription = mapService.mapNodeDragged$.subscribe({
+			next: (node: GmNode) => {
+				this.draggedNode.set(node)
 			}
 		})
 	}

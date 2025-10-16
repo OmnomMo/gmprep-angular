@@ -82,7 +82,6 @@ export class MapBackground implements OnDestroy {
 		var targetY: number = this.mapMousePosY / this.widthFactor();
 
 		if (
-			target.className == "mapBackgroundContainer" ||
 			target.className == "mapIcon" ||
 			target.className == "mapBackground") {
 			var newMapNode: MapNode = new MapNode(0, info.node, targetX, targetY);

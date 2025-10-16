@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { GmNode } from '../../models/map-node';
+import { MapService } from '../../map-service';
 
 @Component({
   selector: 'app-node-icon',
@@ -9,10 +10,13 @@ import { GmNode } from '../../models/map-node';
 })
 export class NodeIcon {
 	node = input.required<GmNode>();
-	onDragStarted = output<GmNode>();
+
+	constructor(
+		private mapService: MapService,
+	) {}
 
 	mouseDown() {
 		console.log("drag started");
-		this.onDragStarted.emit(this.node());
+		this.mapService.startDragNode(this.node());
 	}
 }

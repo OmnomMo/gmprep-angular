@@ -7,7 +7,7 @@ import { GMUser } from './models/user';
 import { Campaign } from './models/campaign';
 import { HttpClient } from '@angular/common/http';
 import { UrlBuilder } from './utils/url-builder';
-import { GmNode, MapNode } from './models/map-node';
+import { GmNode, MapNode} from './models/map-node';
 
 @Injectable({
 	providedIn: 'root'
@@ -58,6 +58,9 @@ export class MapService {
 
 	private mapNodeDropped = new Subject<NodeDropInfo>();
 	mapNodeDropped$ = this.mapNodeDropped.asObservable();
+
+	private mapNodeDragged = new Subject<GmNode>();
+	mapNodeDragged$ = this.mapNodeDragged.asObservable();
 
 	editedMap: GMMap | null = null;
 	cachedUrl: string = "";
@@ -151,9 +154,15 @@ export class MapService {
 		this.mapNodeDropped.next(new NodeDropInfo(e, node));
 	}
 
-	getMapNodes(userToken : string, map: GMMap) {
-		
+	startDragMapNode(userToken : string, node: MapNode) {
+		this.deleteMapNode(userToken, this.getSelectedMap()!, node);
+		this.mapNodeDragged.next(node.node);
 	}
+
+	startDragNode(node: GmNode) {
+		this.mapNodeDragged.next(node);
+	}
+
 
 	private requestMaps(userToken: string, campaign: Campaign) {
 
