@@ -9,22 +9,12 @@
 }
 
 
-.zoomPivotOffset {
-	pointer-events: none;
-	min-height: 100%;
-	min-width: 100%;
-	max-width: 100%;
-	max-height: 100%;
-	position: fixed;
-	background-color: rgb(0, 0, 0);
-}
-
 .mapScrollContainer {
 	pointer-events: none;
 	size: 100% 100%;
 	max-height: 100%;
 	max-width: 100%;
-	position: relative;
+	transform-origin: 0px 0px;
 }
 
 .mapBackground {
@@ -40,14 +30,4 @@
 	position: absolute;
 	left: 0px;
 	top: 0px;
-}
-
-.debugMousePos{
-	z-index: 100;
-	position: absolute;
-	min-width: 32px;
-	min-height: 32px;
-	max-width: 32px;
-	max-height: 32px;
-	background-color: purple;
 }

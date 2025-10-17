@@ -8,7 +8,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NodeService } from '../../node-service';
 import { GmNode, MapNode } from '../../models/map-node';
 import { MapIcon } from '../map-icon/map-icon';
-import { Subscription } from 'rxjs';
+import { min, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-map-background',
@@ -20,21 +20,18 @@ export class MapBackground implements OnDestroy {
 
 	selectedMap: Signal<GMMap | null | undefined>;
 	nodes: Signal<MapNode[] | undefined>;
-	xOffset = signal<number>(0);
-	yOffset = signal<number>(0);
-	zoomPivotPositionX = signal<number>(0);
-	zoomPivotPositionY = signal<number>(0);
-	zoom = signal<number>(1);
+	mapTransformStyle = signal<string>("");
+	offsetX: number = 0;
+	offsetY: number = 0;
+	zoom: number = 1;
 	//factor between map width and window innerWidth
 	widthFactor = signal<number>(1);
 	mapMousePosX: number = 0;
 	mapMousePosY: number = 0;
 
 	mouseDown: boolean = false;
-	mouseStartX: number = 0;
-	mouseStartY: number = 0;
-	xOffsetStart: number = 0;
-	yOffsetStart: number = 0;
+	startX: number = 0;
+	startY: number = 0;
 	mapWidth: number = 0;
 
 	mapNodeDroppedSubscription: Subscription;
@@ -115,10 +112,8 @@ export class MapBackground implements OnDestroy {
 
 	onMouseDown(e: MouseEvent) {
 		this.mouseDown = true;
-		this.mouseStartX = e.clientX;
-		this.mouseStartY = e.clientY;
-		this.xOffsetStart = this.xOffset();
-		this.yOffsetStart = this.yOffset();
+		this.startX = e.clientX - this.offsetX;
+		this.startY = e.clientY - this.offsetY;
 
 		//console.log("mouse down!");
 	}
@@ -143,39 +138,29 @@ export class MapBackground implements OnDestroy {
 		if (!this.mouseDown) {
 			return;
 		}
-
-		this.xOffset.set(this.xOffsetStart + (e.clientX - this.mouseStartX) / this.zoom());
-		this.yOffset.set(this.yOffsetStart + (e.clientY - this.mouseStartY) / this.zoom());
-
-		//console.log(`Mouse offset : ${this.xOffset}|${this.yOffset}`)
+		this.offsetX = e.clientX - this.startX;
+		this.offsetY = e.clientY - this.startY;
+		this.setTransformStyle();
 	}
 
+	onMouseWheel(e: WheelEvent) {
+		//on mousewheel we want to zoom in/out but also move the offset so the zoom happens around the mouse pointer
+		//normalize the new offset with old zoom
+		var xs = (e.clientX - this.offsetX) / this.zoom;
+		var ys = (e.clientY - this.offsetY) / this.zoom;
 
-	onMouseWheel(e: Event) {
-		var wheelEvent: WheelEvent = e as WheelEvent;
-		//console.log(wheelEvent.deltaY);
+		(e.deltaY < 0) ? (this.zoom *= 1.1) : (this.zoom /= 1.1);
+		this.zoom = Math.min(3, Math.max(this.zoom, 0.5));
 
-		var newZoom = this.zoom();
+		//apply offsets scaled with new zoom
+		this.offsetX = e.clientX - xs * this.zoom;
+		this.offsetY = e.clientY - ys * this.zoom;
 
-		if (wheelEvent.deltaY < 0) {
-			newZoom *= 1.15;
-		} else {
-			newZoom *= 0.8;
-		}
+		this.setTransformStyle();
+	}
 
-
-		newZoom = Math.max(0.5, Math.min(newZoom, 5.0));
-		//only adjust focus position if zooming in
-		if (newZoom - this.zoom() > 0.02) {
-			var target: Element = e!.target! as Element;
-			var mapBackground: Element = target as Element;
-			if (target.className != "mapBackground") {
-				mapBackground = target.firstChild as Element;
-			}
-			this.zoomPivotPositionX.set(wheelEvent.clientX - mapBackground.clientWidth / 2);
-			this.zoomPivotPositionY.set(wheelEvent.clientY - mapBackground.clientHeight / 2);
-		}
-		this.zoom.set(newZoom);
+	setTransformStyle() {
+		this.mapTransformStyle.set(`transform: translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.zoom});`)
 	}
 
 	//#endregion

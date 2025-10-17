@@ -1,32 +1,16 @@
 @if (selectedMap() != null && selectedMap != undefined) {
 <div class="mapBackgroundContainer" (mousemove)="onMouseMove($event)" (mousedown)="onMouseDown($event)"
-	(mouseup)="onMouseUp($event)" (mouseleave)="onMouseUp($event)" (mousewheel)="onMouseWheel($event)">
-	<div class="zoomPivotOffset" [style]="
-		'left: ' + zoomPivotPositionX() + 'px;' +
-		'top: ' + zoomPivotPositionY() + 'px;' +
-		'scale: ' + (zoom() * 100).toString() + '%;'">
-		<div class="mapScrollContainer" [style]="
-				'left: ' + (xOffset() - zoomPivotPositionX()) + 'px;' +
-				'top: ' + (yOffset() - zoomPivotPositionY()) + 'px;' 
-				">
-			<img
-				[src]="imgSrc"
-				class="mapBackground"
-				draggable="false"
-				(load)="onMapLoaded($event)"
-				(mousemove)="setLocalMapMousePos($event)"
-			/>
-			@for (mapNode of nodes(); track mapNode) {
-				<app-map-icon
-					[node]="mapNode"
-					class="mapIcon"
-					[style]="getNodePositionStyle(mapNode)"
-					[widthFactor]="widthFactor()"
-				/>
-			}
-		</div>
+	(mouseup)="onMouseUp($event)" (mouseleave)="onMouseUp($event)" (wheel)="onMouseWheel($event)">
 
+	<div class="mapScrollContainer" [style]="mapTransformStyle()">
+		<img [src]="imgSrc" class="mapBackground" draggable="false" (load)="onMapLoaded($event)"
+			(mousemove)="setLocalMapMousePos($event)" />
+		@for (mapNode of nodes(); track mapNode) {
+		<app-map-icon [node]="mapNode" class="mapIcon" [style]="getNodePositionStyle(mapNode)"
+			[widthFactor]="widthFactor()" />
+		}
 	</div>
+
 
 </div>
 } @else {
