@@ -1,2 +1,18 @@
 @import '../forms.css';
 
+.nameFormInput{
+	display: flex;
+	flex-direction: row;
+	margin-top: 0.5em;
+}
+
+.nameFormInput > * {
+	align-self: center;
+}
+
+.nameFormInput > *:first-child {
+	flex-grow: 1;
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+

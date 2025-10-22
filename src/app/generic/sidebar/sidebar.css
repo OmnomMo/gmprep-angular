@@ -1,0 +1,40 @@
+.sidebar{
+	z-index: 5;
+	position: absolute;
+	overflow-y: hidden;
+	top:0px;
+	bottom:0px;
+	width: 512px;
+	background-color: rgba(0, 0, 0, 0.822);
+	backdrop-filter: blur(10px);
+	padding: 1em;
+	padding-top: 5em;
+}
+
+.sidebarLeft{
+	left:0px;
+	padding-right: 32px;
+}
+
+.sidebarRight{
+	right: 0px;
+	padding-left: 32px;
+}
+
+.sidebarHandle{
+	position: absolute;
+	overflow-y: hidden;
+	top: 0px;
+	bottom: 0px;
+	width: 14px;
+	background-color: rgba(245, 245, 220, 0.137);
+	cursor: pointer;
+}
+
+.sidebarHandleLeft{
+	left: 0px;
+}
+
+.sidebarHandleRight{
+	right: 0px;
+}

@@ -29,6 +29,10 @@ export class MapIcon {
 		this.mousePressed = true;
 	}
 
+	onClicked(e: MouseEvent) {
+		this.mapService.setSelectedNode(this.node().node);
+	}
+
 	onMouseLeave(e: MouseEvent) {
 		if (!this.mousePressed) {
 			return;

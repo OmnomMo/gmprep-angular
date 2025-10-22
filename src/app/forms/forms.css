@@ -1,1 +1,19 @@
 @import '../app.css';
+
+.formComponent {
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+textarea {
+	width: 100%;
+}
+
+input {
+	max-width: 100%;
+	width: 25em;
+}
+
+.iconButton {
+	cursor: pointer;
+}

@@ -1,3 +1,4 @@
 .mapIcon{
-	filter: drop-shadow(black 0.2em 0.2em 4px)
+	filter: drop-shadow(black 0.2em 0.2em 4px);
+	user-select: none;
 }

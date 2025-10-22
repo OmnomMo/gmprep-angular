@@ -7,7 +7,8 @@ import { GMUser } from './models/user';
 import { Campaign } from './models/campaign';
 import { HttpClient } from '@angular/common/http';
 import { UrlBuilder } from './utils/url-builder';
-import { GmNode, MapNode} from './models/map-node';
+import { GmNode, MapNode } from './models/map-node';
+import { NodeService } from './node-service';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,6 +18,7 @@ export class MapService {
 	constructor(
 		public http: HttpClient,
 		public campaignService: CampaignService,
+		public nodeService: NodeService,
 		public auth: AuthService,
 		public urlBuilder: UrlBuilder,
 	) {
@@ -53,6 +55,9 @@ export class MapService {
 	private mapNodesLoaded = new BehaviorSubject<boolean>(false);
 	mapNodesLoaded$ = this.mapNodesLoaded.asObservable();
 
+	private selectedNode = new BehaviorSubject<GmNode | null>(null);
+	selectedNode$ = this.selectedNode.asObservable();
+
 	private selectedMap = new BehaviorSubject<GMMap | null>(null);
 	selectedMap$ = this.selectedMap.asObservable();
 
@@ -61,6 +66,7 @@ export class MapService {
 
 	private mapNodeDragged = new Subject<GmNode>();
 	mapNodeDragged$ = this.mapNodeDragged.asObservable();
+
 
 	editedMap: GMMap | null = null;
 	cachedUrl: string = "";
@@ -74,11 +80,11 @@ export class MapService {
 		return this.mapsLoaded.getValue();
 	}
 
-	getMapNodesLoaded() : Observable<boolean> {
+	getMapNodesLoaded(): Observable<boolean> {
 		return this.mapNodesLoaded$;
 	}
 
-	areMapNodesLoaded() : boolean {
+	areMapNodesLoaded(): boolean {
 		return this.mapNodesLoaded.getValue();
 	}
 
@@ -86,6 +92,49 @@ export class MapService {
 		console.log("setting selected map: " + map);
 		this.selectedMap.next(map);
 		this.storeSelectedMap();
+	}
+
+	setSelectedNode(node: GmNode | null) {
+		console.log("Set selected node")
+		console.log(node);
+		this.selectedNode.next(node);
+		this.storeSelectedNode();
+	}
+
+	getSelectedNode(): Observable<GmNode | null> {
+		if (this.selectedNode.getValue() == null) {
+			console.log("no selected node set in memory, checking local storage");
+			this.requestSelectedNode();
+		}
+		return this.selectedNode$;
+	}
+
+	requestSelectedNode() {
+
+		if (this.selectedNode.getValue() != null) {
+			return;
+		}
+		var storedNodeId: string | null = window.localStorage.getItem("selectedNodeID");
+		if (storedNodeId == null) {
+			return;
+		}
+		console.log("retreiving selected node data from storage")
+		this.nodeService.getNode(this.auth.getUserToken(), storedNodeId!).subscribe({
+			next: value => {
+				if (value != null) {
+					this.selectedNode.next(value as GmNode);
+				}
+			}
+		})
+	}
+
+	storeSelectedNode() {
+		if (this.selectedNode.getValue() == null) {
+			return;
+		}
+
+		window.localStorage.setItem("selectedNodeID", this.selectedNode.getValue()!.id.toString());
+
 	}
 
 	getSelectedMap(): GMMap | null {
@@ -103,11 +152,11 @@ export class MapService {
 		return this.selectedMap$;
 	}
 
-	invalidateMaps(invalidateCachedUrl : boolean = false) {
+	invalidateMaps(invalidateCachedUrl: boolean = false) {
 		this.mapsLoaded.next(false);
 
 		if (invalidateCachedUrl) {
-			this.cachedUrl ="";
+			this.cachedUrl = "";
 		}
 		if (this.cachedUrl != "") {
 			this.requestMapsByUrl(this.cachedUrl);
@@ -154,7 +203,7 @@ export class MapService {
 		this.mapNodeDropped.next(new NodeDropInfo(e, node));
 	}
 
-	startDragMapNode(userToken : string, node: MapNode) {
+	startDragMapNode(userToken: string, node: MapNode) {
 		this.deleteMapNode(userToken, this.getSelectedMap()!, node);
 		this.mapNodeDragged.next(node.node);
 	}
@@ -236,7 +285,7 @@ export class MapService {
 
 		var url: string = this.urlBuilder.buildUrl(["nodes", "deletemapnode", mapNode.id.toString(), userToken]);
 		this.http.post(url, {}).subscribe({
-			next: () =>{
+			next: () => {
 				console.log("MapNode deleted");
 				this.invalidateMapNodes();
 			},
@@ -294,5 +343,5 @@ export class NodeDropInfo {
 	constructor(
 		public e: MouseEvent,
 		public node: GmNode,
-	) {}
+	) { }
 }

@@ -1,5 +1,6 @@
 .draggedNode{
 	pointer-events: none;
+	user-select: none;
 	position: absolute;
 	z-index: 100;
 	max-width: 64px;

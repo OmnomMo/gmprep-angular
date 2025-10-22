@@ -1,0 +1,8 @@
+@if (node == null || nodeForm == null) {
+	<p>No node?</p>
+} @else {
+	<div [formGroup]="nodeForm" class="nodeForm">
+		<app-name-form-component label="Name" controlName="name" [formGroup]="nodeForm!"/>
+		<app-multiline-form-component label="Description" controlName="description" [formGroup]="nodeForm!" />
+	</div>
+}

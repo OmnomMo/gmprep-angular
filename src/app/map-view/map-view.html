@@ -1,9 +1,14 @@
-<div class="sidebar sidebarLeft">Nodes:
+<app-sidebar [isLeftSide]="true">
 	<ul>
 		@for(gmNode of nodes(); track gmNode) {
 		<app-node-icon [node]="gmNode" />
 		}
 	</ul>
-</div>
+</app-sidebar>
+@if (selectedNode() != null) {
+<app-sidebar [isLeftSide]="false">
+	<app-node-view [node]="selectedNode()!"></app-node-view>
+</app-sidebar>
+}
 <app-dragged-node [node]="draggedNode()" />
 <app-map-background />

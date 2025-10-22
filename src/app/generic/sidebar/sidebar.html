@@ -1,0 +1,5 @@
+<div [class]="getSidebarClass()" [style]="getWidthStyle()" draggable="false">
+	<ng-content></ng-content>
+	<div [class]="getHandleClass()" id="sidebarHandle" [draggable]="false" (mousedown)="onHandleMouseDown($event)"
+		(mouseup)="onHandleMouseUp($event)"></div>
+</div>

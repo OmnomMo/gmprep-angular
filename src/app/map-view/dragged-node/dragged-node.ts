@@ -30,7 +30,11 @@ export class DraggedNode implements OnChanges, OnDestroy{
 
 	//handles position of dragged node before onMouseMove event is called
 	ngOnChanges(changes: SimpleChanges): void {
-		this.onMouseMove(this.mouseTracker.e!)
+		var cachedEvent : MouseEvent | null = this.mouseTracker.mouseMove.getValue();
+		if (cachedEvent == null) {
+			return;
+		}
+		this.onMouseMove(cachedEvent!);
 	}
 
 	ngOnDestroy(): void {

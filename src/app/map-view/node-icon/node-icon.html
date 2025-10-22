@@ -1,7 +1,5 @@
-<li class="nodeIconSidebar" (mousedown)="mouseDown()">
-	<img
-		[src]="'/node_icons/' + node().mapIconPath"
-		draggable="false"
-	/>
+<li class="nodeIconSidebar" (mousedown)="mouseDown()" (mouseleave)="mouseLeave()" (mouseup)="mouseUp()"
+	(click)="clicked()">
+	<img [src]="'/node_icons/' + node().mapIconPath" draggable="false" />
 	<p>{{node().name}}</p>
 </li>

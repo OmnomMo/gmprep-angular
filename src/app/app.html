@@ -1,5 +1,5 @@
 <main class="main">
-	<div (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)">
+	<div (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)" >
 		<nav>
 			@if (user() != null) {
 			<p class="user-display">Logged in as: {{user()!.name}} </p>

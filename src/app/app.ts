@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth';
@@ -6,6 +6,7 @@ import { GMUser } from './models/user';
 import { MapService } from './map-service';
 import { CampaignService } from './campaign-service';
 import { MouseTracker } from './utils/mouse-tracker';
+import { KeyboardEvents } from './utils/keyboard-events';
 
 @Component({
 	selector: 'app-root',
@@ -19,6 +20,7 @@ export class App {
 		protected authService : AuthService,
 		private router: Router,
 		private mouseTracker : MouseTracker,
+		private keyboardEvents: KeyboardEvents
 	) {
 		var _self = this;
 		authService.authState$.subscribe({
@@ -38,6 +40,11 @@ export class App {
 	navButtonState = signal('disabled-link');
 	loggedIn = signal(false);
 	user = signal<GMUser | null>(null);
+
+	@HostListener('document:keypress', ['$event'])
+	handleKeyboardEvent(event: KeyboardEvent) {
+		this.keyboardEvents.fireKeyboardEvent(event);
+	}
 
 	onMouseMove(e : MouseEvent) {
 		this.mouseTracker.setMouseEvent(e);
