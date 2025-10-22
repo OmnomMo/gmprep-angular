@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 import { GmNode, MapNode } from '../../models/map-node';
 import { AuthService } from '../../auth';
 import { MapService } from '../../map-service';
+import { NodeService } from '../../node-service';
 
 @Component({
   selector: 'app-map-icon',
@@ -18,7 +19,8 @@ export class MapIcon {
 	constructor(
 		private auth: AuthService,
 		private mapService: MapService,
-	) {}
+	) {
+	}
 
 	getSize(): number {
 		return parseFloat(this.node().node.mapIconSize) * this.widthFactor();

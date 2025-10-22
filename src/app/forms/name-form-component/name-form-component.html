@@ -7,8 +7,8 @@
 	</div>
 	} @else {
 	<div class="nameFormInput">
-		<div (click)="editing.set(true)">{{formGroup().controls[controlName()].value}}</div>
-		<img src="/icons/wrench_icon.png" (click)="editing.set(true)" />
+		<div (click)="startEditing()">{{formGroup().controls[controlName()].value}}</div>
+		<img src="/icons/wrench_icon.png" (click)="startEditing()" />
 	</div>
 	}
 </form>

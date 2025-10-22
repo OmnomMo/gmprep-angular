@@ -3,6 +3,9 @@ import { GmNode, LocationInfo } from '../models/map-node';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from "../forms/name-form-component/name-form-component";
 import { MultilineFormComponent } from "../forms/multiline-form-component/multiline-form-component";
+import { NodeService } from '../node-service';
+import { CampaignService } from '../campaign-service';
+import { AuthService } from '../auth';
 
 @Component({
 	selector: 'app-node-view',
@@ -16,6 +19,17 @@ export class NodeView implements OnChanges {
 	formBuilder = inject(FormBuilder);
 
 	nodeForm: FormGroup | null = null;
+
+
+	constructor(
+		private auth: AuthService,
+		private nodeService : NodeService,
+		private campaignService : CampaignService,
+	) {}
+
+	onControlSubmit() {
+		this.submitNode();
+	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.nodeForm = this.formBuilder.group({
@@ -73,5 +87,12 @@ export class NodeView implements OnChanges {
 		})
 	}
 
-
+	submitNode() {
+		var updatedNode : GmNode = this.nodeForm!.value;
+		updatedNode.id = this.node().id;
+		updatedNode.creatureInfo = null;
+		updatedNode.locationInfo = null;
+		updatedNode.secrets = [];
+		this.nodeService.updateNode(this.auth.getUserToken(), this.campaignService.getSelectedCampaign()!.id!, updatedNode);
+	}
 }

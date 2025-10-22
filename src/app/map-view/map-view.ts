@@ -34,7 +34,7 @@ export class MapView implements OnDestroy{
 		private nodeService : NodeService,
 	) {
 		this.nodes = toSignal(nodeService.nodes$);
-		this.selectedNode = toSignal(mapService.getSelectedNode());
+		this.selectedNode = toSignal(mapService.getSelectedNodeObservable());
 
 		this.nodeDroppedSubscription = mapService.mapNodeDropped$.subscribe({
 			next: () => {
@@ -45,7 +45,7 @@ export class MapView implements OnDestroy{
 			next: (node: GmNode) => {
 				this.draggedNode.set(node)
 			}
-		})
+		});
 	}
 
 	ngOnDestroy(): void {

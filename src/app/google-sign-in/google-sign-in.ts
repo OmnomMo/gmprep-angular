@@ -1,9 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { AuthService } from '../auth';
-import { HttpClient } from '@angular/common/http';
-import { GMUser } from '../models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { Observable, Subject } from 'rxjs';
 
 declare const google: any;
 
@@ -14,7 +11,7 @@ declare const google: any;
 })
 export class GoogleSignInComponent implements AfterViewInit {
 
-	constructor(private authService: AuthService, private http: HttpClient) { }
+	constructor(private authService: AuthService) { }
 
 	ngAfterViewInit(): void {
 
@@ -38,7 +35,7 @@ export class GoogleSignInComponent implements AfterViewInit {
 			if (now > exp!) {
 				this.waitForGoogle(this.initializeGoogleSignIn);
 			} else {
-				this.signIn(userToken)
+				this.authService.login(userToken)
 			}
 		}
 	}
@@ -77,28 +74,11 @@ export class GoogleSignInComponent implements AfterViewInit {
 
 		console.log("handle credential response");
 
-		if (response == undefined) {
-			console.error("Google login response undefined");
-			alert("Google login response undefined");
-		}
 		// response.credential is the JWT token
 		console.log('Encoded JWT ID token: ' + response.credential);
 		const userToken = response.credential;
 
-		this.signIn(userToken);
-	}
-
-	signIn(userToken : string) {
-		this.http.post(`http://localhost:5140/Users/login/${userToken}`, {})
-			.subscribe({
-				next: (response) => {
-					console.log("Login Success!");
-					this.authService.setAuthenticated(userToken, response as GMUser);
-				},
-				error: (err) => {
-					console.log("Login ERROR: " + err);
-				}
-			})
+		this.authService.login(userToken);
 	}
 
 }

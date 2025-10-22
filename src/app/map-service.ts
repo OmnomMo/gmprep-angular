@@ -40,6 +40,13 @@ export class MapService {
 			next: () => {
 				this.invalidateMapNodes();
 			}
+		});
+		this.nodeService.nodesLoaded$.subscribe({
+			next: () => {
+				this.selectedNode.next(null);
+				this.requestSelectedNode();
+				this.requestMapNodes(auth.getUserToken(), this.selectedMap.getValue()!);
+			}
 		})
 	}
 
@@ -72,27 +79,6 @@ export class MapService {
 	cachedUrl: string = "";
 
 
-	getMapsLoaded(): Observable<boolean> {
-		return this.mapsLoaded$;
-	}
-
-	areMapsLoaded(): boolean {
-		return this.mapsLoaded.getValue();
-	}
-
-	getMapNodesLoaded(): Observable<boolean> {
-		return this.mapNodesLoaded$;
-	}
-
-	areMapNodesLoaded(): boolean {
-		return this.mapNodesLoaded.getValue();
-	}
-
-	setSelectedMap(map: GMMap | null) {
-		console.log("setting selected map: " + map);
-		this.selectedMap.next(map);
-		this.storeSelectedMap();
-	}
 
 	setSelectedNode(node: GmNode | null) {
 		console.log("Set selected node")
@@ -101,12 +87,16 @@ export class MapService {
 		this.storeSelectedNode();
 	}
 
-	getSelectedNode(): Observable<GmNode | null> {
+	getSelectedNodeObservable(): Observable<GmNode | null> {
 		if (this.selectedNode.getValue() == null) {
 			console.log("no selected node set in memory, checking local storage");
 			this.requestSelectedNode();
 		}
 		return this.selectedNode$;
+	}
+
+	getSelectedNode(): GmNode | null {
+		return this.selectedNode.getValue();
 	}
 
 	requestSelectedNode() {
@@ -118,14 +108,10 @@ export class MapService {
 		if (storedNodeId == null) {
 			return;
 		}
-		console.log("retreiving selected node data from storage")
-		this.nodeService.getNode(this.auth.getUserToken(), storedNodeId!).subscribe({
-			next: value => {
-				if (value != null) {
-					this.selectedNode.next(value as GmNode);
-				}
-			}
-		})
+		console.log("retreiving selected node data from storage");
+		var found : GmNode | null = this.nodeService.getLocalNode(parseInt(storedNodeId));
+		console.log(found);
+		this.selectedNode.next(found);
 	}
 
 	storeSelectedNode() {
@@ -137,30 +123,16 @@ export class MapService {
 
 	}
 
-	getSelectedMap(): GMMap | null {
-		if (this.selectedMap.getValue() != null) {
-			return this.selectedMap.getValue();
-		}
-		console.log("retrieving selected map data from local storage")
-		var map: GMMap | null = this.getMap(parseInt(window.localStorage.getItem("selectedMapID") ?? ""));
-		console.log("found map: " + map);
-		return map;
+	//#region mapnodes
+
+
+
+	getMapNodesLoaded(): Observable<boolean> {
+		return this.mapNodesLoaded$;
 	}
 
-	getSelectedMapObserver(): Observable<GMMap | null> {
-		this.setSelectedMap(this.getSelectedMap());
-		return this.selectedMap$;
-	}
-
-	invalidateMaps(invalidateCachedUrl: boolean = false) {
-		this.mapsLoaded.next(false);
-
-		if (invalidateCachedUrl) {
-			this.cachedUrl = "";
-		}
-		if (this.cachedUrl != "") {
-			this.requestMapsByUrl(this.cachedUrl);
-		}
+	areMapNodesLoaded(): boolean {
+		return this.mapNodesLoaded.getValue();
 	}
 
 	invalidateMapNodes() {
@@ -170,35 +142,6 @@ export class MapService {
 			this.requestMapNodes(this.auth.getUserToken(), this.selectedMap.getValue()!);
 		}
 	}
-
-	private storeSelectedMap() {
-		var map: GMMap | null = this.selectedMap.getValue();
-		console.log("storing selected map: " + map);
-		if (map == null) {
-			window.localStorage.setItem("selectedMapID", "");
-			return;
-		}
-		window.localStorage.setItem("selectedMapID", map.id.toString());
-	}
-
-	getMap(id: number): GMMap | null {
-		console.log("getting map with id " + id);
-		for (var map of this.maps.getValue()) {
-			if (map.id == id) {
-				return map;
-			}
-		}
-		return null;
-	}
-
-	getMaps(userToken: string, campaign: Campaign): Observable<GMMap[]> {
-
-		if (!this.areMapsLoaded()) {
-			this.requestMaps(userToken, campaign);
-		}
-		return this.maps$;
-	}
-
 	dropMapNode(e: MouseEvent, node: GmNode) {
 		this.mapNodeDropped.next(new NodeDropInfo(e, node));
 	}
@@ -212,40 +155,9 @@ export class MapService {
 		this.mapNodeDragged.next(node);
 	}
 
-
-	private requestMaps(userToken: string, campaign: Campaign) {
-
-		if (userToken == "" || campaign == null) {
-			throw new Error(`Cannot request campaign info for campaign ${campaign}.\nUser ${userToken}`)
-		}
-		this.cachedUrl = this.urlBuilder.buildUrl(["campaigns", "maps", campaign.id.toString(), userToken]);
-		this.requestMapsByUrl(this.cachedUrl);
-	}
-
-	private requestMapsByUrl(url: string) {
-
-		if (url == "") {
-			throw new Error("Url empty");
-		}
-
-		this.http.get(url)
-			.subscribe({
-				next: (response) => {
-					console.log(response)
-					this.maps.next(response as GMMap[]);
-					this.mapsLoaded.next(true);
-				},
-				error: (e) => {
-					alert("Error fetching maps. Logging out");
-					this.auth.logout();
-					throw new Error(e);
-				}
-			});
-	}
-
 	private requestMapNodes(userToken: string, map: GMMap) {
 		var url: string = this.urlBuilder.buildUrl(["nodes", "mapnodes", map.id.toString(), userToken]);
-
+		console.log("Requestion map node reload");
 		this.http.get(url).subscribe({
 			next: value => {
 				console.log("received map nodes: ");
@@ -295,6 +207,82 @@ export class MapService {
 		})
 	}
 
+	//#region Maps
+
+
+
+	getMapsLoaded(): Observable<boolean> {
+		return this.mapsLoaded$;
+	}
+
+	areMapsLoaded(): boolean {
+		return this.mapsLoaded.getValue();
+	}
+
+	setSelectedMap(map: GMMap | null) {
+		console.log("setting selected map: " + map);
+		this.selectedMap.next(map);
+		this.storeSelectedMap();
+	}
+
+
+	getSelectedMap(): GMMap | null {
+		if (this.selectedMap.getValue() != null) {
+			return this.selectedMap.getValue();
+		}
+		console.log("retrieving selected map data from local storage")
+		var map: GMMap | null = this.getMap(parseInt(window.localStorage.getItem("selectedMapID") ?? ""));
+		console.log("found map: " + map);
+		return map;
+	}
+
+	getSelectedMapObserver(): Observable<GMMap | null> {
+		this.setSelectedMap(this.getSelectedMap());
+		return this.selectedMap$;
+	}
+
+	invalidateMaps(invalidateCachedUrl: boolean = false) {
+		this.mapsLoaded.next(false);
+
+		if (invalidateCachedUrl) {
+			this.cachedUrl = "";
+		}
+		if (this.cachedUrl != "") {
+			this.requestMapsByUrl(this.cachedUrl);
+		}
+	}
+
+
+
+	private storeSelectedMap() {
+		var map: GMMap | null = this.selectedMap.getValue();
+		console.log("storing selected map: " + map);
+		if (map == null) {
+			window.localStorage.setItem("selectedMapID", "");
+			return;
+		}
+		window.localStorage.setItem("selectedMapID", map.id.toString());
+	}
+
+	getMap(id: number): GMMap | null {
+		console.log("getting map with id " + id);
+		for (var map of this.maps.getValue()) {
+			if (map.id == id) {
+				return map;
+			}
+		}
+		return null;
+	}
+
+	getMaps(userToken: string, campaign: Campaign): Observable<GMMap[]> {
+
+		if (!this.areMapsLoaded()) {
+			this.requestMaps(userToken, campaign);
+		}
+		return this.maps$;
+	}
+
+
 	deleteMap(userToken: string, id: number) {
 
 		if (userToken == "") {
@@ -314,6 +302,15 @@ export class MapService {
 		})
 	}
 
+
+	private requestMaps(userToken: string, campaign: Campaign) {
+
+		if (userToken == "" || campaign == null) {
+			throw new Error(`Cannot request campaign info for campaign ${campaign}.\nUser ${userToken}`)
+		}
+		this.cachedUrl = this.urlBuilder.buildUrl(["campaigns", "maps", campaign.id.toString(), userToken]);
+		this.requestMapsByUrl(this.cachedUrl);
+	}
 	updateMap(userToken: string, campaign: Campaign, map: GMMap) {
 
 
@@ -337,6 +334,29 @@ export class MapService {
 			})
 
 	}
+	private requestMapsByUrl(url: string) {
+
+		if (url == "") {
+			throw new Error("Url empty");
+		}
+
+		this.http.get(url)
+			.subscribe({
+				next: (response) => {
+					console.log(response)
+					this.maps.next(response as GMMap[]);
+					this.mapsLoaded.next(true);
+				},
+				error: (e) => {
+					alert("Error fetching maps. Logging out");
+					this.auth.logout();
+					throw new Error(e);
+				}
+			});
+	}
+
+
+	//#endregion
 }
 
 export class NodeDropInfo {

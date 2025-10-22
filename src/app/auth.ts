@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { GMUser } from './models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
 	private user = new BehaviorSubject<GMUser | null>(null);
 	user$ = this.user.asObservable();
 
-	constructor() { }
+	constructor(private http: HttpClient) { }
 
 	setAuthenticated(token: string, user: GMUser) {
 		console.log("set authenticated")
@@ -43,8 +44,8 @@ export class AuthService {
 
 	retrieveUserToken(): string {
 		console.log(document.cookie)
-		var cookies : string[] = document.cookie.split(';');
-		var foundToken : string = "";
+		var cookies: string[] = document.cookie.split(';');
+		var foundToken: string = "";
 		cookies.forEach(c => {
 			var split: string[] = c.split('=');
 			console.log("checking cookie " + split[0])
@@ -69,7 +70,7 @@ export class AuthService {
 
 	retrieveUser(): GMUser | null {
 		console.log("retrieving user from local storage")
-		var user : GMUser | undefined = JSON.parse(window.localStorage.getItem("User") ?? "");
+		var user: GMUser | undefined = JSON.parse(window.localStorage.getItem("User") ?? "");
 		if (user === undefined) {
 			return null;
 		}
@@ -77,8 +78,23 @@ export class AuthService {
 	}
 
 	getUserToken(): string {
+
 		return this.authToken.value;
 	}
+
+	login(token : string) {
+		this.http.post(`http://localhost:5140/Users/login/${token}`, {})
+			.subscribe({
+				next: (response) => {
+					console.log("Login Success!");
+					this.setAuthenticated(token, response as GMUser);
+				},
+				error: (err) => {
+					console.error("Login ERROR: " + err);
+				}
+			})
+	}
+	
 
 	isAuthenticated(): boolean {
 		if (this.authState.value) {
@@ -86,7 +102,7 @@ export class AuthService {
 		}
 
 		console.log("checking for stored login token")
-		var userToken : string = this.retrieveUserToken()
+		var userToken: string = this.retrieveUserToken()
 
 		//If auth state is false, but we have a valid token and user data stored in local storage / cookies,
 		//we are still logged in!
@@ -94,20 +110,22 @@ export class AuthService {
 			return false;
 		} else {
 
-			var payload : JwtPayload = jwtDecode(userToken);
+			var payload: JwtPayload = jwtDecode(userToken);
 
-			var now : number = Math.round((new Date()).getTime() / 1000);
-			var exp : number | undefined = payload.exp;
+			var now: number = Math.round((new Date()).getTime() / 1000);
+			var exp: number | undefined = payload.exp;
 
 			console.log(`login token expires in ${exp! - now} seconds`);
-
+			var isExpired : boolean = now > exp!;
+			isExpired = false;
+			//HACK: For now we just dont let the token expire to be fixed 
 			//token expired, initialize sign in
-			if (now > exp!) {
+			if (isExpired) {
 				return false;
 			} else {
 
-				var user : GMUser | null = this.retrieveUser();
-				
+				var user: GMUser | null = this.retrieveUser();
+
 				if (user == null) {
 					return false;
 				}

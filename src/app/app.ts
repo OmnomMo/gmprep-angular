@@ -6,7 +6,7 @@ import { GMUser } from './models/user';
 import { MapService } from './map-service';
 import { CampaignService } from './campaign-service';
 import { MouseTracker } from './utils/mouse-tracker';
-import { KeyboardEvents } from './utils/keyboard-events';
+import { UserEvents } from './utils/user-events';
 
 @Component({
 	selector: 'app-root',
@@ -20,7 +20,7 @@ export class App {
 		protected authService : AuthService,
 		private router: Router,
 		private mouseTracker : MouseTracker,
-		private keyboardEvents: KeyboardEvents
+		private keyboardEvents: UserEvents
 	) {
 		var _self = this;
 		authService.authState$.subscribe({

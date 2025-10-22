@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { KeyboardEvents } from './keyboard-events';
+import { UserEvents } from './user-events';
 
 describe('KeyboardEvents', () => {
-  let service: KeyboardEvents;
+  let service: UserEvents;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(KeyboardEvents);
+    service = TestBed.inject(UserEvents);
   });
 
   it('should be created', () => {
