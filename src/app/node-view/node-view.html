@@ -3,6 +3,11 @@
 } @else {
 <div [formGroup]="nodeForm"
 	class="nodeForm">
+	<app-portraiticon-form-component controlNamePath="mapIconPath"
+		controlNameSize="mapIconSize"
+		[formGroup]="nodeForm"
+		[node]="node()" 
+		(onChange)="onControlSubmit()"/>
 	<app-name-form-component label="Name"
 		controlName="name"
 		[formGroup]="nodeForm!"

@@ -1,0 +1,958 @@
+[
+    {
+        "Name":  "alien-bug.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "alien-egg.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "all-for-one.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "ancient-ruins.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "ancient-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "anubis.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "arc-triomphe.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "assassin-pocket.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "axe-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "bad-gnome.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "bat-blade.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "bat-leth.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "battle-gear.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "bayonet.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "beast-eye.png",
+		"Tags":  ["Symbol", "Creature"]
+    },
+    {
+        "Name":  "behold.png",
+		"Tags":  ["Symbol", "Creature"]
+    },
+    {
+        "Name":  "bestial-fangs.png",
+		"Tags":  ["Symbol", "Creature"]
+    },
+    {
+        "Name":  "blade-bite.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "blade-drag.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "blade-fall.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "bloody-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "bone-knife.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "bottled-shadow.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "bouncing-sword.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "bowie-knife.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "box-cutter.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "brain-tentacle.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "brick-pile.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "broad-dagger.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "broadsword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "brute.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "bully-minion.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "cage.png",
+		"Tags":  ["Object", "Structure"]
+    },
+    {
+        "Name":  "camping-tent.png",
+		"Tags":  ["Object", "Structure"]
+    },
+    {
+        "Name":  "carnivorous-plant.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "castle-ruins.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "castle.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "ceiling-barnacle.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "centaur.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "chakram.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "circular-sawblade.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "cleaver.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "cloak-dagger.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "cloaked-figure-on-horseback.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "closed-doors.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "coiled-nail.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "cracked-alien-skull.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "cracked-saber.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "crescent-blade.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "croc-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "crossed-sabres.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "crossed-swords.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "crypt-entrance.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "curvy-knife.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "cyclops.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "daemon-pull.png",
+		"Tags":  ["Action", "Symbol"]
+    },
+    {
+        "Name":  "daemon-skull.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "daggers.png",
+		"Tags":  ["Object", "Symbol", "Action"]
+    },
+    {
+        "Name":  "dervish-swords.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "desert-camp.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "devil-mask.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "diablo-skull.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "diamond-hilt.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "dinosaur-bones.png",
+		"Tags":  ["Creature", "Structure"]
+    },
+    {
+        "Name":  "dinosaur-egg.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "dinosaur-rex.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "diving-dagger.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "djed-pillar.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "djinn.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "dog-house.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "double-dragon.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "double-street-lights.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "dragon-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "dragon-spiral.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "drakkar-dragon.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "dripping-sword.png",
+		"Tags":  ["Object", "Action", "Symbol"]
+    },
+    {
+        "Name":  "dungeon-gate.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "dungeon-light.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "egyptian-pyramids.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "egyptian-sphinx.png",
+		"Tags":  ["Structure", "Creature"]
+    },
+    {
+        "Name":  "egyptian-temple.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "elysium-shade.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "energy-sword.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "ent-mouth.png",
+		"Tags":  ["Creature", "Action"]
+    },
+    {
+        "Name":  "entry-door.png",
+		"Tags":  ["Structure", "Action"]
+    },
+    {
+        "Name":  "evasion.png",
+		"Tags":  ["Structure", "Action"]
+    },
+    {
+        "Name":  "evil-bat.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "evil-book.png",
+		"Tags":  ["Creature", "Object"]
+    },
+    {
+        "Name":  "evil-comet.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "evil-minion.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "evil-moon.png",
+		"Tags":  ["Creature", "Structure"]
+    },
+    {
+        "Name":  "evil-tower.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "evil-tree.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "exit-door.png",
+		"Tags":  ["Structure", "Action"]
+    },
+    {
+        "Name":  "eyestalk.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "fairy.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "family-house.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "female-vampire.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "fish-monster.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "fleshy-mass.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "floating-ghost.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "floating-tentacles.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "fragmented-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "frankenstein-creature.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "gargoyle.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "ghost.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "giant.png",
+		"Tags":  ["Creature", "Action"]
+    },
+    {
+        "Name":  "gluttonous-smile.png",
+		"Tags":  ["Creature", "Action"]
+    },
+    {
+        "Name":  "goblin-camp.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "goblin-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "goblin.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "gold-mine.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "golem-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "gooey-daemon.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "grasping-slug.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "graveyard.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "greek-sphinx.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "griffin-symbol.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "grim-reaper.png",
+		"Tags":  ["Creature", "Symbol"]
+    },
+    {
+        "Name":  "half-body-crawling.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "harpy.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "haunting.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "horned-reptile.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "horned-skull.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "horus.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "hydra.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "ice-golem.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "ifrit.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "imp-laugh.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "imp.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "infested-mass.png",
+		"Tags":  ["Creature", "Object"]
+    },
+    {
+        "Name":  "jawless-cyclop.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "kenku-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "knife-fork.png",
+		"Tags":  ["Object", "Symbol"]
+    },
+    {
+        "Name":  "knife-thrust.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "kraken-tentacle.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "lizardman.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "master-of-arms.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "medieval-pavilion.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "medusa-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "mermaid.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "metroid.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "mimic-chest.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "minotaur.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "mummy-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "obelisk.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "ogre.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "oni.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "orc-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "pick-of-destiny.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "pirate-flag.png",
+		"Tags":  ["Creature", "Symbol"]
+    },
+    {
+        "Name":  "plain-dagger.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "reaper-scythe.png",
+		"Tags":  ["Object", "Creature", "Symbol"]
+    },
+    {
+        "Name":  "relic-blade.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "resting-vampire.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "rock-golem.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "rune-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "rusty-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "sacrificial-dagger.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "samara-mosque.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "sand-castle.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "sasquatch.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "scabbard.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "scythe.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "sea-creature.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "sea-dragon.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "secret-door.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "shambling-mound.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "shambling-zombie.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "sharp-smile.png",
+		"Tags":  ["Symbol"]
+    },
+    {
+        "Name":  "shattered-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "shining-sword.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "sickle.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "siege-tower.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "slime.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "spark-spirit.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "spectre.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "spider-eye.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "spiked-dragon-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "spinning-blades.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "spinning-sword.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "spiral-hilt.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "spiral-thrust.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "split-body.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "stabbed-note.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "stairs.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "stakes-fence.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "steel-claws.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "stiletto.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "stone-tower.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "stone-wall.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "sverd-i-fjell.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "swamp-bat.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "sword-altar.png",
+		"Tags":  ["Object", "Structure"]
+    },
+    {
+        "Name":  "sword-brandish.png",
+		"Tags":  ["Object", "Action"]
+    },
+    {
+        "Name":  "sword-break.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "sword-clash.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "sword-hilt.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "sword-in-stone.png",
+		"Tags":  ["Object", "Structure"]
+    },
+    {
+        "Name":  "sword-mold.png",
+		"Tags":  ["Action", "Object"]
+    },
+    {
+        "Name":  "sword-slice.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "sword-smithing.png",
+		"Tags":  ["Structure", "Action"]
+    },
+    {
+        "Name":  "sword-spade.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "sword-spin.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "sword-tie.png",
+		"Tags":  ["Symbol"]
+    },
+    {
+        "Name":  "swords-emblem.png",
+		"Tags":  ["Symbol"]
+    },
+    {
+        "Name":  "swords-power.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "tearing.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "thrown-daggers.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "thunder-blade.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "toad-teeth.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "tower-flag.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "transparent-slime.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "tree-face.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "trefoil-shuriken.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "triple-gate.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "triton-head.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "troglodyte.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "troll.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "tumulus.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "unfriendly-fire.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "unicorn.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "vampire-dracula.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "viking-longhouse.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "vile-fluid.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "village.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "watchtower.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "water-fountain.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "wave-strike.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "well.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "werewolf.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "windmill.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "window.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "winged-sword.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "witch-flight.png",
+		"Tags":  ["Action"]
+    },
+    {
+        "Name":  "wolverine-claws.png",
+		"Tags":  ["Object"]
+    },
+    {
+        "Name":  "wood-cabin.png",
+		"Tags":  ["Structure"]
+    },
+    {
+        "Name":  "wyvern.png",
+		"Tags":  ["Creature"]
+    },
+    {
+        "Name":  "zeus-sword.png",
+		"Tags":  ["Object"]
+    }
+]

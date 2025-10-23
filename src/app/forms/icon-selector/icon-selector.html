@@ -1,0 +1,12 @@
+<div class="modalOverlay"
+	(click)="closeSelector($event)">
+	<div class="modalContent"
+		(click)="$event.stopPropagation()">
+		<ul class="defaultIconsGrid">
+			@for (icondata of defaultIconData(); track icondata) {
+			<app-selectable-icon [icon]="icondata.Name" (onSelected)="onIconSelected($event)" [selectedIcon]="selectedIcon()"/>
+			}
+		</ul>
+		<button (click)="submit($event)">Submit</button>
+	</div>
+</div>

@@ -27,6 +27,7 @@ export class NodeIcon {
 	mouseLeave() {
 		if (this.dragging) {
 			console.log("drag started");
+			this.dragging = false;
 			this.mapService.startDragNode(this.node());
 		}
 	}

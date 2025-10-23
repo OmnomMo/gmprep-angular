@@ -1,0 +1,26 @@
+.modalOverlay {
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 14px;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.548);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-height: 100%;
+}
+
+.modalContent{
+	background-color: rgba(61, 61, 61, 0.11);
+	padding: 1.5em;
+	max-height: 70%;
+	text-align: center;
+}
+
+.defaultIconsGrid{
+	max-height: 20em;
+	overflow-y: scroll;
+}
+

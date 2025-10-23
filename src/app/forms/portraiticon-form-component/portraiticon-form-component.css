@@ -1,0 +1,16 @@
+@import '../forms.css';
+
+.portraitForm {
+	display: flex;
+	flex-direction: row;
+	align-items: end;
+	justify-content: center;
+}
+
+.portraitFormIcon {
+	cursor: pointer;
+}
+
+.portraitFormWrench {
+	cursor: pointer;
+}

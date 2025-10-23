@@ -1,0 +1,15 @@
+<div class="portraitForm">
+	@if (showSelector()) {
+		<app-icon-selector [node]="node()" (onClosed)="closeSelector()" (onSelected)="onSelected($event)"/>
+	}
+	<img class="portraitFormIcon"
+		[src]="'/node_icons/' + node().mapIconPath"
+		width="92"
+		height="92"
+		(click)="onClick()"/>
+	<img class="portraitFormWrench"
+		src="/icons/wrench_icon.png"
+		width="24"
+		height="24"
+		(click)="onClick()"/>
+</div>

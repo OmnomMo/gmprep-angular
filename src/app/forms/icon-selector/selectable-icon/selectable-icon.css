@@ -1,0 +1,12 @@
+.selectableIcon{
+	padding: 0.2em;
+	user-select: false;
+	-moz-user-select: false;
+	filter: brightness(80%);
+	cursor: pointer;
+}
+
+.selected{
+	background-color: rgb(6, 60, 121);
+	filter: brightness(100%);
+}

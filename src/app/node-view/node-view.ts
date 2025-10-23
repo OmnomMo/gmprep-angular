@@ -6,10 +6,11 @@ import { MultilineFormComponent } from "../forms/multiline-form-component/multil
 import { NodeService } from '../node-service';
 import { CampaignService } from '../campaign-service';
 import { AuthService } from '../auth';
+import { PortraiticonFormComponent } from "../forms/portraiticon-form-component/portraiticon-form-component";
 
 @Component({
 	selector: 'app-node-view',
-	imports: [NameFormComponent, ReactiveFormsModule, MultilineFormComponent],
+	imports: [NameFormComponent, ReactiveFormsModule, MultilineFormComponent, PortraiticonFormComponent],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css'
 })
