@@ -2,6 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GmNode } from '../../models/map-node';
 import { IconSelector } from '../icon-selector/icon-selector';
+import { FormBase } from '../form-base';
 
 @Component({
   selector: 'app-portraiticon-form-component',
@@ -9,12 +10,9 @@ import { IconSelector } from '../icon-selector/icon-selector';
   templateUrl: './portraiticon-form-component.html',
   styleUrl: './portraiticon-form-component.css'
 })
-export class PortraiticonFormComponent {
-	controlNamePath = input.required<string>();
+export class PortraiticonFormComponent extends FormBase{
 	controlNameSize = input.required<string>();
-	formGroup = input.required<FormGroup>();
 	node = input.required<GmNode>();
-	onChange = output<void>();
 
 	showSelector = signal<boolean>(false);
 
@@ -29,7 +27,7 @@ export class PortraiticonFormComponent {
 	onSelected(input : {iconPath: string, iconSize: string}) {
 		this.showSelector.set(false);
 		this.formGroup().patchValue({
-			[this.controlNamePath()]: input.iconPath,
+			[this.controlName()]: input.iconPath,
 			[this.controlNameSize()]: input.iconSize,
 		});
 		this.onChange.emit();

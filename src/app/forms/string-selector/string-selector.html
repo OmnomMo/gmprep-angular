@@ -1,12 +1,12 @@
-@if(editing()) {
-<select class="stringSelector"
-	[value]="selected()"
-	(change)="onSelected($event)">
-	@for(option of options(); track option) {
-	<option value="option">{{option}}</option>
-	}
+<div 
+	[formGroup]="formGroup()">
+	<select class="stringSelector" [formControlName]="controlName()"
+		(change)="onSelected($event)">
+		@for(option of options(); track option) {
+		<option [value]="option"
+			class="stringSelectorOption"
+			[selected]="option == selected() ? 'True' : ''">{{option}}</option>
+		}
 
-</select>
-} @else {
-<p class="stringSelectorDisplay">{{selected()}}</p>
-}
+	</select>
+</div>

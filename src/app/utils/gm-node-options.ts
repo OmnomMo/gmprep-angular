@@ -4,6 +4,16 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GmNodeOptions {
+
+	public stats : string[] = [
+		"STR",
+		"DEX",
+		"CON",
+		"INT",
+		"WIS",
+		"CHA",
+	]
+
 	public sizes : string[] = [
 		"Tiny",
 		"Small",

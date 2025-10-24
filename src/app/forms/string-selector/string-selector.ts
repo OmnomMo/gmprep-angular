@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
 import { FormBase } from '../form-base';
+import { ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-string-selector',
-  imports: [],
+  imports: [ɵInternalFormsSharedModule, ReactiveFormsModule],
   templateUrl: './string-selector.html',
   styleUrl: './string-selector.css'
 })
@@ -12,6 +13,11 @@ export class StringSelector extends FormBase{
 	selected = input.required<string>();
 
 	onSelected(e : Event) {
+
+
+		console.log("SELECTED OPTION: ")
+		console.log(this.formGroup().get(this.controlName())?.value);
+		console.log(this.formGroup());
 		var inputEvent = e as InputEvent;
 		var target = inputEvent.target! as HTMLInputElement;
 
@@ -19,7 +25,7 @@ export class StringSelector extends FormBase{
 			[this.controlName()]: target.value,
 		})
 
-		this.editing.set(false);
+		this.stopEditing();
 		this.onChange.emit();
 	}
 }

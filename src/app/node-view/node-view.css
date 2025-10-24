@@ -1,3 +1,19 @@
 .nodeForm {
 	margin: 1em;
 }
+
+.sizeTypeAlignment {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+}
+
+.nodeInfoButton {
+	margin: 0.2em;
+	padding: 0.3em;
+}
+
+.nodeInfoButton.selected {
+	background-color: rgb(59, 82, 24);
+}

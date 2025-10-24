@@ -24,37 +24,37 @@ export class MapNode{
 
 export class CreatureInfo{
 	constructor(
-		public id : number,
-		public creatureType : string,
-		public size : string,
-		public AC : string,
-		public HP : string,
-		public speed : string,
-		public speedFlying : string,
-		public speedSwimming : string,
-		public alignment : string,
-		public languages : string,
-		public senses : string,
+		public id : number = 0,
+		public creatureType : string = "Humanoid",
+		public size : string = "Medium",
+		public AC : string = "10",
+		public HP : string = "10",
+		public speed : string = "30",
+		public speedFlying : string = "0",
+		public speedSwimming : string = "0",
+		public alignment : string = "Neutral Good",
+		public languages : string = "Common",
+		public senses : string = "Passive perception: 12",
 		public damageResistances : string[] = [],
 		public damageImmunities : string[] = [],
 		public conditionImmunities : string[] = [],
 		public damageVulnerabilities : string[] = [],
 		public skills : Skill[] = [],
 		public Actions : Action[] = [],
-		public CHA : string,
-		public CON : string,
-		public DEX : string,
-		public INT : string,
-		public STR : string,
-		public WIS : string,
-		public CR : string,
+		public CHA : string = "10",
+		public CON : string = "10",
+		public DEX : string = "10",
+		public INT : string = "10",
+		public STR : string = "10",
+		public WIS : string = "10",
+		public CR : string = "1",
 	) {}
 }
 
 export class LocationInfo{
 	constructor(
-		public id : number,
-		public population : string,
+		public id : number = 0,
+		public population : string = "No one lives here.",
 	) {}
 
 }

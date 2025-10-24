@@ -24,3 +24,11 @@
 	overflow-y: scroll;
 }
 
+.iconFilters > * {
+	margin:0.1em;
+	padding: 0.2em;
+}
+
+.iconFilters > .selected{
+	background-color: rgb(18, 58, 104);
+}

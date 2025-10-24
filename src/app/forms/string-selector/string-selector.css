@@ -1,0 +1,11 @@
+.stringSelector {
+	margin: 0.5em;
+	padding: 0.4em;
+	background: rgb(36, 51, 73);
+	border: none;
+	color: white;
+	border-radius: 2px;
+	appearance: none;
+	width: 8em;
+	text-align: center;
+}

@@ -1,5 +1,5 @@
-import { Component, inject, Input, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { GmNode, LocationInfo } from '../models/map-node';
+import { Component, inject, Input, input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from "../forms/name-form-component/name-form-component";
 import { MultilineFormComponent } from "../forms/multiline-form-component/multiline-form-component";
@@ -8,33 +8,42 @@ import { CampaignService } from '../campaign-service';
 import { AuthService } from '../auth';
 import { PortraiticonFormComponent } from "../forms/portraiticon-form-component/portraiticon-form-component";
 import { GmNodeOptions } from '../utils/gm-node-options';
+import { StringSelector } from "../forms/string-selector/string-selector";
+import { StatsForm } from '../forms/stats-form/stats-form';
 
 @Component({
 	selector: 'app-node-view',
-	imports: [NameFormComponent, ReactiveFormsModule, MultilineFormComponent, PortraiticonFormComponent],
+	imports: [NameFormComponent, ReactiveFormsModule, MultilineFormComponent, PortraiticonFormComponent, StringSelector, StatsForm],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css'
 })
 export class NodeView implements OnChanges {
 	node = input.required<GmNode>();
-
 	formBuilder = inject(FormBuilder);
-
 	nodeForm: FormGroup | null = null;
+
+	isCreature = signal<boolean>(false);
+	isLocation = signal<boolean>(false);
+
 
 
 	constructor(
 		private auth: AuthService,
-		private nodeService : NodeService,
-		private campaignService : CampaignService,
-		private gmNodeOptions : GmNodeOptions,
-	) {}
+		private nodeService: NodeService,
+		private campaignService: CampaignService,
+		protected gmNodeOptions: GmNodeOptions,
+	) { }
 
 	onControlSubmit() {
 		this.submitNode();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+
+		this.isCreature.set(this.node().creatureInfo != null);
+		this.isLocation.set(this.node().locationInfo != null);
+
+		//build form group from node
 		this.nodeForm = this.formBuilder.group({
 			name: [this.node().name ?? '', Validators.required],
 			description: [this.node().description ?? ''],
@@ -90,11 +99,43 @@ export class NodeView implements OnChanges {
 		})
 	}
 
+	setIsCreature(isCreature: boolean) {
+		if (!isCreature) {
+			this.node().creatureInfo = null;
+			this.isCreature.set(false);
+		} else {
+			this.node().creatureInfo = new CreatureInfo();
+			this.isCreature.set(true);
+		}
+		this.onControlSubmit();
+	}
+
+	setIsLocation(isLocation: boolean) {
+		if (!isLocation) {
+			this.node().locationInfo = null;
+			this.isLocation.set(false);
+		} else {
+			this.node().locationInfo = new LocationInfo();
+			this.isLocation.set(true);
+		}
+		this.onControlSubmit();
+
+	}
+
+	getSubFormGroup(groupName: string): FormGroup {
+		var control = this.nodeForm!.get(groupName) as FormGroup;
+		return control;
+	}
+
 	submitNode() {
-		var updatedNode : GmNode = this.nodeForm!.value;
+		var updatedNode: GmNode = this.nodeForm!.value;
 		updatedNode.id = this.node().id;
-		updatedNode.creatureInfo = null;
-		updatedNode.locationInfo = null;
+		if (!this.isCreature()) {
+			updatedNode.creatureInfo = null;
+		}
+		if (!this.isLocation()) {
+			updatedNode.locationInfo = null;
+		}
 		updatedNode.secrets = [];
 		this.nodeService.updateNode(this.auth.getUserToken(), this.campaignService.getSelectedCampaign()!.id!, updatedNode);
 	}

@@ -20,6 +20,7 @@ export class IconSelector {
 	selectedSize = signal<string>("");
 
 	defaultIconData = signal<IconData[]>([]);
+	visibleFilter = signal<string>("");
 
 	constructor(private mapService : MapService) {
 		this.defaultIconData.set(defaultIcons as unknown as IconData[]);
@@ -28,6 +29,26 @@ export class IconSelector {
 				this.closeSelector(null);
 			}
 		})
+	}
+
+	getFilteredIcons() {
+		if (this.visibleFilter() == "") {
+			return this.defaultIconData();
+		} else {
+			return this.defaultIconData().filter(value => {return value.Tags.includes(this.visibleFilter())});
+		}
+	}
+
+	setIconTagFilter(filter : string) {
+		this.visibleFilter.set(filter);
+	}
+
+	getIsFilterSelectedClass(filter : string) : string {
+		if (filter == this.visibleFilter()) {
+			return "selected";
+		} else {
+			return "";
+		}
 	}
 
 	closeSelector(e: PointerEvent | null) {

@@ -3,18 +3,53 @@
 } @else {
 <div [formGroup]="nodeForm"
 	class="nodeForm">
-	<app-portraiticon-form-component controlNamePath="mapIconPath"
+	<img src="/icons/character_icon.png"
+		[class]="isCreature() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+		(click)="setIsCreature(!isCreature())">
+	<img src="/icons/location_icon.png"
+		[class]="isLocation() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+		(click)="setIsLocation(!isLocation())">
+	<app-portraiticon-form-component controlName="mapIconPath"
 		controlNameSize="mapIconSize"
 		[formGroup]="nodeForm"
-		[node]="node()" 
-		(onChange)="onControlSubmit()"/>
+		[node]="node()"
+		(onChange)="onControlSubmit()" />
 	<app-name-form-component label="Name"
 		controlName="name"
 		[formGroup]="nodeForm!"
 		(onChange)="onControlSubmit()" />
+	@if (isCreature()) {
+	<div class="sizeTypeAlignment">
+		<app-string-selector label=""
+			controlName="size"
+			[formGroup]="getSubFormGroup('creatureInfo')"
+			[options]="gmNodeOptions.sizes"
+			[selected]="node().creatureInfo!.size"
+			(onChange)="onControlSubmit()" />
+		<app-string-selector label=""
+			controlName="creatureType"
+			[formGroup]="getSubFormGroup('creatureInfo')"
+			[options]="gmNodeOptions.creatureTypes"
+			[selected]="node().creatureInfo!.creatureType"
+			(onChange)="onControlSubmit()" />
+		<app-string-selector label=""
+			controlName="alignment"
+			[formGroup]="getSubFormGroup('creatureInfo')"
+			[options]="gmNodeOptions.alignments"
+			[selected]="node().creatureInfo!.alignment"
+			(onChange)="onControlSubmit()" />
+	</div>
+	}
 	<app-multiline-form-component label="Description"
 		controlName="description"
 		[formGroup]="nodeForm!"
 		(onChange)="onControlSubmit()" />
+	@if(isCreature()) {
+		<app-stats-form 
+		[formGroup]="getSubFormGroup('creatureInfo')"
+		controlName=""
+		[node]="node()"
+		(onChange)="onControlSubmit()"/>
+	}
 </div>
 }

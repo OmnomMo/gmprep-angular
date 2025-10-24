@@ -2,12 +2,37 @@
 	(click)="closeSelector($event)">
 	<div class="modalContent"
 		(click)="$event.stopPropagation()">
+		<div class="iconFilters">
+			<img src="/icons/character_icon.png"
+				[class]="getIsFilterSelectedClass('Creature')"
+				(click)="setIconTagFilter('Creature')" />
+			<img src="/icons/object_icon.png"
+				[class]="getIsFilterSelectedClass('Object')"
+				(click)="setIconTagFilter('Object')" />
+			<img src="/icons/action_icon.png"
+				[class]="getIsFilterSelectedClass('Action')"
+				(click)="setIconTagFilter('Action')" />
+			<img src="/icons/symbol_icon.png"
+				[class]="getIsFilterSelectedClass('Symbol')"
+				(click)="setIconTagFilter('Symbol')" />
+			<img src="/icons/location_icon.png"
+				[class]="getIsFilterSelectedClass('Structure')"
+				(click)="setIconTagFilter('Structure')" />
+			<img src="/icons/delete_icon.png"
+				[class]="getIsFilterSelectedClass('')"
+				(click)="setIconTagFilter('')" />
+		</div>
 		<ul class="defaultIconsGrid">
-			@for (icondata of defaultIconData(); track icondata) {
-			<app-selectable-icon [icon]="icondata.Name" (onSelected)="onIconSelected($event)" [selectedIcon]="selectedIcon()"/>
+			@for (icondata of getFilteredIcons(); track icondata) {
+			<app-selectable-icon [icon]="icondata.Name"
+				(onSelected)="onIconSelected($event)"
+				[selectedIcon]="selectedIcon()" />
 			}
 		</ul>
-		<select id="iconSizeSelect" class="iconSizeSelect" [value]="getSize()" (change)="setSize($event)">
+		<select id="iconSizeSelect"
+			class="iconSizeSelect"
+			[value]="getSize()"
+			(change)="setSize($event)">
 			<option value="32">32px</option>
 			<option value="64">64px</option>
 			<option value="92">92px</option>
