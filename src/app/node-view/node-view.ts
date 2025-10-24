@@ -7,6 +7,7 @@ import { NodeService } from '../node-service';
 import { CampaignService } from '../campaign-service';
 import { AuthService } from '../auth';
 import { PortraiticonFormComponent } from "../forms/portraiticon-form-component/portraiticon-form-component";
+import { GmNodeOptions } from '../utils/gm-node-options';
 
 @Component({
 	selector: 'app-node-view',
@@ -26,6 +27,7 @@ export class NodeView implements OnChanges {
 		private auth: AuthService,
 		private nodeService : NodeService,
 		private campaignService : CampaignService,
+		private gmNodeOptions : GmNodeOptions,
 	) {}
 
 	onControlSubmit() {

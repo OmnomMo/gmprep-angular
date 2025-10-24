@@ -7,6 +7,12 @@
 			<app-selectable-icon [icon]="icondata.Name" (onSelected)="onIconSelected($event)" [selectedIcon]="selectedIcon()"/>
 			}
 		</ul>
+		<select id="iconSizeSelect" class="iconSizeSelect" [value]="getSize()" (change)="setSize($event)">
+			<option value="32">32px</option>
+			<option value="64">64px</option>
+			<option value="92">92px</option>
+		</select><br />
 		<button (click)="submit($event)">Submit</button>
+		<button (click)="closeSelector($event)">Cancel</button>
 	</div>
 </div>

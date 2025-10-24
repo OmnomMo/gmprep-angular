@@ -2,6 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { GmNode } from '../../models/map-node';
 import defaultIcons from './DefaultIcons.json'
 import { SelectableIcon } from './selectable-icon/selectable-icon';
+import { MapService } from '../../map-service';
 
 @Component({
   selector: 'app-icon-selector',
@@ -20,17 +21,36 @@ export class IconSelector {
 
 	defaultIconData = signal<IconData[]>([]);
 
-	constructor() {
+	constructor(private mapService : MapService) {
 		this.defaultIconData.set(defaultIcons as unknown as IconData[]);
+		mapService.selectedNode$.subscribe({
+			next: () => {
+				this.closeSelector(null);
+			}
+		})
 	}
 
-	closeSelector(e: PointerEvent) {
-		e.stopPropagation();
+	closeSelector(e: PointerEvent | null) {
+		e?.stopPropagation();
 		this.onClosed.emit();
 	}
 
 	onIconSelected(icon : string) {
 		this.selectedIcon.set(icon);
+	}
+
+	getSize() : string {
+		if (this.selectedSize() != "") {
+			return this.selectedSize();
+		} else {
+			return this.node().mapIconSize;
+		}
+	}
+
+	setSize(e: Event) {
+		var inputEvent : InputEvent = e as InputEvent;
+		var inputElement : HTMLInputElement = inputEvent.target as HTMLInputElement;
+		this.selectedSize.set(inputElement!.value);
 	}
 
 	submit(e: PointerEvent) {
