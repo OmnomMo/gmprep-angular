@@ -10,10 +10,19 @@ import { PortraiticonFormComponent } from "../forms/portraiticon-form-component/
 import { GmNodeOptions } from '../utils/gm-node-options';
 import { StringSelector } from "../forms/string-selector/string-selector";
 import { StatsForm } from '../forms/stats-form/stats-form';
+import { MovementForm } from '../forms/movement-form/movement-form';
 
 @Component({
 	selector: 'app-node-view',
-	imports: [NameFormComponent, ReactiveFormsModule, MultilineFormComponent, PortraiticonFormComponent, StringSelector, StatsForm],
+	imports: [
+		NameFormComponent,
+		ReactiveFormsModule,
+		MultilineFormComponent,
+		PortraiticonFormComponent,
+		StringSelector,
+		StatsForm,
+		MovementForm
+	],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css'
 })
@@ -39,32 +48,28 @@ export class NodeView implements OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-
 		this.isCreature.set(this.node().creatureInfo != null);
 		this.isLocation.set(this.node().locationInfo != null);
 
-		//build form group from node
-		this.nodeForm = this.formBuilder.group({
-			name: [this.node().name ?? '', Validators.required],
-			description: [this.node().description ?? ''],
-			mapIconPath: [this.node().mapIconPath ?? '', Validators.required],
-			portraitPath: [this.node().portraitPath ?? ''],
-			mapIconSize: [this.node().mapIconSize ?? '64', Validators.required],
-			creatureInfo: this.formBuilder.group({
-				creatureType: [this.node().creatureInfo?.creatureType ?? ''],
-				size: [this.node().creatureInfo?.size ?? ''],
-				AC: [this.node().creatureInfo?.AC ?? ''],
-				HP: [this.node().creatureInfo?.HP ?? ''],
-				speed: [this.node().creatureInfo?.speed ?? ''],
-				speedFlying: [this.node().creatureInfo?.speedFlying ?? ''],
-				speedSwimming: [this.node().creatureInfo?.speedSwimming ?? ''],
-				alignment: [this.node().creatureInfo?.alignment ?? ''],
-				languages: [this.node().creatureInfo?.languages ?? ''],
-				senses: [this.node().creatureInfo?.senses ?? ''],
-				damageResistances: [this.node().creatureInfo?.damageResistances ?? ''],
-				damageImmunities: [this.node().creatureInfo?.damageImmunities ?? ''],
-				conditionImmunities: [this.node().creatureInfo?.conditionImmunities ?? ''],
-				damageVulnerabilities: [this.node().creatureInfo?.damageVulnerabilities ?? ''],
+		var creatureInfoGroup: FormGroup = this.formBuilder.group({});
+		if (this.isCreature()) {
+			var creatureInfo: CreatureInfo = this.node().creatureInfo!;
+			creatureInfoGroup = this.formBuilder.group({
+
+				creatureType: [creatureInfo.creatureType ?? 'Humanoid'],
+				size: [creatureInfo.size ?? 'Medium'],
+				AC: [creatureInfo.ac ?? '10'],
+				HP: [creatureInfo.hp ?? '20'],
+				speed: [creatureInfo.speed ?? ''],
+				speedFlying: [creatureInfo.speedFlying ?? ''],
+				speedSwimming: [creatureInfo.speedSwimming ?? ''],
+				alignment: [creatureInfo.alignment ?? 'Lawful Good'],
+				languages: [creatureInfo.languages ?? ''],
+				senses: [creatureInfo.senses ?? ''],
+				damageResistances: [creatureInfo.damageResistances ?? ''],
+				damageImmunities: [creatureInfo.damageImmunities ?? ''],
+				conditionImmunities: [creatureInfo.conditionImmunities ?? ''],
+				damageVulnerabilities: [creatureInfo.damageVulnerabilities ?? ''],
 				skills: this.formBuilder.array([
 					this.formBuilder.group({
 						skillName: ['', Validators.required],
@@ -77,14 +82,25 @@ export class NodeView implements OnChanges {
 						description: [''],
 					})
 				]),
-				CHA: [this.node().creatureInfo?.CHA ?? '10'],
-				CON: [this.node().creatureInfo?.CON ?? '10'],
-				DEX: [this.node().creatureInfo?.DEX ?? '10'],
-				INT: [this.node().creatureInfo?.INT ?? '10'],
-				STR: [this.node().creatureInfo?.STR ?? '10'],
-				WIS: [this.node().creatureInfo?.WIS ?? '10'],
-				CR: [this.node().creatureInfo?.CR ?? '1'],
-			}),
+				CHA: [creatureInfo.cha ?? '10'],
+				CON: [creatureInfo.con ?? '10'],
+				DEX: [creatureInfo.dex ?? '10'],
+				INT: [creatureInfo.int ?? '10'],
+				STR: [creatureInfo.str ?? '10'],
+				WIS: [creatureInfo.wis ?? '10'],
+				CR: [creatureInfo.cr ?? '1'],
+			}
+			);
+		}
+
+		//build form group from node
+		this.nodeForm = this.formBuilder.group({
+			name: [this.node().name ?? '', Validators.required],
+			description: [this.node().description ?? ''],
+			mapIconPath: [this.node().mapIconPath ?? '', Validators.required],
+			portraitPath: [this.node().portraitPath ?? ''],
+			mapIconSize: [this.node().mapIconSize ?? '64', Validators.required],
+			creatureInfo: creatureInfoGroup,
 			locationInfo: this.formBuilder.group({
 				population: [this.node().locationInfo?.population ?? ''],
 			}),
@@ -96,7 +112,9 @@ export class NodeView implements OnChanges {
 				})
 			])
 
-		})
+		});
+
+		console.log(this.nodeForm);
 	}
 
 	setIsCreature(isCreature: boolean) {

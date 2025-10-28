@@ -1,49 +1,42 @@
-<div class="statsForm"
-	[formGroup]="formGroup()">
+<div class="statsForm" [formGroup]="formGroup()">
 	<div class="stat">
-		<label for="hpStatInput"
-			class="statLabel"
-			type="text">HP:</label>
+		<label for="hpStatInput" class="statLabel" type="text">HP:</label>
 		@if (editing()) {
-		<input id="hpStatInput"
-			class="statInput"
-			type="text"
-			formControlName="HP"
-			autofocus/>
+			<input id="hpStatInput" class="statInput" type="text" formControlName="HP" autofocus />
 		} @else {
-		<div class="statDisplay"
-			(click)="startEditing()">{{formGroup().get("HP")!.value}}</div>
+			<div class="statDisplay" (click)="startEditing()">
+				{{ formGroup().get('HP')!.value }}
+			</div>
 		}
 	</div>
 	<div class="stat">
-		<label for="acStatInput"
-			class="statLabel"
-			type="text">AC:</label>
+		<label for="acStatInput" class="statLabel" type="text">AC:</label>
 		@if (editing()) {
-		<input id="acStatInput"
-			class="statInput"
-			type="text"
-			formControlName="AC" />
+			<input id="acStatInput" class="statInput" type="text" formControlName="AC" />
 		} @else {
-		<div class="statDisplay"
-			(click)="startEditing()">{{formGroup().get("AC")!.value}}</div>
+			<div class="statDisplay" (click)="startEditing()">
+				{{ formGroup().get('AC')!.value }}
+			</div>
 		}
 	</div>
-	@for(stat of nodeOptions.stats; track stat) {
-	<div class="stat">
-		<label [for]="stat + 'statInput'"
-			class="statLabel"
-			type="text">{{stat}}:</label>
-		@if (editing()) {
-		<input [id]="stat + 'statInput'"
-			class="statInput"
-			type="text"
-			[formControlName]="stat" />
-		} @else {
-		<div class="statDisplay"
-			(click)="startEditing()">{{formGroup().get(stat)!.value }}</div>
-		}
-		<div [class]="getStatBonusClass(formGroup().get(stat)!.value)">{{getStatsBonus(formGroup().get(stat)!.value)}}</div>
-	</div>
+	@for (stat of nodeOptions.stats; track stat) {
+		<div class="stat">
+			<label [for]="stat + 'statInput'" class="statLabel" type="text">{{ stat }}:</label>
+			@if (editing()) {
+				<input
+					[id]="stat + 'statInput'"
+					class="statInput"
+					type="text"
+					[formControlName]="stat"
+				/>
+			} @else {
+				<div class="statDisplay" (click)="startEditing()">
+					{{ formGroup().get(stat)!.value }}
+				</div>
+			}
+			<div [class]="getStatBonusClass(formGroup().get(stat)!.value)">
+				{{ getStatsBonus(formGroup().get(stat)!.value) }}
+			</div>
+		</div>
 	}
 </div>

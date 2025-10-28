@@ -48,7 +48,10 @@
 		<app-stats-form 
 		[formGroup]="getSubFormGroup('creatureInfo')"
 		controlName=""
-		[node]="node()"
+		(onChange)="onControlSubmit()"/>
+		<app-movement-form 
+		[formGroup]="getSubFormGroup('creatureInfo')"
+		controlName=""
 		(onChange)="onControlSubmit()"/>
 	}
 </div>

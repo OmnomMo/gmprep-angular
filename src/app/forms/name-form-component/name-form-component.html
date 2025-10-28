@@ -1,14 +1,14 @@
-<form class="nameFormComponent formComponent" [formGroup]="formGroup()" >
-	<label for="nameFormInput">{{label()}}:</label><br>
+<form class="nameFormComponent formComponent" [formGroup]="formGroup()">
+	<label for="nameFormInput">{{ label() }}:</label><br />
 	@if (editing()) {
-	<div class="nameFormInput">
-		<input id="nameFormInput>" type="text" [formControlName]="controlName()" autofocus/>
-		<img src="/icons/check_icon.png" (click)="stopEditing()"/>
-	</div>
+		<div class="nameFormInput">
+			<input id="nameFormInput>" type="text" [formControlName]="controlName()" autofocus />
+			<img src="/icons/check_icon.png" (click)="stopEditing()" />
+		</div>
 	} @else {
-	<div class="nameFormInput">
-		<div (click)="startEditing()">{{formGroup().controls[controlName()].value}}</div>
-		<img src="/icons/wrench_icon.png" (click)="startEditing()" />
-	</div>
+		<div class="nameFormInput">
+			<div (click)="startEditing()">{{ formGroup().controls[controlName()].value }}</div>
+			<img src="/icons/wrench_icon.png" (click)="startEditing()" />
+		</div>
 	}
 </form>

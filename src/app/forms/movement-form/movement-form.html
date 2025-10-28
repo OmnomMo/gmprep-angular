@@ -1,0 +1,30 @@
+<div class="movementForm" [formGroup]="formGroup()">
+	<img src="/icons/walk_icon.png" (click)="startEditing()" />
+	@if (editing()) {
+		<input type="text" class="speedInput" formControlName="speed" />
+	} @else {
+		<div class="speedDisplay" (click)="startEditing()">
+			{{ formGroup().get('speed')?.value }}
+		</div>
+	}
+	@if (editing() || showSwimming()) {
+		<img src="/icons/swim_icon.png" (click)="startEditing()" />
+		@if (editing()) {
+			<input type="text" class="speedInput" formControlName="speedSwimming" />
+		} @else {
+			<div class="speedDisplay" (click)="startEditing()">
+				{{ formGroup().get('speedSwimming')?.value }}
+			</div>
+		}
+	}
+	@if (editing() || showFlying()) {
+		<img src="/icons/fly_icon.png" (click)="startEditing()" />
+		@if (editing()) {
+			<input type="text" class="speedInput" formControlName="speedFlying" />
+		} @else {
+			<div class="speedDisplay" (click)="startEditing()">
+				{{ formGroup().get('speedFlying')?.value }}
+			</div>
+		}
+	}
+</div>

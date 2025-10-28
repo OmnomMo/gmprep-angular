@@ -1,48 +1,48 @@
 .statsForm {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	column-gap: 3em;
-	padding: 1.5em;
-	background-color: rgba(100, 100, 100, 0.24);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3em;
+  padding: 1.5em;
+  background-color: rgba(100, 100, 100, 0.24);
 }
 
 .stat {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .statInput {
-	padding: 2px;
-	max-width: 2rem;
-	text-align: center;
-	border: 0;
-	width: 2rem;
+  padding: 2px;
+  max-width: 2rem;
+  text-align: center;
+  border: 0;
+  width: 2rem;
 }
 
 .statLabel {
-	width: 4em;
-	padding: 2px;
+  width: 4em;
+  padding: 2px;
 }
 
 .statBonus {
-	color: grey;
-	margin-left: 0.5em;
-	text-align: center;
+  color: grey;
+  margin-left: 0.5em;
+  text-align: center;
 }
 
 .statBonus.positive {
-	color: rgb(0, 197, 0);
+  color: rgb(0, 197, 0);
 }
 
 .statBonus.negative {
-	color: red;
+  color: red;
 }
 
 .statDisplay {
-	padding: 2px;
-	cursor: pointer;
-	width: 2rem;
-	max-width: 2rem;
-	text-align: center;
+  padding: 2px;
+  cursor: pointer;
+  width: 2rem;
+  max-width: 2rem;
+  text-align: center;
 }
