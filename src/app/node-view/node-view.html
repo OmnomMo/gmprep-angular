@@ -1,58 +1,103 @@
 @if (node == null || nodeForm == null) {
-<p>No node?</p>
+	<p>No node?</p>
 } @else {
-<div [formGroup]="nodeForm"
-	class="nodeForm">
-	<img src="/icons/character_icon.png"
-		[class]="isCreature() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
-		(click)="setIsCreature(!isCreature())">
-	<img src="/icons/location_icon.png"
-		[class]="isLocation() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
-		(click)="setIsLocation(!isLocation())">
-	<app-portraiticon-form-component controlName="mapIconPath"
-		controlNameSize="mapIconSize"
-		[formGroup]="nodeForm"
-		[node]="node()"
-		(onChange)="onControlSubmit()" />
-	<app-name-form-component label="Name"
-		controlName="name"
-		[formGroup]="nodeForm!"
-		(onChange)="onControlSubmit()" />
-	@if (isCreature()) {
-	<div class="sizeTypeAlignment">
-		<app-string-selector label=""
-			controlName="size"
-			[formGroup]="getSubFormGroup('creatureInfo')"
-			[options]="gmNodeOptions.sizes"
-			[selected]="node().creatureInfo!.size"
-			(onChange)="onControlSubmit()" />
-		<app-string-selector label=""
-			controlName="creatureType"
-			[formGroup]="getSubFormGroup('creatureInfo')"
-			[options]="gmNodeOptions.creatureTypes"
-			[selected]="node().creatureInfo!.creatureType"
-			(onChange)="onControlSubmit()" />
-		<app-string-selector label=""
-			controlName="alignment"
-			[formGroup]="getSubFormGroup('creatureInfo')"
-			[options]="gmNodeOptions.alignments"
-			[selected]="node().creatureInfo!.alignment"
-			(onChange)="onControlSubmit()" />
+	<div [formGroup]="nodeForm" class="nodeForm">
+		<img
+			src="/icons/character_icon.png"
+			[class]="isCreature() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+			(click)="setIsCreature(!isCreature())"
+		/>
+		<img
+			src="/icons/location_icon.png"
+			[class]="isLocation() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+			(click)="setIsLocation(!isLocation())"
+		/>
+		<app-portraiticon-form-component
+			controlName="mapIconPath"
+			controlNameSize="mapIconSize"
+			[formGroup]="nodeForm"
+			[node]="node()"
+			(onChange)="onControlSubmit()"
+		/>
+		<app-name-form-component
+			label="Name"
+			controlName="name"
+			[formGroup]="nodeForm!"
+			(onChange)="onControlSubmit()"
+		/>
+		@if (isCreature()) {
+			<div class="sizeTypeAlignment">
+				<app-string-selector
+					label=""
+					controlName="size"
+					[formGroup]="getSubFormGroup('creatureInfo')"
+					[options]="gmNodeOptions.sizes"
+					[selected]="node().creatureInfo!.size"
+					(onChange)="onControlSubmit()"
+				/>
+				<app-string-selector
+					label=""
+					controlName="creatureType"
+					[formGroup]="getSubFormGroup('creatureInfo')"
+					[options]="gmNodeOptions.creatureTypes"
+					[selected]="node().creatureInfo!.creatureType"
+					(onChange)="onControlSubmit()"
+				/>
+				<app-string-selector
+					label=""
+					controlName="alignment"
+					[formGroup]="getSubFormGroup('creatureInfo')"
+					[options]="gmNodeOptions.alignments"
+					[selected]="node().creatureInfo!.alignment"
+					(onChange)="onControlSubmit()"
+				/>
+			</div>
+		}
+		<app-multiline-form-component
+			label="Description"
+			controlName="description"
+			[formGroup]="nodeForm!"
+			(onChange)="onControlSubmit()"
+		/>
+		@if (isCreature()) {
+			<app-stats-form
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				controlName=""
+				(onChange)="onControlSubmit()"
+			/>
+			<app-movement-form
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				controlName=""
+				(onChange)="onControlSubmit()"
+			/>
+			<app-multi-string-selector
+				controlName="damageImmunities"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				label="Damage Immunities"
+				[options]="gmNodeOptions.damageTypes"
+				(onChange)="onControlSubmit()"
+			/>
+			<app-multi-string-selector
+				controlName="damageResistances"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				label="Damage Resistances"
+				[options]="gmNodeOptions.damageTypes"
+				(onChange)="onControlSubmit()"
+			/>
+			<app-multi-string-selector
+				controlName="damageVulnerabilities"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				label="Damage Vulnerabilities"
+				[options]="gmNodeOptions.damageTypes"
+				(onChange)="onControlSubmit()"
+			/>
+			<app-multi-string-selector
+				controlName="conditionImmunities"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				label="Condition Immunities"
+				[options]="gmNodeOptions.conditions"
+				(onChange)="onControlSubmit()"
+			/>
+		}
 	</div>
-	}
-	<app-multiline-form-component label="Description"
-		controlName="description"
-		[formGroup]="nodeForm!"
-		(onChange)="onControlSubmit()" />
-	@if(isCreature()) {
-		<app-stats-form 
-		[formGroup]="getSubFormGroup('creatureInfo')"
-		controlName=""
-		(onChange)="onControlSubmit()"/>
-		<app-movement-form 
-		[formGroup]="getSubFormGroup('creatureInfo')"
-		controlName=""
-		(onChange)="onControlSubmit()"/>
-	}
-</div>
 }

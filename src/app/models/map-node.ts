@@ -27,7 +27,7 @@ export class CreatureInfo {
 		public id: number = 0,
 		public creatureType: string = 'Humanoid',
 		public size: string = 'Medium',
-		public ac: string = '10',
+		public ac: string = '14',
 		public hp: string = '10',
 		public speed: string = '30',
 		public speedFlying: string = '0',

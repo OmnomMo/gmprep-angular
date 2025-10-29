@@ -1,9 +1,9 @@
+@import '../../node-view/node-view.css';
+
 .statsForm {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 3em;
-  padding: 1.5em;
-  background-color: rgba(100, 100, 100, 0.24);
 }
 
 .stat {

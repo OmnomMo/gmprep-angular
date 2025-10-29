@@ -1,0 +1,43 @@
+@import '../../node-view/node-view.css';
+
+.multiStringHeader {
+	display: flex;
+	flex-direction: row;
+}
+
+.multiStringHeader > *:first-child {
+	flex-grow: 1;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	
+}
+
+.multiLineContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.multiStringDisplay {
+	background-color: rgba(127, 255, 212, 0.089);
+	margin: 0.3rem;
+	padding: 0.2rem;
+}
+
+.multiStringLabel {
+	user-select: false;
+	cursor: pointer;
+}
+
+.multiStringButton {
+	border: 0;
+	background-color: gray;
+	padding: 0.2rem;
+	margin: 0.2rem;
+}
+
+.multiStringButton.active {
+	background-color: greenyellow;
+	color: black;
+}

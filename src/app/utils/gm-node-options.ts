@@ -51,4 +51,40 @@ export class GmNodeOptions {
 		"Plant",
 		"Undead",
 	]
+
+	public damageTypes : string[] = [
+		"Slashing",
+		"Slashing*",
+		"Bludgeoning",
+		"Bludgeoning*",
+		"Piercing",
+		"Piercing*",
+		"Acid",
+		"Cold",
+		"Fire",
+		"Force",
+		"Lightning",
+		"Necrotic",
+		"Poison",
+		"Psychic",
+		"Radiant",
+		"Thunder"
+	]
+
+	public conditions : string[] = [
+		"Blinded",
+		"Charmed",
+		"Deafened",
+		"Frightened",
+		"Grappled",
+		"Incapacitated",
+		"Invisible",
+		"Paralyzed",
+		"Petrified",
+		"Poisoned",
+		"Prone",
+		"Restrained",
+		"Stunned",
+		"Unconscious",
+	]
 }

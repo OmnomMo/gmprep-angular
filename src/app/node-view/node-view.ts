@@ -1,16 +1,32 @@
-import { Component, inject, Input, input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import {
+	Component,
+	inject,
+	Input,
+	input,
+	OnChanges,
+	OnInit,
+	signal,
+	SimpleChanges,
+} from '@angular/core';
 import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NameFormComponent } from "../forms/name-form-component/name-form-component";
-import { MultilineFormComponent } from "../forms/multiline-form-component/multiline-form-component";
+import {
+	AbstractControl,
+	FormBuilder,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
+import { NameFormComponent } from '../forms/name-form-component/name-form-component';
+import { MultilineFormComponent } from '../forms/multiline-form-component/multiline-form-component';
 import { NodeService } from '../node-service';
 import { CampaignService } from '../campaign-service';
 import { AuthService } from '../auth';
-import { PortraiticonFormComponent } from "../forms/portraiticon-form-component/portraiticon-form-component";
+import { PortraiticonFormComponent } from '../forms/portraiticon-form-component/portraiticon-form-component';
 import { GmNodeOptions } from '../utils/gm-node-options';
-import { StringSelector } from "../forms/string-selector/string-selector";
+import { StringSelector } from '../forms/string-selector/string-selector';
 import { StatsForm } from '../forms/stats-form/stats-form';
 import { MovementForm } from '../forms/movement-form/movement-form';
+import { MultiStringSelector } from '../forms/multi-string-selector/multi-string-selector';
 
 @Component({
 	selector: 'app-node-view',
@@ -21,10 +37,11 @@ import { MovementForm } from '../forms/movement-form/movement-form';
 		PortraiticonFormComponent,
 		StringSelector,
 		StatsForm,
-		MovementForm
+		MovementForm,
+		MultiStringSelector
 	],
 	templateUrl: './node-view.html',
-	styleUrl: './node-view.css'
+	styleUrl: './node-view.css',
 })
 export class NodeView implements OnChanges {
 	node = input.required<GmNode>();
@@ -34,20 +51,26 @@ export class NodeView implements OnChanges {
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
 
-
-
 	constructor(
 		private auth: AuthService,
 		private nodeService: NodeService,
 		private campaignService: CampaignService,
 		protected gmNodeOptions: GmNodeOptions,
-	) { }
+	) {}
 
 	onControlSubmit() {
 		this.submitNode();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		this.buildForm();
+	}
+
+	buildForm() {
+		
+		console.log("Building Form:");
+		console.log(this.node());
+
 		this.isCreature.set(this.node().creatureInfo != null);
 		this.isLocation.set(this.node().locationInfo != null);
 
@@ -55,10 +78,9 @@ export class NodeView implements OnChanges {
 		if (this.isCreature()) {
 			var creatureInfo: CreatureInfo = this.node().creatureInfo!;
 			creatureInfoGroup = this.formBuilder.group({
-
 				creatureType: [creatureInfo.creatureType ?? 'Humanoid'],
 				size: [creatureInfo.size ?? 'Medium'],
-				AC: [creatureInfo.ac ?? '10'],
+				AC: [creatureInfo.ac ?? '15'],
 				HP: [creatureInfo.hp ?? '20'],
 				speed: [creatureInfo.speed ?? ''],
 				speedFlying: [creatureInfo.speedFlying ?? ''],
@@ -74,13 +96,13 @@ export class NodeView implements OnChanges {
 					this.formBuilder.group({
 						skillName: ['', Validators.required],
 						bonus: ['0', Validators.required],
-					})
+					}),
 				]),
 				actions: this.formBuilder.array([
 					this.formBuilder.group({
 						name: [''],
 						description: [''],
-					})
+					}),
 				]),
 				CHA: [creatureInfo.cha ?? '10'],
 				CON: [creatureInfo.con ?? '10'],
@@ -89,8 +111,7 @@ export class NodeView implements OnChanges {
 				STR: [creatureInfo.str ?? '10'],
 				WIS: [creatureInfo.wis ?? '10'],
 				CR: [creatureInfo.cr ?? '1'],
-			}
-			);
+			});
 		}
 
 		//build form group from node
@@ -109,12 +130,10 @@ export class NodeView implements OnChanges {
 					description: [''],
 					testSkill: [''],
 					testDifficulty: [''],
-				})
-			])
-
+				}),
+			]),
 		});
 
-		console.log(this.nodeForm);
 	}
 
 	setIsCreature(isCreature: boolean) {
@@ -125,7 +144,7 @@ export class NodeView implements OnChanges {
 			this.node().creatureInfo = new CreatureInfo();
 			this.isCreature.set(true);
 		}
-		this.onControlSubmit();
+		this.buildForm();
 	}
 
 	setIsLocation(isLocation: boolean) {
@@ -136,8 +155,7 @@ export class NodeView implements OnChanges {
 			this.node().locationInfo = new LocationInfo();
 			this.isLocation.set(true);
 		}
-		this.onControlSubmit();
-
+		this.buildForm();
 	}
 
 	getSubFormGroup(groupName: string): FormGroup {
@@ -155,6 +173,10 @@ export class NodeView implements OnChanges {
 			updatedNode.locationInfo = null;
 		}
 		updatedNode.secrets = [];
-		this.nodeService.updateNode(this.auth.getUserToken(), this.campaignService.getSelectedCampaign()!.id!, updatedNode);
+		this.nodeService.updateNode(
+			this.auth.getUserToken(),
+			this.campaignService.getSelectedCampaign()!.id!,
+			updatedNode,
+		);
 	}
 }

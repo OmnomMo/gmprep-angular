@@ -1,4 +1,4 @@
-<div class="movementForm" [formGroup]="formGroup()">
+<div class="movementForm nodePanel" [formGroup]="formGroup()">
 	<img src="/icons/walk_icon.png" (click)="startEditing()" />
 	@if (editing()) {
 		<input type="text" class="speedInput" formControlName="speed" />
