@@ -1,0 +1,7 @@
+.arrayHeader{
+	display: flex;
+}
+
+.arrayHeader > *:first-child {
+	flex-grow: 1;
+}

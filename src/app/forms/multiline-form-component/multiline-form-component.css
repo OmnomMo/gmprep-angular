@@ -1,14 +1,16 @@
 @import '../forms.css';
 
-.multilineFormHeader{
+.multilineForm{
 	display: flex;
+	flex-direction: row;
 	max-width: 100%;
 }
 
-.multilineFormHeader > *:first-child {
-	overflow: hidden;
-	text-overflow: ellipsis;
+.multiLineFormLeft{
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
+	padding-right: 1rem;
 }
 
 .multilineFormHeader > * {
@@ -16,7 +18,7 @@
 }
 
 .multilineFormInput {
-	white-space: pre-wrap;
+	white-space: pre-line;
 	margin-top: 0.5em;
 }
 

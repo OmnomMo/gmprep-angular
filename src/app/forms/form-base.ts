@@ -17,7 +17,7 @@ export class FormBase {
 		console.log("Form Base constructor called.");
 		this.userEvents.keyboardEvent$.subscribe({
 			next: e => {
-				if (this.editing() && e.key == 'Enter') {
+				if (this.editing() && e.key == 'Enter' && !e.getModifierState('Shift')) {
 					this.stopEditing();
 				}
 			}
@@ -41,6 +41,14 @@ export class FormBase {
 		}
 		this.onChange?.emit();
 		this.editing.set(false);
+	}
+
+	toggleEditing() {
+		if(!this.editing()) {
+			this.startEditing();
+		} else{
+			this.stopEditing();
+		}
 	}
 
 }

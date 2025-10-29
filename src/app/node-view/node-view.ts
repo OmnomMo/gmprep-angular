@@ -1,21 +1,6 @@
-import {
-	Component,
-	inject,
-	Input,
-	input,
-	OnChanges,
-	OnInit,
-	signal,
-	SimpleChanges,
-} from '@angular/core';
+import { Component, inject, input, OnChanges, signal, SimpleChanges } from '@angular/core';
 import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
-import {
-	AbstractControl,
-	FormBuilder,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from '../forms/name-form-component/name-form-component';
 import { MultilineFormComponent } from '../forms/multiline-form-component/multiline-form-component';
 import { NodeService } from '../node-service';
@@ -27,6 +12,8 @@ import { StringSelector } from '../forms/string-selector/string-selector';
 import { StatsForm } from '../forms/stats-form/stats-form';
 import { MovementForm } from '../forms/movement-form/movement-form';
 import { MultiStringSelector } from '../forms/multi-string-selector/multi-string-selector';
+import { NodeFormArray } from '../forms/node-form-array/node-form-array';
+import { ActionForm } from '../forms/action-form/action-form';
 
 @Component({
 	selector: 'app-node-view',
@@ -38,7 +25,9 @@ import { MultiStringSelector } from '../forms/multi-string-selector/multi-string
 		StringSelector,
 		StatsForm,
 		MovementForm,
-		MultiStringSelector
+		MultiStringSelector,
+		NodeFormArray,
+		ActionForm,
 	],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css',
@@ -50,6 +39,11 @@ export class NodeView implements OnChanges {
 
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
+
+	protected defaultAction = {
+		name: 'Name',
+		description: 'Description',
+	};
 
 	constructor(
 		private auth: AuthService,
@@ -67,8 +61,7 @@ export class NodeView implements OnChanges {
 	}
 
 	buildForm() {
-		
-		console.log("Building Form:");
+		console.log('Building Form:');
 		console.log(this.node());
 
 		this.isCreature.set(this.node().creatureInfo != null);
@@ -76,6 +69,7 @@ export class NodeView implements OnChanges {
 
 		var creatureInfoGroup: FormGroup = this.formBuilder.group({});
 		if (this.isCreature()) {
+			//build creature info form group
 			var creatureInfo: CreatureInfo = this.node().creatureInfo!;
 			creatureInfoGroup = this.formBuilder.group({
 				creatureType: [creatureInfo.creatureType ?? 'Humanoid'],
@@ -98,12 +92,7 @@ export class NodeView implements OnChanges {
 						bonus: ['0', Validators.required],
 					}),
 				]),
-				actions: this.formBuilder.array([
-					this.formBuilder.group({
-						name: [''],
-						description: [''],
-					}),
-				]),
+				actions: this.formBuilder.array([]),
 				CHA: [creatureInfo.cha ?? '10'],
 				CON: [creatureInfo.con ?? '10'],
 				DEX: [creatureInfo.dex ?? '10'],
@@ -111,6 +100,16 @@ export class NodeView implements OnChanges {
 				STR: [creatureInfo.str ?? '10'],
 				WIS: [creatureInfo.wis ?? '10'],
 				CR: [creatureInfo.cr ?? '1'],
+			});
+
+			var actionFormArray: FormArray = creatureInfoGroup.get('actions') as FormArray;
+			creatureInfo.actions.forEach((action) => {
+				actionFormArray.push(
+					this.formBuilder.group({
+						name: [action.name],
+						description: [action.description],
+					}),
+				);
 			});
 		}
 
@@ -133,7 +132,6 @@ export class NodeView implements OnChanges {
 				}),
 			]),
 		});
-
 	}
 
 	setIsCreature(isCreature: boolean) {
@@ -163,6 +161,16 @@ export class NodeView implements OnChanges {
 		return control;
 	}
 
+	getFormArray(group: FormGroup, arrayName: string): FormArray {
+		var array = group.get(arrayName) as FormArray;
+		return array;
+	}
+
+	getFormArrayGroups(group: FormGroup, arrayName: string): FormGroup[] {
+		var array = group.get(arrayName) as FormArray;
+		return array.controls as FormGroup[];
+	}
+
 	submitNode() {
 		var updatedNode: GmNode = this.nodeForm!.value;
 		updatedNode.id = this.node().id;
@@ -178,5 +186,15 @@ export class NodeView implements OnChanges {
 			this.campaignService.getSelectedCampaign()!.id!,
 			updatedNode,
 		);
+	}
+
+	removeAction(group: FormGroup) {
+		var actionFormArray: FormArray = this.getFormArray(
+			this.getSubFormGroup('creatureInfo'),
+			'actions',
+		);
+		var index : number = actionFormArray.controls.indexOf(group);
+		actionFormArray.removeAt(index);
+		this.onControlSubmit();
 	}
 }

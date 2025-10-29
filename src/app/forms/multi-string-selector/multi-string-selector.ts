@@ -35,6 +35,9 @@ export class MultiStringSelector extends FormBase implements OnChanges{
 	}
 
 	override startEditing(): void {
+		if (this.editing()) {
+			return;
+		}
 		this.initializeFromFormControl();
 		super.startEditing();
 	}

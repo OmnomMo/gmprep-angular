@@ -98,6 +98,29 @@
 				[options]="gmNodeOptions.conditions"
 				(onChange)="onControlSubmit()"
 			/>
+			<div class="nodePanel">
+				<app-node-form-array
+					class="actionsForm"
+					[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'actions')"
+					[defaultControls]="defaultAction"
+					label="Actions"
+					(onChange)="onControlSubmit()"
+				>
+					@for (
+						formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'actions');
+						track formGroup
+					) {
+						<app-action-form
+							controlName="name"
+							[formGroup]="formGroup"
+							nameFormControlName="name"
+							descriptionFormControlName="description"
+							(onChange)="onControlSubmit()"
+						/>
+						<img class="iconButton" src="icons/delete_icon.png" (click)="removeAction(formGroup)" />
+					}
+				</app-node-form-array>
+			</div>
 		}
 	</div>
 }

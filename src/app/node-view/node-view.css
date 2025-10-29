@@ -1,5 +1,9 @@
+@import '../forms/forms.css';
+
 .nodeForm {
-	margin: 1em;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 100%;
 }
 
 .nodePanel {

@@ -1,4 +1,4 @@
-.nodeIconSidebar{
+.nodeIconSidebar {
 	background-color: rgba(252, 252, 252, 0.075);
 	display: flex;
 	flex-direction: row;
@@ -7,13 +7,12 @@
 	padding: 0.5em;
 	list-style-type: none;
 	user-select: none;
-
 }
-.nodeIconSidebar:hover{
+.nodeIconSidebar:hover {
 	background-color: rgb(33, 30, 43);
 }
 
-.nodeIconSidebar > img{
+.nodeIconSidebar > img {
 	max-width: 52px;
 	filter: brightness(85%);
 }
@@ -22,7 +21,12 @@
 	filter: brightness(100%);
 }
 
-
-.nodeIconSidebar > p{
+.nodeIconSidebar > p {
 	margin-left: 2em;
+}
+
+.nodeIconName {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }

@@ -1,9 +1,6 @@
 @import '../app.css';
 
-.formComponent {
-	margin-bottom: 1em;
-	margin-top: 1em;
-}
+
 
 textarea {
 	width: 100%;
@@ -16,4 +13,7 @@ input {
 
 .iconButton {
 	cursor: pointer;
+	align-self: top;
+	width: 1.5rem;
+	height: 1.5rem;
 }

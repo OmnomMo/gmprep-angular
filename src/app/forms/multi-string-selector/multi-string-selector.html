@@ -1,7 +1,7 @@
 <div class="multiStringSelector nodePanel">
 	<div class="multiStringHeader">
 		@if (label() != '') {
-			<div class="multiStringLabel" (click)="startEditing()">{{ label() }}:</div>
+			<div class="multiStringLabel" (click)="toggleEditing()">{{ label() }}:</div>
 		} @else {
 			<div class="multiStringLabel"></div>
 		}

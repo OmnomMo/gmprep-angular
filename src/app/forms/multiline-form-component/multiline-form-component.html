@@ -1,17 +1,28 @@
 <form class="multilineFormComponent formComponent" [formGroup]="formGroup()">
-	<div class="multilineFormHeader">
-		<label for="multilineFormInput">{{label()}}:</label>
-		@if(editing()) {
-		<img src="/icons/check_icon.png" (click)="stopEditing()" class="iconButton">
+	<div class="multilineForm">
+		<div class="multiLineFormLeft">
+			@if (label().length > 0) {
+				<label for="multilineFormInput">{{ label() }}:</label>
+			}
+
+			@if (editing()) {
+				<textarea
+					id="multilineFormInput"
+					class="multilineFormInput"
+					rows="7"
+					[formControlName]="controlName()"
+					autofocus
+				></textarea>
+			} @else {
+				<div class="multilineFormInput" (click)="startEditing()">
+					{{ formGroup().controls[controlName()].value }}
+				</div>
+			}
+		</div>
+		@if (editing()) {
+			<img src="/icons/check_icon.png" (click)="stopEditing()" class="iconButton" />
 		} @else {
-		<img src="/icons/wrench_icon.png" (click)="startEditing()" class="iconButton" />
+			<img src="/icons/wrench_icon.png" (click)="startEditing()" class="iconButton" />
 		}
 	</div>
-	@if(editing()) {
-	<textarea id="multilineFormInput" class="multilineFormInput" rows="7" [formControlName]="controlName()" autofocus></textarea>
-	} @else {
-	<div>
-		<div class="multilineFormInput" (click)="startEditing()">{{formGroup().controls[controlName()].value}}</div>
-	</div>
-	}
 </form>

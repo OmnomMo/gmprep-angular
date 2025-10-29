@@ -1,0 +1,20 @@
+<div class="actionForm">
+	<div>
+		<app-name-form-component
+			class="actionFormName"
+			[controlName]="nameFormControlName()"
+			[formGroup]="formGroup()"
+			label=""
+			(onChange)="onChange.emit()"
+		/>
+	</div>
+	<div>
+		<app-multiline-form-component
+			class="actionFormDescription"
+			[controlName]="descriptionFormControlName()"
+			[formGroup]="formGroup()"
+			label=""
+			(onChange)="onChange.emit()"
+		/>
+	</div>
+</div>
