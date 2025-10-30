@@ -86,6 +86,24 @@
 				(onChange)="onControlSubmit()"
 				formId="damageImmunitiesForm"
 			/>
+			<div class="nodePanel">
+				<app-multiline-form-component
+					controlName="senses"
+					[formGroup]="getSubFormGroup('creatureInfo')"
+					formId="senses"
+					label="Senses"
+					(onChange)="onControlSubmit()"
+				/>
+			</div>
+			<div class="nodePanel">
+				<app-multiline-form-component
+					controlName="languages"
+					[formGroup]="getSubFormGroup('creatureInfo')"
+					formId="languages"
+					label="Languages"
+					(onChange)="onControlSubmit()"
+				/>
+			</div>
 			<app-multi-string-selector
 				controlName="damageResistances"
 				[formGroup]="getSubFormGroup('creatureInfo')"
@@ -157,5 +175,36 @@
 				</app-node-form-array>
 			</div>
 		}
+		@if (isLocation()) {
+			<div class="nodePanel">
+				<app-multiline-form-component
+					controlName="population"
+					[formGroup]="getSubFormGroup('locationInfo')"
+					formId="population"
+					label="Population"
+					(onChange)="onControlSubmit()"
+				/>
+			</div>
+		}
+		<div class="nodePanel">
+			<app-node-form-array
+				#secrets
+				class="secretsForm"
+				[formArray]="getFormArray(nodeForm, 'secrets')"
+				[defaultControls]="defaultSecret"
+				label="Secrets"
+				(onChange)="onControlSubmit()"
+			>
+				@for (formGroup of getFormArrayGroups(nodeForm, 'secrets'); track formGroup) {
+					<app-secret-form
+						controlName="secretsForm"
+						[formGroup]="formGroup"
+						formId="secretsForm"
+						(onChange)="onControlSubmit()"
+						(onDelete)="secretsForm?.removeEntry(formGroup)"
+					/>
+				}
+			</app-node-form-array>
+		</div>
 	</div>
 }

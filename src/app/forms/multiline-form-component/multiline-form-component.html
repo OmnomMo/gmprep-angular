@@ -14,7 +14,7 @@
 					autofocus
 				></textarea>
 			} @else {
-				<div class="multilineFormInput" (click)="startEditing()" tabindex="0" (focus)="startEditing()">
+				<div class="multilineFormDisplay" (click)="startEditing()" tabindex="0" (focus)="startEditing()">
 					{{ formGroup().controls[controlName()].value }}
 				</div>
 			}

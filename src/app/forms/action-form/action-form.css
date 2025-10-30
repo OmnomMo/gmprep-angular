@@ -1,4 +1,7 @@
 .actionForm{
 	background-color: rgba(17, 21, 22, 0.589);
 	padding: 0.5rem;
+	padding-top: 0.2rem;
+	padding-bottom: 0.2rem;
+	margin-top: 0.5rem;;
 }

@@ -1,4 +1,13 @@
-import { Component, inject, input, OnChanges, signal, SimpleChanges, ViewChild, viewChild } from '@angular/core';
+import {
+	Component,
+	inject,
+	input,
+	OnChanges,
+	signal,
+	SimpleChanges,
+	ViewChild,
+	viewChild,
+} from '@angular/core';
 import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from '../forms/name-form-component/name-form-component';
@@ -14,23 +23,25 @@ import { MovementForm } from '../forms/movement-form/movement-form';
 import { MultiStringSelector } from '../forms/multi-string-selector/multi-string-selector';
 import { NodeFormArray } from '../forms/node-form-array/node-form-array';
 import { ActionForm } from '../forms/action-form/action-form';
-import { SkillForm } from "../forms/skill-form/skill-form";
+import { SkillForm } from '../forms/skill-form/skill-form';
+import { SecretForm } from '../forms/secret-form/secret-form';
 
 @Component({
 	selector: 'app-node-view',
 	imports: [
-    NameFormComponent,
-    ReactiveFormsModule,
-    MultilineFormComponent,
-    PortraiticonFormComponent,
-    StringSelector,
-    StatsForm,
-    MovementForm,
-    MultiStringSelector,
-    NodeFormArray,
-    ActionForm,
-    SkillForm
-],
+		NameFormComponent,
+		ReactiveFormsModule,
+		MultilineFormComponent,
+		PortraiticonFormComponent,
+		StringSelector,
+		StatsForm,
+		MovementForm,
+		MultiStringSelector,
+		NodeFormArray,
+		ActionForm,
+		SkillForm,
+		SecretForm,
+	],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css',
 })
@@ -42,8 +53,9 @@ export class NodeView implements OnChanges {
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
 
-	@ViewChild('actionsForm') actionsForm : NodeFormArray | undefined;
-	@ViewChild('skillsForm') skillsForm : NodeFormArray | undefined;
+	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
+	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
+	@ViewChild('secretsForm') secretsForm: NodeFormArray | undefined;
 
 	protected defaultAction = {
 		name: 'Name',
@@ -53,7 +65,13 @@ export class NodeView implements OnChanges {
 	protected defaultSkill = {
 		skillName: 'Athletics',
 		bonus: '10',
-	}
+	};
+
+	protected defaultSecret = {
+		description: '',
+		testSkill: 'None',
+		testDifficulty: '10',
+	};
 
 	constructor(
 		private auth: AuthService,
@@ -111,6 +129,7 @@ export class NodeView implements OnChanges {
 			creatureInfo.actions.forEach((action) => {
 				actionFormArray.push(
 					this.formBuilder.group({
+						id: action.id,
 						name: [action.name],
 						description: [action.description],
 					}),
@@ -121,11 +140,20 @@ export class NodeView implements OnChanges {
 			creatureInfo.skills.forEach((skill) => {
 				skillsFormArray.push(
 					this.formBuilder.group({
+						id: skill.id,
 						skillName: [skill.skillName],
 						bonus: [skill.bonus],
 					}),
 				);
 			});
+		}
+
+		var locationInfoGroup : FormGroup = this.formBuilder.group({});
+		if (this.isLocation()) {
+			var locationInfo = this.node().locationInfo;
+			locationInfoGroup = this.formBuilder.group({
+				population: locationInfo!.population,
+			})
 		}
 
 		//build form group from node
@@ -136,39 +164,49 @@ export class NodeView implements OnChanges {
 			portraitPath: [this.node().portraitPath ?? ''],
 			mapIconSize: [this.node().mapIconSize ?? '64', Validators.required],
 			creatureInfo: creatureInfoGroup,
-			locationInfo: this.formBuilder.group({
-				population: [this.node().locationInfo?.population ?? ''],
-			}),
-			secrets: this.formBuilder.array([
+			locationInfo: locationInfoGroup,
+			secrets: this.formBuilder.array([]),
+		});
+
+		var secretsFormArray: FormArray = this.nodeForm.get('secrets') as FormArray;
+		this.node().secrets.forEach((secret) => {
+			secretsFormArray.push(
 				this.formBuilder.group({
-					description: [''],
-					testSkill: [''],
-					testDifficulty: [''],
+					id: secret.id,
+					description: secret.description,
+					testSkill: secret.testSkill,
+					testDifficulty: secret.testDifficulty,
 				}),
-			]),
+			);
 		});
 	}
 
 	setIsCreature(isCreature: boolean) {
 		if (!isCreature) {
-			this.node().creatureInfo = null;
-			this.isCreature.set(false);
+			if (confirm('Are you sure you want to remove all creature infos from this node?')) {
+				this.node().creatureInfo = null;
+				this.isCreature.set(false);
+			}
 		} else {
 			this.node().creatureInfo = new CreatureInfo();
 			this.isCreature.set(true);
 		}
 		this.buildForm();
+		this.onControlSubmit();
 	}
 
 	setIsLocation(isLocation: boolean) {
 		if (!isLocation) {
-			this.node().locationInfo = null;
-			this.isLocation.set(false);
+			if (confirm('Are you sure you want to remove all location info from this node?')) {
+				this.node().locationInfo = null;
+				this.isLocation.set(false);
+			}
 		} else {
 			this.node().locationInfo = new LocationInfo();
 			this.isLocation.set(true);
 		}
 		this.buildForm();
+		this.onControlSubmit();
 	}
 
 	getSubFormGroup(groupName: string): FormGroup {
@@ -195,13 +233,10 @@ export class NodeView implements OnChanges {
 		if (!this.isLocation()) {
 			updatedNode.locationInfo = null;
 		}
-		updatedNode.secrets = [];
 		this.nodeService.updateNode(
 			this.auth.getUserToken(),
 			this.campaignService.getSelectedCampaign()!.id!,
 			updatedNode,
 		);
 	}
-
-
 }

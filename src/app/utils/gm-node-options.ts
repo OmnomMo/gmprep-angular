@@ -15,7 +15,7 @@ export class GmNodeOptions {
 	]
 
 	public skills : string[] = [
-		"NONE",
+		"None",
 		"Athletics",
 		"Acrobatics",
 		"Sleight of Hand",
