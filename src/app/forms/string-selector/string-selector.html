@@ -1,9 +1,11 @@
 <div [formGroup]="formGroup()">
 	<select
+		#stringSelect
 		class="stringSelector"
 		[formControlName]="controlName()"
 		(click)="startEditing()"
 		(change)="onSelected($event)"
+		(focus)="stringSelect!.click()"
 	>
 		@for (option of options(); track option) {
 			<option

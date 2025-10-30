@@ -8,13 +8,13 @@ import { UrlBuilder } from './utils/url-builder';
 import { MapService } from './map-service';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class NodeService {
 	constructor(
 		public http: HttpClient,
 		public urlBuilder: UrlBuilder,
-	) { }
+	) {}
 
 	nodes = new BehaviorSubject<GmNode[]>([]);
 	nodes$ = this.nodes.asObservable();
@@ -25,24 +25,16 @@ export class NodeService {
 	nodeUpdated = new Subject<GmNode>();
 	nodeUpdated$ = this.nodeUpdated.asObservable();
 
-
 	requestNodes(userToken: string, campaignId: number): Observable<GmNode[]> {
-
-		if (userToken == "") {
-			throw new Error("User not authenticated");
+		if (userToken == '') {
+			throw new Error('User not authenticated');
 		}
 
-
-		this.http.get(this.urlBuilder.buildUrl(
-			[
-				"nodes",
-				"all",
-				campaignId.toString(),
-				userToken
-			]))
+		this.http
+			.get(this.urlBuilder.buildUrl(['nodes', 'all', campaignId.toString(), userToken]))
 			.subscribe({
 				next: (value) => {
-					console.log("received nodes:");
+					console.log('received nodes:');
 					console.log(value);
 					this.nodes.next(value as GmNode[]);
 					this.nodesLoaded.next(true);
@@ -50,8 +42,7 @@ export class NodeService {
 				error: (e) => {
 					console.error(e);
 				},
-			})
-
+			});
 
 		return this.nodes$;
 	}
@@ -67,65 +58,58 @@ export class NodeService {
 	}
 
 	getNode(userToken: string, nodeId: string): Observable<GmNode | null> {
-		if (userToken == "") {
-			throw new Error("User not authenticated");
+		if (userToken == '') {
+			throw new Error('User not authenticated');
 		}
 
 		var node = new Subject<GmNode | null>();
 		var node$ = node.asObservable();
 
-		this.http.get(this.urlBuilder.buildUrl([
-			"nodes",
-			nodeId,
-			userToken
-		]))
-			.subscribe({
-				next: (value) => {
-					console.log(`received node ${nodeId}.`);
-					console.log(value);
-					node.next(value as GmNode);
-				},
-				error: e => {
-					console.error("Error receiving node: " + e);
-					node.next(null);
-				}
-			})
+		this.http.get(this.urlBuilder.buildUrl(['nodes', nodeId, userToken])).subscribe({
+			next: (value) => {
+				console.log(`received node ${nodeId}.`);
+				console.log(value);
+				node.next(value as GmNode);
+			},
+			error: (e) => {
+				console.error('Error receiving node: ' + e);
+				node.next(null);
+			},
+		});
 
 		return node$;
 	}
 
 	updateNode(userToken: string, campaignId: number, node: GmNode) {
-		if (userToken == "") {
+		if (userToken == '') {
 			return;
 		}
 
-		this.http.post(this.urlBuilder.buildUrl([
-			"nodes",
-			"update",
-			campaignId.toString(),
-			userToken,
-		]), node)
+		this.http
+			.post(
+				this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString(), userToken]),
+				node,
+			)
 			.subscribe({
-				next: (updatedObject) => {
-					var updatedNode : GmNode = updatedObject as GmNode;
-					console.log("node successfully updated");
+				next: () => {
+					console.log('node successfully updated');
 					//update node in nodes array
 					for (var i: number = 0; i < this.nodes.value.length; i++) {
-						if (this.nodes.value[i].id == updatedNode.id) {
-							this.nodes.value[i] = updatedNode;
+						if (this.nodes.value[i].id == node.id) {
+							//create a copy of nodes array, update changed node and push back into nodes array
+							var newNodes: GmNode[] = Object.assign([], this.nodes.value);
+							newNodes[i] = node;
+							this.nodes.next(newNodes);
 							this.nodesLoaded.next(true);
 							break;
 						}
 					}
+					console.log(node);
 					this.nodeUpdated.next(node);
-					console.log(updatedObject);
 				},
 				error: (e) => {
-					console.error("Error updating node " + e);
-				}
-			})
-
-
-
+					console.error('Error updating node ' + e);
+				},
+			});
 	}
 }

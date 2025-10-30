@@ -55,10 +55,10 @@ export class Sidebar {
 	}
 
 	onHandleMouseMove(e: MouseEvent) {
-		e.stopPropagation();
 		if (!this.draggingHandle) {
 			return;
 		}
+		e.stopPropagation();
 		var dX = this.dragHandleStartPosX - e.clientX;
 		this.dragHandleStartPosX = e.clientX;
 

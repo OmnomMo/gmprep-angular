@@ -3,7 +3,7 @@
 		<app-icon-selector [node]="node()" (onClosed)="closeSelector()" (onSelected)="onSelected($event)"/>
 	}
 	<img class="portraitFormIcon"
-		[src]="'/node_icons/' + node().mapIconPath"
+		[src]="getNodeIconPath()"
 		width="92"
 		height="92"
 		(click)="onClick()"/>

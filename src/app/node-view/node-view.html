@@ -188,7 +188,7 @@
 		}
 		<div class="nodePanel">
 			<app-node-form-array
-				#secrets
+				#secretsForm
 				class="secretsForm"
 				[formArray]="getFormArray(nodeForm, 'secrets')"
 				[defaultControls]="defaultSecret"
@@ -201,7 +201,7 @@
 						[formGroup]="formGroup"
 						formId="secretsForm"
 						(onChange)="onControlSubmit()"
-						(onDelete)="secretsForm?.removeEntry(formGroup)"
+						(onDelete)="secretsForm!.removeEntry(formGroup)"
 					/>
 				}
 			</app-node-form-array>

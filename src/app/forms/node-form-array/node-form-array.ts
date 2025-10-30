@@ -22,7 +22,8 @@ export class NodeFormArray {
 		this.onChange.emit();
 	}
 
-	removeEntry(group : FormGroup) {
+	removeEntry(group: FormGroup) {
+		console.log('remove entry');
 		var index: number = this.formArray().controls.indexOf(group);
 		this.formArray().removeAt(index);
 		this.onChange.emit();

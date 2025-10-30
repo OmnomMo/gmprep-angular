@@ -24,6 +24,10 @@ export class PortraiticonFormComponent extends FormBase{
 		this.showSelector.set(false);
 	}
 
+	getNodeIconPath() : string {
+		return '/node_icons/' + this.formGroup().get(this.controlName())!.value;
+	}
+
 	onSelected(input : {iconPath: string, iconSize: string}) {
 		this.showSelector.set(false);
 		this.formGroup().patchValue({

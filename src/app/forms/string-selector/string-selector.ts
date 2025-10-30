@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewChild, viewChild } from '@angular/core';
 import { FormBase } from '../form-base';
 import { ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms";
 
@@ -11,6 +11,9 @@ import { ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms
 export class StringSelector extends FormBase{
 	options = input.required<string[]>();
 	selected = input.required<string>();
+
+	@ViewChild('stringSelect') stringSelect : HTMLSelectElement | undefined;
+
 
 	onSelected(e : Event) {
 
