@@ -18,12 +18,14 @@
 			[formGroup]="nodeForm"
 			[node]="node()"
 			(onChange)="onControlSubmit()"
+			formId="mapIconForm"
 		/>
 		<app-name-form-component
 			label="Name"
 			controlName="name"
 			[formGroup]="nodeForm!"
 			(onChange)="onControlSubmit()"
+			formId="nameForm"
 		/>
 		@if (isCreature()) {
 			<div class="sizeTypeAlignment">
@@ -34,6 +36,7 @@
 					[options]="gmNodeOptions.sizes"
 					[selected]="node().creatureInfo!.size"
 					(onChange)="onControlSubmit()"
+					formId="creatureSizeForm"
 				/>
 				<app-string-selector
 					label=""
@@ -42,6 +45,7 @@
 					[options]="gmNodeOptions.creatureTypes"
 					[selected]="node().creatureInfo!.creatureType"
 					(onChange)="onControlSubmit()"
+					formId="creatureTypeForm"
 				/>
 				<app-string-selector
 					label=""
@@ -50,6 +54,7 @@
 					[options]="gmNodeOptions.alignments"
 					[selected]="node().creatureInfo!.alignment"
 					(onChange)="onControlSubmit()"
+					formId="creatureAlignmentForm"
 				/>
 			</div>
 		}
@@ -58,17 +63,20 @@
 			controlName="description"
 			[formGroup]="nodeForm!"
 			(onChange)="onControlSubmit()"
+			formId="descriptionForm"
 		/>
 		@if (isCreature()) {
 			<app-stats-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
-				controlName=""
+				controlName="statsForm"
 				(onChange)="onControlSubmit()"
+				formId="statsForm"
 			/>
 			<app-movement-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
-				controlName=""
+				controlName="movementForm"
 				(onChange)="onControlSubmit()"
+				formId="movementForm"
 			/>
 			<app-multi-string-selector
 				controlName="damageImmunities"
@@ -76,6 +84,7 @@
 				label="Damage Immunities"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
+				formId="damageImmunitiesForm"
 			/>
 			<app-multi-string-selector
 				controlName="damageResistances"
@@ -83,6 +92,7 @@
 				label="Damage Resistances"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
+				formId="damageResistancesForm"
 			/>
 			<app-multi-string-selector
 				controlName="damageVulnerabilities"
@@ -90,6 +100,7 @@
 				label="Damage Vulnerabilities"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
+				formId="damageVulnerabilitiesForm"
 			/>
 			<app-multi-string-selector
 				controlName="conditionImmunities"
@@ -97,9 +108,34 @@
 				label="Condition Immunities"
 				[options]="gmNodeOptions.conditions"
 				(onChange)="onControlSubmit()"
+				formId="conditionImmunitiesForm"
 			/>
 			<div class="nodePanel">
 				<app-node-form-array
+					#skillsForm
+					class="skillsForm"
+					[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'skills')"
+					[defaultControls]="defaultSkill"
+					label="Skills"
+					(onChange)="onControlSubmit()"
+				>
+					@for (
+						formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'skills');
+						track formGroup
+					) {
+						<app-skill-form
+							controlName=""
+							[formGroup]="formGroup"
+							formId="skillsForm"
+							(onChange)="onControlSubmit()"
+							(onRemove)="skillsForm.removeEntry(formGroup)"
+						/>
+					}
+				</app-node-form-array>
+			</div>
+			<div class="nodePanel">
+				<app-node-form-array
+					#actionsForm
 					class="actionsForm"
 					[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'actions')"
 					[defaultControls]="defaultAction"
@@ -113,11 +149,10 @@
 						<app-action-form
 							controlName="name"
 							[formGroup]="formGroup"
-							nameFormControlName="name"
-							descriptionFormControlName="description"
 							(onChange)="onControlSubmit()"
+							(onRemove)="actionsForm.removeEntry(formGroup)"
+							formId="actionsForm"
 						/>
-						<img class="iconButton" src="icons/delete_icon.png" (click)="removeAction(formGroup)" />
 					}
 				</app-node-form-array>
 			</div>

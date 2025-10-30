@@ -12,8 +12,10 @@ input {
 }
 
 .iconButton {
+	opacity: 50%;
 	cursor: pointer;
 	align-self: top;
 	width: 1.5rem;
 	height: 1.5rem;
+	margin-left: auto;
 }

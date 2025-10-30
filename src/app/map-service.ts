@@ -43,8 +43,8 @@ export class MapService {
 		});
 		this.nodeService.nodesLoaded$.subscribe({
 			next: () => {
-				this.selectedNode.next(null);
-				this.requestSelectedNode();
+				//this.selectedNode.next(null);
+				//this.requestSelectedNode();
 				this.requestMapNodes(auth.getUserToken(), this.selectedMap.getValue()!);
 			}
 		})

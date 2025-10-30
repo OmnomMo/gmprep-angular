@@ -16,6 +16,7 @@ export class UserEvents {
 	}
 
 	fireNodeFormEditingStartEvent(formControlName : string) {
+		console.log("start edit " + formControlName)
 		this.nodeFormEditingStartEvent.next(formControlName);
 	}
 }

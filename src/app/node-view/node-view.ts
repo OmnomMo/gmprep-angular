@@ -1,4 +1,4 @@
-import { Component, inject, input, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, input, OnChanges, signal, SimpleChanges, ViewChild, viewChild } from '@angular/core';
 import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NameFormComponent } from '../forms/name-form-component/name-form-component';
@@ -14,21 +14,23 @@ import { MovementForm } from '../forms/movement-form/movement-form';
 import { MultiStringSelector } from '../forms/multi-string-selector/multi-string-selector';
 import { NodeFormArray } from '../forms/node-form-array/node-form-array';
 import { ActionForm } from '../forms/action-form/action-form';
+import { SkillForm } from "../forms/skill-form/skill-form";
 
 @Component({
 	selector: 'app-node-view',
 	imports: [
-		NameFormComponent,
-		ReactiveFormsModule,
-		MultilineFormComponent,
-		PortraiticonFormComponent,
-		StringSelector,
-		StatsForm,
-		MovementForm,
-		MultiStringSelector,
-		NodeFormArray,
-		ActionForm,
-	],
+    NameFormComponent,
+    ReactiveFormsModule,
+    MultilineFormComponent,
+    PortraiticonFormComponent,
+    StringSelector,
+    StatsForm,
+    MovementForm,
+    MultiStringSelector,
+    NodeFormArray,
+    ActionForm,
+    SkillForm
+],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css',
 })
@@ -40,10 +42,18 @@ export class NodeView implements OnChanges {
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
 
+	@ViewChild('actionsForm') actionsForm : NodeFormArray | undefined;
+	@ViewChild('skillsForm') skillsForm : NodeFormArray | undefined;
+
 	protected defaultAction = {
 		name: 'Name',
 		description: 'Description',
 	};
+
+	protected defaultSkill = {
+		skillName: 'Athletics',
+		bonus: '10',
+	}
 
 	constructor(
 		private auth: AuthService,
@@ -86,12 +96,7 @@ export class NodeView implements OnChanges {
 				damageImmunities: [creatureInfo.damageImmunities ?? ''],
 				conditionImmunities: [creatureInfo.conditionImmunities ?? ''],
 				damageVulnerabilities: [creatureInfo.damageVulnerabilities ?? ''],
-				skills: this.formBuilder.array([
-					this.formBuilder.group({
-						skillName: ['', Validators.required],
-						bonus: ['0', Validators.required],
-					}),
-				]),
+				skills: this.formBuilder.array([]),
 				actions: this.formBuilder.array([]),
 				CHA: [creatureInfo.cha ?? '10'],
 				CON: [creatureInfo.con ?? '10'],
@@ -108,6 +113,16 @@ export class NodeView implements OnChanges {
 					this.formBuilder.group({
 						name: [action.name],
 						description: [action.description],
+					}),
+				);
+			});
+
+			var skillsFormArray: FormArray = creatureInfoGroup.get('skills') as FormArray;
+			creatureInfo.skills.forEach((skill) => {
+				skillsFormArray.push(
+					this.formBuilder.group({
+						skillName: [skill.skillName],
+						bonus: [skill.bonus],
 					}),
 				);
 			});
@@ -188,13 +203,5 @@ export class NodeView implements OnChanges {
 		);
 	}
 
-	removeAction(group: FormGroup) {
-		var actionFormArray: FormArray = this.getFormArray(
-			this.getSubFormGroup('creatureInfo'),
-			'actions',
-		);
-		var index : number = actionFormArray.controls.indexOf(group);
-		actionFormArray.removeAt(index);
-		this.onControlSubmit();
-	}
+
 }

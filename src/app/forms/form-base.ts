@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from "@angular/core";
+import { Component, ElementRef, inject, input, output, Renderer2, signal } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { UserEvents } from "../utils/user-events";
 
@@ -8,8 +8,10 @@ import { UserEvents } from "../utils/user-events";
 export class FormBase {
 	controlName = input.required<string>();
 	formGroup = input.required<FormGroup>();
+	formId = input.required<string>();
 	onChange = output<void>();
 	editing = signal<boolean>(false);
+
 
 	userEvents = inject(UserEvents);
 	
@@ -23,15 +25,15 @@ export class FormBase {
 			}
 		});
 		this.userEvents.nodeFormEditingStartEvent$.subscribe({
-			next: controlName => {
-				if (controlName != this.controlName()) {
+			next: formId => {
+				if (formId != this.formId()) {
 					this.stopEditing();
 				}
 			}
 		})
 	}
 	startEditing() {
-		this.userEvents.fireNodeFormEditingStartEvent(this.controlName())
+		this.userEvents.fireNodeFormEditingStartEvent(this.formId())
 		this.editing.set(true);
 	}
 

@@ -2,19 +2,22 @@
 	<div>
 		<app-name-form-component
 			class="actionFormName"
-			[controlName]="nameFormControlName()"
+			controlName="name"
 			[formGroup]="formGroup()"
 			label=""
 			(onChange)="onChange.emit()"
+			formId="actionNameForm"
 		/>
 	</div>
 	<div>
 		<app-multiline-form-component
 			class="actionFormDescription"
-			[controlName]="descriptionFormControlName()"
+			controlName="description"
 			[formGroup]="formGroup()"
 			label=""
 			(onChange)="onChange.emit()"
+			formId="actionDescriptionForm"
 		/>
 	</div>
+	<img class="iconButton" src="icons/delete_icon.png" (click)="onRemove.emit(formGroup())" />
 </div>

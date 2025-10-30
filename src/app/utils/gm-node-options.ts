@@ -14,6 +14,28 @@ export class GmNodeOptions {
 		"CHA",
 	]
 
+	public skills : string[] = [
+		"NONE",
+		"Athletics",
+		"Acrobatics",
+		"Sleight of Hand",
+		"Stealth",
+		"Arcana",
+		"History",
+		"Investigation",
+		"Nature",
+		"Religion",
+		"Animal Handling",
+		"Insight",
+		"Medicine",
+		"Perception",
+		"Survival",
+		"Deception",
+		"Intimidation",
+		"Performance",
+		"Persuasion",
+	]
+
 	public sizes : string[] = [
 		"Tiny",
 		"Small",

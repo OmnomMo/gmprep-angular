@@ -3,15 +3,15 @@ import { Component, ContentChild, inject, input, output, signal, TemplateRef } f
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-node-form-array',
-  templateUrl: './node-form-array.html',
-  styleUrl: './node-form-array.css',
+	selector: 'app-node-form-array',
+	templateUrl: './node-form-array.html',
+	styleUrl: './node-form-array.css',
 })
 export class NodeFormArray {
-	testLabels = signal<string[]>(["a", "b", "c"]);
+	testLabels = signal<string[]>(['a', 'b', 'c']);
 
 	formArray = input.required<FormArray>();
-	label = input<string>("");
+	label = input<string>('');
 	defaultControls = input.required<{}>();
 	onChange = output<void>();
 
@@ -19,6 +19,12 @@ export class NodeFormArray {
 
 	addEntry() {
 		this.formArray().push(this.formBuilder.group(this.defaultControls()));
+		this.onChange.emit();
+	}
+
+	removeEntry(group : FormGroup) {
+		var index: number = this.formArray().controls.indexOf(group);
+		this.formArray().removeAt(index);
 		this.onChange.emit();
 	}
 }

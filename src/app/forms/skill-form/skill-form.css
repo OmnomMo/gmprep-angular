@@ -1,0 +1,7 @@
+@import '../forms.css';
+
+.skillForm {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}

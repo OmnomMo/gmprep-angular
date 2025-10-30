@@ -2,18 +2,31 @@
 	@if (submitting()) {
 		<p>Submitting Campaign...</p>
 	} @else {
-	<div class="CreateCampaignForm" [formGroup]="createCampaignForm">
-		<app-name-form-component label="Name" controlName="name" [formGroup]="createCampaignForm" />
-		@if (name?.invalid && (name?.dirty || name?.touched)) {
-			<div class="formAlert">Name is required.</div>
-		}
-		<app-multiline-form-component label="Description" controlName="description" [formGroup]="createCampaignForm" />
-		<app-imagelink-form-component label="Campaign Image" controlName="imageLink" [formGroup]="createCampaignForm" />
-		<form [formGroup]="createCampaignForm" (submit)="onSubmit()">
-			<input type="submit" value="Submit" [disabled]="!submittable">
-			<button (click)="abort()">Abort</button>
-		</form>
-	</div>
+		<div class="CreateCampaignForm" [formGroup]="createCampaignForm">
+			<app-name-form-component
+				label="Name"
+				controlName="name"
+				[formGroup]="createCampaignForm"
+				formId="campaignName"
+			/>
+			@if (name?.invalid && (name?.dirty || name?.touched)) {
+				<div class="formAlert">Name is required.</div>
+			}
+			<app-multiline-form-component
+				label="Description"
+				controlName="description"
+				[formGroup]="createCampaignForm"
+				formId="campaignDescription"
+			/>
+			<app-imagelink-form-component
+				label="Campaign Image"
+				controlName="imageLink"
+				[formGroup]="createCampaignForm"
+			/>
+			<form [formGroup]="createCampaignForm" (submit)="onSubmit()">
+				<input type="submit" value="Submit" [disabled]="!submittable" />
+				<button (click)="abort()">Abort</button>
+			</form>
+		</div>
 	}
-
 </div>

@@ -1,0 +1,17 @@
+<div class="skillForm">
+	<app-string-selector
+		controlName="skillName"
+		[formGroup]="formGroup()"
+		formId="skillName"
+		[options]="nodeOptions.skills"
+		[selected]="formGroup().get('skillName')!.value"
+		(onChange)="onChange.emit()"
+	/>
+	<app-inline-name-form
+		controlName="bonus"
+		[formGroup]="formGroup()"
+		[formId]="getBonusFormId()"
+		(onChange)="onChange.emit()"
+	/>
+	<img src="/icons/delete_icon.png" class="iconButton" (click)="onRemove.emit(formGroup())" />
+</div>

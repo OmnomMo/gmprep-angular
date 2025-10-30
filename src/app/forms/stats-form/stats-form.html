@@ -1,4 +1,4 @@
-<div class="statsForm nodePanel" [formGroup]="formGroup()">
+<div class="statsForm nodePanel" [formGroup]="formGroup()" tabindex="0" (focus)="startEditing()">
 	<div class="stat">
 		<label for="hpStatInput" class="statLabel" type="text">HP:</label>
 		@if (editing()) {

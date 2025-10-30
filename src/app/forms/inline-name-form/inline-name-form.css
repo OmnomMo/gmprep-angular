@@ -1,0 +1,14 @@
+@import '../forms.css';
+
+.inlineNameForm {
+	padding: 0.2rem;
+	min-width: 3rem;
+	text-align: center;
+	background: rgb(36, 51, 73);
+}
+
+.inlineNameInput {
+	border: 0;
+	max-width: 3rem;
+	text-align: center;
+}
