@@ -148,12 +148,12 @@ export class NodeView implements OnChanges {
 			});
 		}
 
-		var locationInfoGroup : FormGroup = this.formBuilder.group({});
+		var locationInfoGroup: FormGroup = this.formBuilder.group({});
 		if (this.isLocation()) {
 			var locationInfo = this.node().locationInfo;
 			locationInfoGroup = this.formBuilder.group({
 				population: locationInfo!.population,
-			})
+			});
 		}
 
 		//build form group from node
@@ -222,6 +222,18 @@ export class NodeView implements OnChanges {
 	getFormArrayGroups(group: FormGroup, arrayName: string): FormGroup[] {
 		var array = group.get(arrayName) as FormArray;
 		return array.controls as FormGroup[];
+	}
+
+	deleteNode() {
+		if (confirm('Are you sure you want to delete this node? This cannot be undone.')) {
+
+
+			this.nodeService.deleteNode(
+				this.auth.getUserToken(),
+				this.campaignService.getSelectedCampaign()!.id,
+				this.node(),
+			);
+		}
 	}
 
 	submitNode() {

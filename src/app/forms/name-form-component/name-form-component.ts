@@ -11,9 +11,17 @@ import { FormBase } from '../form-base';
 })
 export class NameFormComponent extends FormBase{
 	label = input.required<string>();
+	header = input<boolean>(false);
 
 	getValue() : string {
 		return this.formGroup().controls[this.controlName()].value;
+	}
+
+	getDisplayClass() : string {
+		if (this.header()) {
+			return "nameDisplay header";
+		}
+		return "nameDisplay";
 	}
 }
 

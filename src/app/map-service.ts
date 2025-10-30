@@ -47,6 +47,25 @@ export class MapService {
 				//this.requestSelectedNode();
 				this.requestMapNodes(auth.getUserToken(), this.selectedMap.getValue()!);
 			}
+		});
+		this.nodeService.nodeDeleted$.subscribe({
+			next: nodeId => {
+				if(this.getSelectedNode()?.id == nodeId) {
+					this.setSelectedNode(null);
+				}
+			}
+		});
+		this.nodeService.nodeCreated$.subscribe({
+			next: node => {
+				this.setSelectedNode(node);
+			}
+		});
+		this.nodeService.nodeUpdated$.subscribe({
+			next: node => {
+				if (this.getSelectedNode()?.id == node.id) {
+					this.setSelectedNode(node);
+				}
+			}
 		})
 	}
 

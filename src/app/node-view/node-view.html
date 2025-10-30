@@ -21,10 +21,11 @@
 			formId="mapIconForm"
 		/>
 		<app-name-form-component
-			label="Name"
+			label=""
 			controlName="name"
 			[formGroup]="nodeForm!"
 			(onChange)="onControlSubmit()"
+			[header]="true"
 			formId="nameForm"
 		/>
 		@if (isCreature()) {
@@ -58,13 +59,15 @@
 				/>
 			</div>
 		}
-		<app-multiline-form-component
-			label="Description"
-			controlName="description"
-			[formGroup]="nodeForm!"
-			(onChange)="onControlSubmit()"
-			formId="descriptionForm"
-		/>
+		<div class="nodePanel">
+			<app-multiline-form-component
+				label="Description"
+				controlName="description"
+				[formGroup]="nodeForm!"
+				(onChange)="onControlSubmit()"
+				formId="descriptionForm"
+			/>
+		</div>
 		@if (isCreature()) {
 			<app-stats-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
@@ -206,5 +209,6 @@
 				}
 			</app-node-form-array>
 		</div>
+		<button class="deleteButton" (click)="deleteNode()">Delete!</button>
 	</div>
 }

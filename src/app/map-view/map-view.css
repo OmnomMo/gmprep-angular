@@ -1,0 +1,21 @@
+.nodeList{
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}
+
+.addButton{
+	size: 4rem 4rem;
+	min-width: 4rem;
+	min-height: 4rem;
+	background-color: rgba(252, 252, 252, 0.075);
+	border-radius: 0.3rem;
+	cursor: pointer;
+	margin: 1rem;
+	align-self: center;
+}
+
+.addButton:hover {
+	scale: 110%;
+	background-color: rgb(33, 30, 43);
+}

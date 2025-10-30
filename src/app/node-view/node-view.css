@@ -27,3 +27,14 @@
 .nodeInfoButton.selected {
 	background-color: rgb(59, 82, 24);
 }
+
+.deleteButton {
+	cursor: pointer;
+	border: 0;
+	background-color: red;
+	border-radius: 5px;
+	margin: 1rem;
+	padding: 0.3rem;
+	color: white;
+	font-weight: bold;
+}

@@ -1,14 +1,15 @@
 <app-sidebar [isLeftSide]="true">
-	<ul>
-		@for(gmNode of nodes(); track gmNode) {
-		<app-node-icon [node]="gmNode" />
+	<ul class="nodeList">
+		@for (gmNode of nodes(); track gmNode) {
+			<app-node-icon [node]="gmNode" />
 		}
+		<img src="/icons/add_icon.png" class="addButton" (click)="createNewNode()" />
 	</ul>
 </app-sidebar>
 @if (selectedNode() != null) {
-<app-sidebar [isLeftSide]="false">
-	<app-node-view [node]="selectedNode()!"></app-node-view>
-</app-sidebar>
+	<app-sidebar [isLeftSide]="false">
+		<app-node-view [node]="selectedNode()!"></app-node-view>
+	</app-sidebar>
 }
 <app-dragged-node [node]="draggedNode()" />
 <app-map-background />
