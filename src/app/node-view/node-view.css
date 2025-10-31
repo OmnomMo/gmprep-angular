@@ -6,11 +6,6 @@
 	max-height: 100%;
 }
 
-.nodePanel {
-	padding: 1.0em;
-	margin-top: 0.3rem;
-	background-color: rgba(100, 100, 100, 0.267);
-}
 
 .sizeTypeAlignment {
 	display: flex;
@@ -19,9 +14,18 @@
 	flex-direction: row;
 }
 
+.nodeInfoButtonBar {
+	display: flex;
+}
+
 .nodeInfoButton {
 	margin: 0.2em;
 	padding: 0.3em;
+}
+
+.nodeInfoButton.rightAlign {
+	margin-right: 1rem;
+	margin-left: auto;
 }
 
 .nodeInfoButton.selected {

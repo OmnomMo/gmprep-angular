@@ -9,6 +9,7 @@ export class FormBase {
 	controlName = input.required<string>();
 	formGroup = input.required<FormGroup>();
 	formId = input.required<string>();
+	editMode = input.required<boolean>();
 	onChange = output<void>();
 	editing = signal<boolean>(false);
 
@@ -16,7 +17,6 @@ export class FormBase {
 	userEvents = inject(UserEvents);
 	
 	constructor() {
-		console.log("Form Base constructor called.");
 		this.userEvents.keyboardEvent$.subscribe({
 			next: e => {
 				if (this.editing() && e.key == 'Enter' && !e.getModifierState('Shift')) {
@@ -33,6 +33,9 @@ export class FormBase {
 		})
 	}
 	startEditing() {
+		if (!this.editMode()) {
+			return;
+		}
 		this.userEvents.fireNodeFormEditingStartEvent(this.formId())
 		this.editing.set(true);
 	}

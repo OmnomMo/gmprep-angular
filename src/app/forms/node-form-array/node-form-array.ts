@@ -8,8 +8,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 	styleUrl: './node-form-array.css',
 })
 export class NodeFormArray {
-	testLabels = signal<string[]>(['a', 'b', 'c']);
-
+	editMode = input.required<boolean>();
 	formArray = input.required<FormArray>();
 	label = input<string>('');
 	defaultControls = input.required<{}>();

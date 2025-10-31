@@ -60,13 +60,6 @@ export class MapService {
 				this.setSelectedNode(node);
 			}
 		});
-		this.nodeService.nodeUpdated$.subscribe({
-			next: node => {
-				if (this.getSelectedNode()?.id == node.id) {
-					this.setSelectedNode(node);
-				}
-			}
-		})
 	}
 
 	private maps = new BehaviorSubject<GMMap[]>([])

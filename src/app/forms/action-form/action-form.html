@@ -4,9 +4,10 @@
 			class="actionFormName"
 			controlName="name"
 			[formGroup]="formGroup()"
+			[editMode]="editMode()"
 			label=""
 			(onChange)="onChange.emit()"
-			formId="actionNameForm"
+			[formId]="'actionName' + index()"
 		/>
 	</div>
 	<div>
@@ -14,10 +15,14 @@
 			class="actionFormDescription"
 			controlName="description"
 			[formGroup]="formGroup()"
+			[editMode]="editMode()"
 			label=""
+			[lines]="4"
 			(onChange)="onChange.emit()"
-			formId="actionDescriptionForm"
+			[formId]="'actionDescription' + index()"
 		/>
 	</div>
-	<img class="iconButton" src="icons/delete_icon.png" (click)="onRemove.emit(formGroup())" />
+	@if (editMode()) {
+		<img class="iconButton" src="icons/delete_icon.png" (click)="onRemove.emit(formGroup())" />
+	}
 </div>

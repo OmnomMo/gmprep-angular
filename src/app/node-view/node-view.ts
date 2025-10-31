@@ -3,6 +3,7 @@ import {
 	inject,
 	input,
 	OnChanges,
+	Signal,
 	signal,
 	SimpleChanges,
 	ViewChild,
@@ -25,6 +26,9 @@ import { NodeFormArray } from '../forms/node-form-array/node-form-array';
 import { ActionForm } from '../forms/action-form/action-form';
 import { SkillForm } from '../forms/skill-form/skill-form';
 import { SecretForm } from '../forms/secret-form/secret-form';
+import { MapService } from '../map-service';
+import { UserEvents } from '../utils/user-events';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-node-view',
@@ -52,6 +56,7 @@ export class NodeView implements OnChanges {
 
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
+	editMode : Signal<boolean | undefined>
 
 	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
 	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
@@ -76,9 +81,13 @@ export class NodeView implements OnChanges {
 	constructor(
 		private auth: AuthService,
 		private nodeService: NodeService,
+		private mapService : MapService,
 		private campaignService: CampaignService,
+		protected userEvents : UserEvents,
 		protected gmNodeOptions: GmNodeOptions,
-	) {}
+	) {
+		this.editMode = toSignal<boolean>(userEvents.editMode$);
+	}
 
 	onControlSubmit() {
 		this.submitNode();
@@ -182,31 +191,35 @@ export class NodeView implements OnChanges {
 	}
 
 	setIsCreature(isCreature: boolean) {
+
+		var modifiedNode : GmNode = this.getNodeFromForm();
+
 		if (!isCreature) {
 			if (confirm('Are you sure you want to remove all creature infos from this node?')) {
-				this.node().creatureInfo = null;
+				modifiedNode.creatureInfo = null;
 				this.isCreature.set(false);
 			}
 		} else {
-			this.node().creatureInfo = new CreatureInfo();
+			modifiedNode.creatureInfo = new CreatureInfo();
 			this.isCreature.set(true);
 		}
-		this.buildForm();
-		this.onControlSubmit();
+		this.submitNode(modifiedNode);
+		this.mapService.setSelectedNode(modifiedNode);
 	}
 
 	setIsLocation(isLocation: boolean) {
+		var modifiedNode : GmNode = this.getNodeFromForm();
 		if (!isLocation) {
 			if (confirm('Are you sure you want to remove all location info from this node?')) {
-				this.node().locationInfo = null;
+				modifiedNode.locationInfo = null;
 				this.isLocation.set(false);
 			}
 		} else {
-			this.node().locationInfo = new LocationInfo();
+			modifiedNode.locationInfo = new LocationInfo();
 			this.isLocation.set(true);
 		}
-		this.buildForm();
-		this.onControlSubmit();
+		this.submitNode(modifiedNode);
+		this.mapService.setSelectedNode(modifiedNode);
 	}
 
 	getSubFormGroup(groupName: string): FormGroup {
@@ -226,8 +239,6 @@ export class NodeView implements OnChanges {
 
 	deleteNode() {
 		if (confirm('Are you sure you want to delete this node? This cannot be undone.')) {
-
-
 			this.nodeService.deleteNode(
 				this.auth.getUserToken(),
 				this.campaignService.getSelectedCampaign()!.id,
@@ -236,19 +247,26 @@ export class NodeView implements OnChanges {
 		}
 	}
 
-	submitNode() {
-		var updatedNode: GmNode = this.nodeForm!.value;
-		updatedNode.id = this.node().id;
+	getNodeFromForm() : GmNode{
+		var node: GmNode = this.nodeForm!.value;
+		node.id = this.node().id;
 		if (!this.isCreature()) {
-			updatedNode.creatureInfo = null;
+			node.creatureInfo = null;
 		}
 		if (!this.isLocation()) {
-			updatedNode.locationInfo = null;
+			node.locationInfo = null;
 		}
+		return node;
+	}
+
+	submitNode(node : GmNode | null = null) {
+
+		var submittedNode : GmNode = node ?? this.getNodeFromForm();
+
 		this.nodeService.updateNode(
 			this.auth.getUserToken(),
 			this.campaignService.getSelectedCampaign()!.id!,
-			updatedNode,
+			submittedNode,
 		);
 	}
 }

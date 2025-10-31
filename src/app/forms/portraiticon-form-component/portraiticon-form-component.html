@@ -1,15 +1,25 @@
 <div class="portraitForm">
 	@if (showSelector()) {
-		<app-icon-selector [node]="node()" (onClosed)="closeSelector()" (onSelected)="onSelected($event)"/>
+		<app-icon-selector
+			[node]="node()"
+			(onClosed)="closeSelector()"
+			(onSelected)="onSelected($event)"
+		/>
 	}
-	<img class="portraitFormIcon"
+	<img
+		class="portraitFormIcon"
 		[src]="getNodeIconPath()"
 		width="92"
 		height="92"
-		(click)="onClick()"/>
-	<img class="portraitFormWrench iconButton"
-		src="/icons/wrench_icon.png"
-		width="24"
-		height="24"
-		(click)="onClick()"/>
+		(click)="onClick()"
+	/>
+	@if (editMode()) {
+		<img
+			class="portraitFormWrench iconButton"
+			src="/icons/wrench_icon.png"
+			width="24"
+			height="24"
+			(click)="onClick()"
+		/>
+	}
 </div>

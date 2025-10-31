@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,12 +11,18 @@ export class UserEvents {
 	nodeFormEditingStartEvent = new Subject<string>();
 	nodeFormEditingStartEvent$ = this.nodeFormEditingStartEvent.asObservable();
 
+	editMode = new BehaviorSubject<boolean>(false);
+	editMode$ = this.editMode.asObservable();
+
+	setEditMode(inEditing : boolean) {
+		this.editMode.next(inEditing);
+	}
+
 	fireKeyboardEvent(e: KeyboardEvent) {
 		this.keyboardEvent.next(e);
 	}
 
 	fireNodeFormEditingStartEvent(formControlName : string) {
-		console.log("start edit " + formControlName)
 		this.nodeFormEditingStartEvent.next(formControlName);
 	}
 }

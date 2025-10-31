@@ -3,6 +3,7 @@
 		controlName="skillName"
 		[formGroup]="formGroup()"
 		formId="skillName"
+		[editMode]="editMode()"
 		[options]="nodeOptions.skills"
 		[selected]="formGroup().get('skillName')!.value"
 		(onChange)="onChange.emit()"
@@ -10,8 +11,11 @@
 	<app-inline-name-form
 		controlName="bonus"
 		[formGroup]="formGroup()"
+		[editMode]="editMode()"
 		[formId]="getBonusFormId()"
 		(onChange)="onChange.emit()"
 	/>
-	<img src="/icons/delete_icon.png" class="iconButton" (click)="onRemove.emit(formGroup())" />
+	@if (editMode()) {
+		<img src="/icons/delete_icon.png" class="iconButton" (click)="onRemove.emit(formGroup())" />
+	}
 </div>

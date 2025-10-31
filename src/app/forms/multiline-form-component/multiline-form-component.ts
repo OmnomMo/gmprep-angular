@@ -11,4 +11,6 @@ import { FormBase } from '../form-base';
 })
 export class MultilineFormComponent extends FormBase {
 	label = input.required<string>();
+	standalone = input<boolean>(false);
+	lines = input<number>(7);
 }

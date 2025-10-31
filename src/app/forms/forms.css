@@ -1,6 +1,11 @@
 @import '../app.css';
 
 
+.nodePanel {
+	padding: 1.0em;
+	margin-top: 0.3rem;
+	background-color: rgba(100, 100, 100, 0.267);
+}
 
 textarea {
 	width: 100%;

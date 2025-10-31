@@ -4,13 +4,21 @@
 	}
 	@if (editing()) {
 		<div class="nameFormInput">
-			<input [class]="getDisplayClass()" id="nameFormInput>" type="text" [formControlName]="controlName()" autofocus />
+			<input
+				[class]="getDisplayClass()"
+				id="nameFormInput>"
+				type="text"
+				[formControlName]="controlName()"
+				autofocus
+			/>
 			<img src="/icons/check_icon.png" class="iconButton" (click)="stopEditing()" />
 		</div>
 	} @else {
 		<div class="nameFormInput">
 			<div [class]="getDisplayClass()" (click)="startEditing()">{{ getValue() }}</div>
-			<img src="/icons/wrench_icon.png" class="iconButton" (click)="startEditing()" />
+			@if (editMode()) {
+				<img src="/icons/wrench_icon.png" class="iconButton" (click)="startEditing()" />
+			}
 		</div>
 	}
 </form>

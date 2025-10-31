@@ -2,21 +2,31 @@
 	<p>No node?</p>
 } @else {
 	<div [formGroup]="nodeForm" class="nodeForm">
-		<img
-			src="/icons/character_icon.png"
-			[class]="isCreature() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
-			(click)="setIsCreature(!isCreature())"
-		/>
-		<img
-			src="/icons/location_icon.png"
-			[class]="isLocation() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
-			(click)="setIsLocation(!isLocation())"
-		/>
+		<div class="nodeInfoButtonBar">
+			<img
+				src="/icons/character_icon.png"
+				[class]="isCreature() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+				(click)="setIsCreature(!isCreature())"
+			/>
+			<img
+				src="/icons/location_icon.png"
+				[class]="isLocation() ? 'nodeInfoButton selected' : 'nodeInfoButton'"
+				(click)="setIsLocation(!isLocation())"
+			/>
+			<img
+				src="/icons/wrench_icon.png"
+				[class]="
+					editMode()! ? 'nodeInfoButton rightAlign selected' : 'nodeInfoButton rightAlign'
+				"
+				(click)="userEvents.setEditMode(!editMode())"
+			/>
+		</div>
 		<app-portraiticon-form-component
 			controlName="mapIconPath"
 			controlNameSize="mapIconSize"
 			[formGroup]="nodeForm"
 			[node]="node()"
+			[editMode]="editMode()!"
 			(onChange)="onControlSubmit()"
 			formId="mapIconForm"
 		/>
@@ -26,6 +36,7 @@
 			[formGroup]="nodeForm!"
 			(onChange)="onControlSubmit()"
 			[header]="true"
+			[editMode]="editMode()!"
 			formId="nameForm"
 		/>
 		@if (isCreature()) {
@@ -36,6 +47,7 @@
 					[formGroup]="getSubFormGroup('creatureInfo')"
 					[options]="gmNodeOptions.sizes"
 					[selected]="node().creatureInfo!.size"
+					[editMode]="editMode()!"
 					(onChange)="onControlSubmit()"
 					formId="creatureSizeForm"
 				/>
@@ -45,6 +57,7 @@
 					[formGroup]="getSubFormGroup('creatureInfo')"
 					[options]="gmNodeOptions.creatureTypes"
 					[selected]="node().creatureInfo!.creatureType"
+					[editMode]="editMode()!"
 					(onChange)="onControlSubmit()"
 					formId="creatureTypeForm"
 				/>
@@ -54,29 +67,32 @@
 					[formGroup]="getSubFormGroup('creatureInfo')"
 					[options]="gmNodeOptions.alignments"
 					[selected]="node().creatureInfo!.alignment"
+					[editMode]="editMode()!"
 					(onChange)="onControlSubmit()"
 					formId="creatureAlignmentForm"
 				/>
 			</div>
 		}
-		<div class="nodePanel">
-			<app-multiline-form-component
-				label="Description"
-				controlName="description"
-				[formGroup]="nodeForm!"
-				(onChange)="onControlSubmit()"
-				formId="descriptionForm"
-			/>
-		</div>
+		<app-multiline-form-component
+			label="Description"
+			controlName="description"
+			[formGroup]="nodeForm!"
+			[editMode]="editMode()!"
+			[standalone]="true"
+			(onChange)="onControlSubmit()"
+			formId="descriptionForm"
+		/>
 		@if (isCreature()) {
 			<app-stats-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				controlName="statsForm"
 				(onChange)="onControlSubmit()"
 				formId="statsForm"
 			/>
 			<app-movement-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				controlName="movementForm"
 				(onChange)="onControlSubmit()"
 				formId="movementForm"
@@ -84,32 +100,17 @@
 			<app-multi-string-selector
 				controlName="damageImmunities"
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				label="Damage Immunities"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
 				formId="damageImmunitiesForm"
 			/>
-			<div class="nodePanel">
-				<app-multiline-form-component
-					controlName="senses"
-					[formGroup]="getSubFormGroup('creatureInfo')"
-					formId="senses"
-					label="Senses"
-					(onChange)="onControlSubmit()"
-				/>
-			</div>
-			<div class="nodePanel">
-				<app-multiline-form-component
-					controlName="languages"
-					[formGroup]="getSubFormGroup('creatureInfo')"
-					formId="languages"
-					label="Languages"
-					(onChange)="onControlSubmit()"
-				/>
-			</div>
+
 			<app-multi-string-selector
 				controlName="damageResistances"
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				label="Damage Resistances"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
@@ -118,6 +119,7 @@
 			<app-multi-string-selector
 				controlName="damageVulnerabilities"
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				label="Damage Vulnerabilities"
 				[options]="gmNodeOptions.damageTypes"
 				(onChange)="onControlSubmit()"
@@ -126,89 +128,109 @@
 			<app-multi-string-selector
 				controlName="conditionImmunities"
 				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
 				label="Condition Immunities"
 				[options]="gmNodeOptions.conditions"
 				(onChange)="onControlSubmit()"
 				formId="conditionImmunitiesForm"
 			/>
-			<div class="nodePanel">
-				<app-node-form-array
-					#skillsForm
-					class="skillsForm"
-					[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'skills')"
-					[defaultControls]="defaultSkill"
-					label="Skills"
-					(onChange)="onControlSubmit()"
-				>
-					@for (
-						formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'skills');
-						track formGroup
-					) {
-						<app-skill-form
-							controlName=""
-							[formGroup]="formGroup"
-							formId="skillsForm"
-							(onChange)="onControlSubmit()"
-							(onRemove)="skillsForm.removeEntry(formGroup)"
-						/>
-					}
-				</app-node-form-array>
-			</div>
-			<div class="nodePanel">
-				<app-node-form-array
-					#actionsForm
-					class="actionsForm"
-					[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'actions')"
-					[defaultControls]="defaultAction"
-					label="Actions"
-					(onChange)="onControlSubmit()"
-				>
-					@for (
-						formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'actions');
-						track formGroup
-					) {
-						<app-action-form
-							controlName="name"
-							[formGroup]="formGroup"
-							(onChange)="onControlSubmit()"
-							(onRemove)="actionsForm.removeEntry(formGroup)"
-							formId="actionsForm"
-						/>
-					}
-				</app-node-form-array>
-			</div>
-		}
-		@if (isLocation()) {
-			<div class="nodePanel">
-				<app-multiline-form-component
-					controlName="population"
-					[formGroup]="getSubFormGroup('locationInfo')"
-					formId="population"
-					label="Population"
-					(onChange)="onControlSubmit()"
-				/>
-			</div>
-		}
-		<div class="nodePanel">
 			<app-node-form-array
-				#secretsForm
-				class="secretsForm"
-				[formArray]="getFormArray(nodeForm, 'secrets')"
-				[defaultControls]="defaultSecret"
-				label="Secrets"
+				#skillsForm
+				class="skillsForm"
+				[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'skills')"
+				[editMode]="editMode()!"
+				[defaultControls]="defaultSkill"
+				label="Skills"
 				(onChange)="onControlSubmit()"
 			>
-				@for (formGroup of getFormArrayGroups(nodeForm, 'secrets'); track formGroup) {
-					<app-secret-form
-						controlName="secretsForm"
+				@for (
+					formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'skills');
+					track formGroup
+				) {
+					<app-skill-form
+						controlName=""
 						[formGroup]="formGroup"
-						formId="secretsForm"
+						[editMode]="editMode()!"
+						formId="skillsForm"
 						(onChange)="onControlSubmit()"
-						(onDelete)="secretsForm!.removeEntry(formGroup)"
+						(onRemove)="skillsForm.removeEntry(formGroup)"
 					/>
 				}
 			</app-node-form-array>
-		</div>
+			<app-node-form-array
+				#actionsForm
+				class="actionsForm"
+				[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'actions')"
+				[editMode]="editMode()!"
+				[defaultControls]="defaultAction"
+				label="Actions"
+				(onChange)="onControlSubmit()"
+			>
+				@for (
+					formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'actions');
+					track formGroup
+				) {
+					<app-action-form
+						controlName="name"
+						[formGroup]="formGroup"
+						[editMode]="editMode()!"
+						[index]="$index"
+						(onChange)="onControlSubmit()"
+						(onRemove)="actionsForm.removeEntry(formGroup)"
+						formId="actionsForm"
+					/>
+				}
+			</app-node-form-array>
+			<app-multiline-form-component
+				controlName="senses"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
+				formId="senses"
+				[standalone]="true"
+				label="Senses"
+				(onChange)="onControlSubmit()"
+			/>
+			<app-multiline-form-component
+				controlName="languages"
+				[formGroup]="getSubFormGroup('creatureInfo')"
+				[editMode]="editMode()!"
+				[standalone]="true"
+				formId="languages"
+				label="Languages"
+				(onChange)="onControlSubmit()"
+			/>
+		}
+		@if (isLocation()) {
+			<app-multiline-form-component
+				controlName="population"
+				[formGroup]="getSubFormGroup('locationInfo')"
+				[editMode]="editMode()!"
+				[standalone]="true"
+				formId="population"
+				label="Population"
+				(onChange)="onControlSubmit()"
+			/>
+		}
+		<app-node-form-array
+			#secretsForm
+			class="secretsForm"
+			[formArray]="getFormArray(nodeForm, 'secrets')"
+			[editMode]="editMode()!"
+			[defaultControls]="defaultSecret"
+			label="Secrets"
+			(onChange)="onControlSubmit()"
+		>
+			@for (formGroup of getFormArrayGroups(nodeForm, 'secrets'); track formGroup) {
+				<app-secret-form
+					controlName="secretsForm"
+					[formGroup]="formGroup"
+					[editMode]="editMode()!"
+					formId="secretsForm"
+					(onChange)="onControlSubmit()"
+					(onDelete)="secretsForm!.removeEntry(formGroup)"
+				/>
+			}
+		</app-node-form-array>
 		<button class="deleteButton" (click)="deleteNode()">Delete!</button>
 	</div>
 }

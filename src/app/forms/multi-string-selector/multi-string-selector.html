@@ -1,27 +1,39 @@
-<div class="multiStringSelector nodePanel">
-	<div class="multiStringHeader">
-		@if (label() != '') {
-			<div class="multiStringLabel" (click)="toggleEditing()">{{ label() }}:</div>
-		} @else {
-			<div class="multiStringLabel"></div>
-		}
-		@if (editing()) {
-			<img class="multiStringEditIcon iconButton" src="icons/check_icon.png" (click)="stopEditing()" />
-		} @else {
-			<img class="multiStringEditIcon iconButton" src="icons/wrench_icon.png" (click)="startEditing()" />
-		}
-	</div>
-	<div class="multiLineContainer">
-		@if (editing()) {
-			@for (option of options(); track option) {
-				<button [class]="getOptionButtonClass(option)" (click)="toggleOption(option)">
-					{{ option }}
-				</button>
+@if (editMode() || selectedStrings().size > 0) {
+	<div class="multiStringSelector nodePanel">
+		<div class="multiStringHeader">
+			@if (label() != '') {
+				<div class="multiStringLabel" (click)="toggleEditing()">{{ label() }}:</div>
+			} @else {
+				<div class="multiStringLabel"></div>
 			}
-		} @else {
-			@for (selected of selectedStrings(); track selected) {
-				<div class="multiStringDisplay" (click)="startEditing()">{{ selected }}</div>
+			@if (editing()) {
+				<img
+					class="multiStringEditIcon iconButton"
+					src="icons/check_icon.png"
+					(click)="stopEditing()"
+				/>
+			} @else {
+				@if (editMode()) {
+					<img
+						class="multiStringEditIcon iconButton"
+						src="icons/wrench_icon.png"
+						(click)="startEditing()"
+					/>
+				}
 			}
-		}
+		</div>
+		<div class="multiLineContainer">
+			@if (editing()) {
+				@for (option of options(); track option) {
+					<button [class]="getOptionButtonClass(option)" (click)="toggleOption(option)">
+						{{ option }}
+					</button>
+				}
+			} @else {
+				@for (selected of selectedStrings(); track selected) {
+					<div class="multiStringDisplay" (click)="startEditing()">{{ selected }}</div>
+				}
+			}
+		</div>
 	</div>
-</div>
+}
