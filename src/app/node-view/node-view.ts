@@ -29,6 +29,7 @@ import { SecretForm } from '../forms/secret-form/secret-form';
 import { MapService } from '../map-service';
 import { UserEvents } from '../utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ImportService } from '../import-service';
 
 @Component({
 	selector: 'app-node-view',
@@ -56,7 +57,7 @@ export class NodeView implements OnChanges {
 
 	isCreature = signal<boolean>(false);
 	isLocation = signal<boolean>(false);
-	editMode : Signal<boolean | undefined>
+	editMode: Signal<boolean | undefined>;
 
 	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
 	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
@@ -81,9 +82,10 @@ export class NodeView implements OnChanges {
 	constructor(
 		private auth: AuthService,
 		private nodeService: NodeService,
-		private mapService : MapService,
+		private mapService: MapService,
 		private campaignService: CampaignService,
-		protected userEvents : UserEvents,
+		protected userEvents: UserEvents,
+		protected importService: ImportService,
 		protected gmNodeOptions: GmNodeOptions,
 	) {
 		this.editMode = toSignal<boolean>(userEvents.editMode$);
@@ -191,8 +193,7 @@ export class NodeView implements OnChanges {
 	}
 
 	setIsCreature(isCreature: boolean) {
-
-		var modifiedNode : GmNode = this.getNodeFromForm();
+		var modifiedNode: GmNode = this.getNodeFromForm();
 
 		if (!isCreature) {
 			if (confirm('Are you sure you want to remove all creature infos from this node?')) {
@@ -208,7 +209,7 @@ export class NodeView implements OnChanges {
 	}
 
 	setIsLocation(isLocation: boolean) {
-		var modifiedNode : GmNode = this.getNodeFromForm();
+		var modifiedNode: GmNode = this.getNodeFromForm();
 		if (!isLocation) {
 			if (confirm('Are you sure you want to remove all location info from this node?')) {
 				modifiedNode.locationInfo = null;
@@ -220,6 +221,19 @@ export class NodeView implements OnChanges {
 		}
 		this.submitNode(modifiedNode);
 		this.mapService.setSelectedNode(modifiedNode);
+	}
+
+	importFromString() {
+		console.log('Import button clicked');
+		this.importService.parseClipboard().then((node) => {
+			console.log('Node imported.');
+			console.log(node);
+			if (node != null) {
+				this.nodeService.copyNodeValues(node, this.node());
+				this.buildForm();
+				this.submitNode();
+			}
+		});
 	}
 
 	getSubFormGroup(groupName: string): FormGroup {
@@ -247,7 +261,7 @@ export class NodeView implements OnChanges {
 		}
 	}
 
-	getNodeFromForm() : GmNode{
+	getNodeFromForm(): GmNode {
 		var node: GmNode = this.nodeForm!.value;
 		node.id = this.node().id;
 		if (!this.isCreature()) {
@@ -259,9 +273,8 @@ export class NodeView implements OnChanges {
 		return node;
 	}
 
-	submitNode(node : GmNode | null = null) {
-
-		var submittedNode : GmNode = node ?? this.getNodeFromForm();
+	submitNode(node: GmNode | null = null) {
+		var submittedNode: GmNode = node ?? this.getNodeFromForm();
 
 		this.nodeService.updateNode(
 			this.auth.getUserToken(),

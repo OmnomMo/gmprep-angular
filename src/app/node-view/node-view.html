@@ -14,10 +14,13 @@
 				(click)="setIsLocation(!isLocation())"
 			/>
 			<img
+				src="/icons/copy_icon.png"
+				class="nodeInfoButton rightAlign"
+				(click)="importFromString()"
+			/>
+			<img
 				src="/icons/wrench_icon.png"
-				[class]="
-					editMode()! ? 'nodeInfoButton rightAlign selected' : 'nodeInfoButton rightAlign'
-				"
+				[class]="editMode()! ? 'nodeInfoButton selected' : 'nodeInfoButton'"
 				(click)="userEvents.setEditMode(!editMode())"
 			/>
 		</div>

@@ -11,6 +11,8 @@ export class GmNode {
 		public secrets: Secret[] = [],
 		public links: NodeLink[] = [],
 	) {}
+
+
 }
 
 export class MapNode {

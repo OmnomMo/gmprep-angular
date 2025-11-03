@@ -87,6 +87,18 @@ export class NodeService {
 		return node$;
 	}
 
+	copyNodeValues(from : GmNode, to : GmNode) {
+		to.name = from.name;
+		to.description = from.description;
+		to.mapIconPath = from.mapIconPath;
+		to.portraitPath = from.portraitPath;
+		to.mapIconSize = from.mapIconSize;
+		to.creatureInfo = from.creatureInfo;
+		to.locationInfo = from.locationInfo;
+		to.secrets = from.secrets;
+		to.links = from.links;
+	}
+
 	updateNode(userToken: string, campaignId: number, node: GmNode) {
 		if (userToken == '') {
 			return;

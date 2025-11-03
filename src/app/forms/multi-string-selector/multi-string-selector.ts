@@ -54,6 +54,9 @@ export class MultiStringSelector extends FormBase implements OnChanges{
 	}
 
 	override stopEditing(): void {
+		if (!this.editing()) {
+			return;
+		}
 		this.updateFormControl();
 		super.stopEditing();
 	}
