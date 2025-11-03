@@ -30,6 +30,13 @@ export class FormBase {
 					this.stopEditing();
 				}
 			}
+		});
+		this.userEvents.editMode$.subscribe({
+			next: inEditMode => {
+				if (!inEditMode) {
+					this.stopEditing();
+				}
+			}
 		})
 	}
 	startEditing() {

@@ -2,7 +2,7 @@
 
 .statsForm {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, max(10rem, 100%/3)), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, max(9rem, 100%/3)), 1fr));
 	column-gap: 2rem;
 	column-count: 2;
 }
