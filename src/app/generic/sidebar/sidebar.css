@@ -1,3 +1,5 @@
+@import '../../app.css';
+
 .sidebar{
 	z-index: 5;
 	position: absolute;
@@ -7,18 +9,18 @@
 	width: 512px;
 	background-color: rgba(0, 0, 0, 0.822);
 	backdrop-filter: blur(10px);
-	padding: 2rem;
+	padding: 1rem;
 	padding-top: 5em;
 }
 
 .sidebarLeft{
 	left:0px;
-	padding-right: 32px;
+	padding-right: 24px;
 }
 
 .sidebarRight{
 	right: 0px;
-	padding-left: 32px;
+	padding-left: 24px;
 }
 
 .sidebarHandle{
@@ -26,9 +28,9 @@
 	overflow-y: hidden;
 	top: 0px;
 	bottom: 0px;
-	width: 14px;
+	width: 10px;
 	background-color: rgba(245, 245, 220, 0.137);
-	cursor: pointer;
+	cursor:ew-resize;
 }
 
 .sidebarHandleLeft{

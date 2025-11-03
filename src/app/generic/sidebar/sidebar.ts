@@ -10,6 +10,8 @@ import { MouseTracker } from '../../utils/mouse-tracker';
 export class Sidebar {
 	isLeftSide = input.required<boolean>();
 	width = signal<number>(400);
+	min_width = 200;
+	max_width = 800;
 
 	draggingHandle: boolean = false;
 	dragHandleStartPosX: number = 0;
@@ -50,6 +52,8 @@ export class Sidebar {
 	}
 
 	onHandleMouseDown(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
 		this.dragHandleStartPosX = e.clientX;
 		this.draggingHandle = true;
 	}
@@ -59,14 +63,19 @@ export class Sidebar {
 			return;
 		}
 		e.stopPropagation();
+		e.preventDefault();
 		var dX = this.dragHandleStartPosX - e.clientX;
 		this.dragHandleStartPosX = e.clientX;
 
+		var target_width : number;
 		if (this.isLeftSide()) {
-			this.width.set(this.width() - dX);
+			target_width = this.width() - dX;
 		} else {
-			this.width.set(this.width() + dX);
+			target_width = this.width() + dX;
 		}
+
+		target_width = Math.min(Math.max(target_width, this.min_width), this.max_width);
+		this.width.set(target_width);
 	}
 
 	onHandleMouseUp(e: MouseEvent) {

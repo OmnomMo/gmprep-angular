@@ -9,7 +9,7 @@ export class FormBase {
 	controlName = input.required<string>();
 	formGroup = input.required<FormGroup>();
 	formId = input.required<string>();
-	editMode = input.required<boolean>();
+	editMode = input<boolean>(true);
 	onChange = output<void>();
 	editing = signal<boolean>(false);
 
