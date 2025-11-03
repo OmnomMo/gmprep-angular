@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { StringSelector } from "../string-selector/string-selector";
 import { NameFormComponent } from "../name-form-component/name-form-component";
 import { FormBase } from '../form-base';
@@ -15,6 +15,8 @@ import { InlineNameForm } from "../inline-name-form/inline-name-form";
 export class SkillForm extends FormBase{
 
 	onRemove = output<FormGroup>();
+	
+	abilitiesMode = input<boolean>(false);
 
 	constructor(
 		protected nodeOptions : GmNodeOptions
@@ -22,8 +24,16 @@ export class SkillForm extends FormBase{
 		super();
 	}
 
+	getOptions() : string[] {
+		if (this.abilitiesMode()){
+			return this.nodeOptions.stats;
+		} else {
+			return this.nodeOptions.skills;
+		}
+	}
+
 	getBonusFormId() {
-		var skillName : string = this.formGroup().get('skillName')!.value;
-		return "skillBonus" + skillName;
+		var skillName : string = this.formGroup().get(this.controlName())!.value;
+		return this.controlName() + "bonus" + skillName;
 	}
 }

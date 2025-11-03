@@ -42,6 +42,7 @@ export class CreatureInfo {
 		public conditionImmunities: string[] = [],
 		public damageVulnerabilities: string[] = [],
 		public skills: Skill[] = [],
+		public savingThrows: SavingThrow[] = [],
 		public actions: Action[] = [],
 		public cha: string = '10',
 		public con: string = '10',
@@ -80,6 +81,14 @@ export class Skill {
 	constructor(
 		public id: number,
 		public skillName: string,
+		public bonus: string,
+	) {}
+}
+
+export class SavingThrow {
+	constructor(
+		public id: number,
+		public savingThrowName: string,
 		public bonus: string,
 	) {}
 }

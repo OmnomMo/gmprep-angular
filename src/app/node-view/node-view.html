@@ -151,12 +151,36 @@
 					track formGroup
 				) {
 					<app-skill-form
-						controlName=""
+						controlName="skillName"
 						[formGroup]="formGroup"
 						[editMode]="editMode()!"
 						formId="skillsForm"
 						(onChange)="onControlSubmit()"
 						(onRemove)="skillsForm.removeEntry(formGroup)"
+					/>
+				}
+			</app-node-form-array>
+			<app-node-form-array
+				#savingThrowsForm
+				class="savingThrowsForm"
+				[formArray]="getFormArray(getSubFormGroup('creatureInfo'), 'savingThrows')"
+				[editMode]="editMode()!"
+				[defaultControls]="defaultSavingThrow"
+				label="Saving Throws"
+				(onChange)="onControlSubmit()"
+			>
+				@for (
+					formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'savingThrows');
+					track formGroup
+				) {
+					<app-skill-form
+						controlName="savingThrowName"
+						[formGroup]="formGroup"
+						[editMode]="editMode()!"
+						[abilitiesMode]="true"
+						formId="savingThrowsForm"
+						(onChange)="onControlSubmit()"
+						(onRemove)="savingThrowsForm.removeEntry(formGroup)"
 					/>
 				}
 			</app-node-form-array>

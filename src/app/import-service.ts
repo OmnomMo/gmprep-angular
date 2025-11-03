@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Action, CreatureInfo, GmNode, Skill } from './models/map-node';
+import { Action, CreatureInfo, GmNode, SavingThrow, Skill } from './models/map-node';
 import { GmNodeOptions } from './utils/gm-node-options';
 import { filter } from 'rxjs';
-
 
 //Service allows parsing of clipboard contents. Tries to fit the string into a GmNode Object.
 @Injectable({
@@ -25,7 +24,7 @@ export class ImportService {
 	tryParse(text: string): GmNode | null {
 		console.log('Try parse ');
 		const splitLines: string[] = text.split(/\r?\n/);
-		const filteredLines: string[] = splitLines.filter((line) => line.length > 1);
+		var filteredLines: string[] = splitLines.filter((line) => line.length > 1);
 		console.log(filteredLines);
 		if (filteredLines.length < 3) {
 			return null;
@@ -34,40 +33,43 @@ export class ImportService {
 		var parsedNode: GmNode = new GmNode(0, filteredLines[0]);
 		parsedNode.creatureInfo = new CreatureInfo();
 		this.parseSizeTypeAlignment(filteredLines[1], parsedNode);
-		parsedNode.creatureInfo.hp = this.getStat('Hit Points', filteredLines) || '0';
-		parsedNode.creatureInfo.ac = this.getStat('Armor Class', filteredLines) || '0';
-		parsedNode.creatureInfo.speed = this.getStat('Speed', filteredLines) || '0';
-		parsedNode.creatureInfo.speedSwimming = this.getStat('swim', filteredLines) || '0';
-		parsedNode.creatureInfo.speedFlying = this.getStat('fly', filteredLines) || '0';
-		parsedNode.creatureInfo.str = this.getStat('STR', filteredLines) || '0';
-		parsedNode.creatureInfo.dex = this.getStat('DEX', filteredLines) || '0';
-		parsedNode.creatureInfo.con = this.getStat('CON', filteredLines) || '0';
-		parsedNode.creatureInfo.int = this.getStat('INT', filteredLines) || '0';
-		parsedNode.creatureInfo.wis = this.getStat('WIS', filteredLines) || '0';
-		parsedNode.creatureInfo.cha = this.getStat('CHA', filteredLines) || '0';
+		//Name / Type / Alignment / Size removed from string array to not disrupt detection of other stats
+		filteredLines = filteredLines.slice(2, filteredLines.length);
+		parsedNode.creatureInfo.hp = this.getStat(['Hit Points', 'HP'], filteredLines) || '0';
+		parsedNode.creatureInfo.ac = this.getStat(['Armor Class', 'AC'], filteredLines) || '0';
+		parsedNode.creatureInfo.speed = this.getStat(['Speed'], filteredLines) || '0';
+		parsedNode.creatureInfo.speedSwimming = this.getStat(['swim'], filteredLines) || '0';
+		parsedNode.creatureInfo.speedFlying = this.getStat(['fly'], filteredLines) || '0';
+		parsedNode.creatureInfo.str = this.getStat(['STR', 'Str'], filteredLines) || '0';
+		parsedNode.creatureInfo.dex = this.getStat(['DEX', 'Dex'], filteredLines) || '0';
+		parsedNode.creatureInfo.con = this.getStat(['CON', 'Con'], filteredLines) || '0';
+		parsedNode.creatureInfo.int = this.getStat(['INT', 'Int'], filteredLines) || '0';
+		parsedNode.creatureInfo.wis = this.getStat(['WIS', 'Wis'], filteredLines) || '0';
+		parsedNode.creatureInfo.cha = this.getStat(['CHA', 'Cha'], filteredLines) || '0';
 		parsedNode.creatureInfo.languages = this.getProperty('Languages', filteredLines) || '';
 		parsedNode.creatureInfo.senses = this.getProperty('Senses', filteredLines) || '';
 		parsedNode.creatureInfo.damageImmunities = this.getMultiStringProperty(
-			'Damage Immunities',
+			['Damage Immunities', 'Immunities'],
 			this.nodeOptions.damageTypes,
 			filteredLines,
 		);
 		parsedNode.creatureInfo.damageResistances = this.getMultiStringProperty(
-			'Damage Resistance',
+			['Damage Resistance', 'Resistances'],
 			this.nodeOptions.damageTypes,
 			filteredLines,
 		);
 		parsedNode.creatureInfo.damageVulnerabilities = this.getMultiStringProperty(
-			'Vulnerabilities',
+			['Vulnerabilities'],
 			this.nodeOptions.damageTypes,
 			filteredLines,
 		);
 		parsedNode.creatureInfo.conditionImmunities = this.getMultiStringProperty(
-			'Condition Immunities',
+			['Condition Immunities'],
 			this.nodeOptions.conditions,
 			filteredLines,
 		);
 		parsedNode.creatureInfo.skills = this.parseSkills(filteredLines);
+		parsedNode.creatureInfo.savingThrows = this.parseSavingThrows(filteredLines);
 		parsedNode.creatureInfo.actions = this.parseActions(filteredLines);
 
 		return parsedNode;
@@ -95,13 +97,22 @@ export class ImportService {
 		node.creatureInfo.alignment = [filtered[2], filtered[3]].join(' ');
 	}
 
-	getStat(statName: string, toParse: string[]): string | null {
+	getStat(statNameAliases: string[], toParse: string[]): string | null {
 		for (var i: number = 0; i < toParse.length; i++) {
 			const line = toParse[i];
 
-			if (line.includes(statName)) {
-				console.log(`found stat ${statName}:`);
-				var filteredLine = line.substring(line.indexOf(statName) + statName.length + 1);
+			//check if line contains alias
+			var foundAlias: string = '';
+			for (const alias of statNameAliases) {
+				if (line.includes(alias)) {
+					foundAlias = alias;
+					break;
+				}
+			}
+
+			if (foundAlias != '') {
+				console.log(`found stat ${foundAlias}:`);
+				var filteredLine = line.substring(line.indexOf(foundAlias) + foundAlias.length + 1);
 				var filteredArray: string[] = [];
 				if (filteredLine.length > 0) {
 					filteredArray = filteredLine.split(' ');
@@ -133,13 +144,20 @@ export class ImportService {
 		return null;
 	}
 
-	getMultiStringProperty(name: string, options: string[], toParse: string[]): string[] {
+	getMultiStringProperty(aliases: string[], options: string[], toParse: string[]): string[] {
 		for (var i: number = 0; i < toParse.length; i++) {
 			const line = toParse[i];
 
-			if (line.includes(name)) {
-				console.log(`found characteristic ${name}:`);
-				var filteredLine = line.substring(line.indexOf(name) + name.length + 1);
+			var foundAlias: string = '';
+			for (const alias of aliases) {
+				if (line.includes(alias)) {
+					foundAlias = alias;
+				}
+			}
+
+			if (foundAlias != '') {
+				console.log(`found characteristic ${foundAlias}:`);
+				var filteredLine = line.substring(line.indexOf(foundAlias) + foundAlias.length + 1);
 				console.log(filteredLine);
 				filteredLine = filteredLine.replaceAll(',', '');
 				filteredLine = filteredLine.replaceAll(';', '');
@@ -193,6 +211,41 @@ export class ImportService {
 		return skills;
 	}
 
+	parseSavingThrows(toParse: string[]): SavingThrow[] {
+		var savingThrowsLine: string | null = null;
+
+		//find skills line to parse
+		for (const line of toParse) {
+			if (line.includes('Saving Throws')) {
+				savingThrowsLine = line.substring(line.indexOf('Saving Throws') + 14);
+				break;
+			}
+		}
+
+		if (savingThrowsLine == null) {
+			return [];
+		}
+		savingThrowsLine = savingThrowsLine.replaceAll(' ', '');
+		console.log(savingThrowsLine);
+
+		var savingThrowStrings: string[] = savingThrowsLine.split(',');
+
+		console.log('Saving Throws line found');
+		console.log(savingThrowStrings);
+
+		var savingThrows: SavingThrow[] = [];
+
+		for (const savingThrow of savingThrowStrings) {
+			var split: string[] = savingThrow.split('+');
+			var abilityName: string = split[0].toLowerCase();
+			if (this.nodeOptions.stats.includes(abilityName)) {
+				savingThrows.push(new SavingThrow(0, abilityName, split[1]));
+			}
+		}
+
+		return savingThrows;
+	}
+
 	parseActions(toParse: string[]): Action[] {
 		var startReached: boolean = false;
 		var actions: Action[] = [];
@@ -201,7 +254,7 @@ export class ImportService {
 			if (startReached) {
 				//Skip parsing on lines that include keywords
 				var skipLine = ['Actions', 'Traits', 'Legendary Actions'].some((keyword) =>
-					toParse[i].startsWith(keyword)
+					toParse[i].startsWith(keyword),
 				);
 				if (!skipLine) {
 					var splitAction: string[] = toParse[i].split('.');
@@ -210,7 +263,10 @@ export class ImportService {
 				}
 			}
 
-			if (toParse[i].includes('Challenge')) {
+			//check if we have reached the start of the actions section
+			if (
+				['Challenge', 'Traits', 'Actions'].some((keyword) => toParse[i].startsWith(keyword))
+			) {
 				startReached = true;
 			}
 		}

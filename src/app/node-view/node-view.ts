@@ -30,6 +30,7 @@ import { MapService } from '../map-service';
 import { UserEvents } from '../utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImportService } from '../import-service';
+import { createUrlTreeFromSnapshot } from '@angular/router';
 
 @Component({
 	selector: 'app-node-view',
@@ -61,6 +62,7 @@ export class NodeView implements OnChanges {
 
 	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
 	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
+	@ViewChild('savingThrowsForm') savingThrowsForm: NodeFormArray | undefined;
 	@ViewChild('secretsForm') secretsForm: NodeFormArray | undefined;
 
 	protected defaultAction = {
@@ -71,6 +73,11 @@ export class NodeView implements OnChanges {
 	protected defaultSkill = {
 		skillName: 'Athletics',
 		bonus: '10',
+	};
+	
+	protected defaultSavingThrow = {
+		savingThrowName: 'STR',
+		bonus: '4',
 	};
 
 	protected defaultSecret = {
@@ -126,6 +133,7 @@ export class NodeView implements OnChanges {
 				conditionImmunities: [creatureInfo.conditionImmunities ?? ''],
 				damageVulnerabilities: [creatureInfo.damageVulnerabilities ?? ''],
 				skills: this.formBuilder.array([]),
+				savingThrows: this.formBuilder.array([]),
 				actions: this.formBuilder.array([]),
 				cha: [creatureInfo.cha ?? '10'],
 				con: [creatureInfo.con ?? '10'],
@@ -135,6 +143,8 @@ export class NodeView implements OnChanges {
 				wis: [creatureInfo.wis ?? '10'],
 				cr: [creatureInfo.cr ?? '1'],
 			});
+
+			//build form arrays
 
 			var actionFormArray: FormArray = creatureInfoGroup.get('actions') as FormArray;
 			creatureInfo.actions.forEach((action) => {
@@ -154,6 +164,19 @@ export class NodeView implements OnChanges {
 						id: skill.id,
 						skillName: [skill.skillName],
 						bonus: [skill.bonus],
+					}),
+				);
+			});
+
+			var savingThrowsFormArray: FormArray = creatureInfoGroup.get(
+				'savingThrows',
+			) as FormArray;
+			creatureInfo.savingThrows.forEach((savingThrow) => {
+				savingThrowsFormArray.push(
+					this.formBuilder.group({
+						id: savingThrow.id,
+						savingThrowName: [savingThrow.savingThrowName],
+						bonus: [savingThrow.bonus],
 					}),
 				);
 			});

@@ -1,11 +1,11 @@
 <div class="skillForm">
 	<app-string-selector
-		controlName="skillName"
+		[controlName]="controlName()"
 		[formGroup]="formGroup()"
-		formId="skillName"
+		[formId]="controlName()"
 		[editMode]="editMode()"
-		[options]="nodeOptions.skills"
-		[selected]="formGroup().get('skillName')!.value"
+		[options]="getOptions()"
+		[selected]="formGroup().get(controlName())!.value"
 		(onChange)="onChange.emit()"
 	/>
 	<app-inline-name-form
