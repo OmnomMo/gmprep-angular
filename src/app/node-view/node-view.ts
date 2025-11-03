@@ -113,8 +113,8 @@ export class NodeView implements OnChanges {
 			creatureInfoGroup = this.formBuilder.group({
 				creatureType: [creatureInfo.creatureType ?? 'Humanoid'],
 				size: [creatureInfo.size ?? 'Medium'],
-				AC: [creatureInfo.ac ?? '15'],
-				HP: [creatureInfo.hp ?? '20'],
+				ac: [creatureInfo.ac ?? '15'],
+				hp: [creatureInfo.hp ?? '20'],
 				speed: [creatureInfo.speed ?? ''],
 				speedFlying: [creatureInfo.speedFlying ?? ''],
 				speedSwimming: [creatureInfo.speedSwimming ?? ''],
@@ -127,13 +127,13 @@ export class NodeView implements OnChanges {
 				damageVulnerabilities: [creatureInfo.damageVulnerabilities ?? ''],
 				skills: this.formBuilder.array([]),
 				actions: this.formBuilder.array([]),
-				CHA: [creatureInfo.cha ?? '10'],
-				CON: [creatureInfo.con ?? '10'],
-				DEX: [creatureInfo.dex ?? '10'],
-				INT: [creatureInfo.int ?? '10'],
-				STR: [creatureInfo.str ?? '10'],
-				WIS: [creatureInfo.wis ?? '10'],
-				CR: [creatureInfo.cr ?? '1'],
+				cha: [creatureInfo.cha ?? '10'],
+				con: [creatureInfo.con ?? '10'],
+				dex: [creatureInfo.dex ?? '10'],
+				int: [creatureInfo.int ?? '10'],
+				str: [creatureInfo.str ?? '10'],
+				wis: [creatureInfo.wis ?? '10'],
+				cr: [creatureInfo.cr ?? '1'],
 			});
 
 			var actionFormArray: FormArray = creatureInfoGroup.get('actions') as FormArray;

@@ -6,12 +6,12 @@ import { Injectable } from '@angular/core';
 export class GmNodeOptions {
 
 	public stats : string[] = [
-		"STR",
-		"DEX",
-		"CON",
-		"INT",
-		"WIS",
-		"CHA",
+		"str",
+		"dex",
+		"con",
+		"int",
+		"wis",
+		"cha",
 	]
 
 	public skills : string[] = [

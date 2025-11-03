@@ -2,26 +2,26 @@
 	<div class="stat">
 		<label for="hpStatInput" class="statLabel" type="text">HP:</label>
 		@if (editing()) {
-			<input id="hpStatInput" class="statInput" type="text" formControlName="HP" autofocus />
+			<input id="hpStatInput" class="statInput" type="text" formControlName="hp" autofocus />
 		} @else {
 			<div class="statDisplay" (click)="startEditing()">
-				{{ formGroup().get('HP')!.value }}
+				{{ formGroup().get('hp')!.value }}
 			</div>
 		}
 	</div>
 	<div class="stat">
 		<label for="acStatInput" class="statLabel" type="text">AC:</label>
 		@if (editing()) {
-			<input id="acStatInput" class="statInput" type="text" formControlName="AC" />
+			<input id="acStatInput" class="statInput" type="text" formControlName="ac" />
 		} @else {
 			<div class="statDisplay" (click)="startEditing()">
-				{{ formGroup().get('AC')!.value }}
+				{{ formGroup().get('ac')!.value }}
 			</div>
 		}
 	</div>
 	@for (stat of nodeOptions.stats; track stat) {
 		<div class="stat">
-			<label [for]="stat + 'statInput'" class="statLabel" type="text">{{ stat }}:</label>
+			<label [for]="stat + 'statInput'" class="statLabel" type="text">{{ stat.toUpperCase() }}:</label>
 			@if (editing()) {
 				<input
 					[id]="stat + 'statInput'"

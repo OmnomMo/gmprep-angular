@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CreatureInfo, GmNode, Skill } from './models/map-node';
+import { Action, CreatureInfo, GmNode, Skill } from './models/map-node';
 import { GmNodeOptions } from './utils/gm-node-options';
+import { filter } from 'rxjs';
 
+
+//Service allows parsing of clipboard contents. Tries to fit the string into a GmNode Object.
 @Injectable({
 	providedIn: 'root',
 })
@@ -61,10 +64,11 @@ export class ImportService {
 		);
 		parsedNode.creatureInfo.conditionImmunities = this.getMultiStringProperty(
 			'Condition Immunities',
-			this.nodeOptions.damageTypes,
+			this.nodeOptions.conditions,
 			filteredLines,
 		);
 		parsedNode.creatureInfo.skills = this.parseSkills(filteredLines);
+		parsedNode.creatureInfo.actions = this.parseActions(filteredLines);
 
 		return parsedNode;
 	}
@@ -156,13 +160,12 @@ export class ImportService {
 	}
 
 	parseSkills(toParse: string[]): Skill[] {
-		
-		var skillsLine : string | null = null;
+		var skillsLine: string | null = null;
 
 		//find skills line to parse
 		for (const line of toParse) {
-			if (line.includes("Skills")) {
-				skillsLine = line.substring(line.indexOf("Skills") + 7);
+			if (line.includes('Skills')) {
+				skillsLine = line.substring(line.indexOf('Skills') + 7);
 				break;
 			}
 		}
@@ -173,21 +176,45 @@ export class ImportService {
 		skillsLine = skillsLine.replaceAll(' ', '');
 		console.log(skillsLine);
 
-		var skillStrings : string[] = skillsLine.split(',');
+		var skillStrings: string[] = skillsLine.split(',');
 
-		console.log("Skills line found");
+		console.log('Skills line found');
 		console.log(skillStrings);
 
-		var skills : Skill[] = [];
+		var skills: Skill[] = [];
 
 		for (const skill of skillStrings) {
-			var split : string[] = skill.split("+");
+			var split: string[] = skill.split('+');
 			if (this.nodeOptions.skills.includes(split[0])) {
 				skills.push(new Skill(0, split[0], split[1]));
 			}
 		}
 
-
 		return skills;
+	}
+
+	parseActions(toParse: string[]): Action[] {
+		var startReached: boolean = false;
+		var actions: Action[] = [];
+
+		for (var i: number = 0; i < toParse.length; i++) {
+			if (startReached) {
+				//Skip parsing on lines that include keywords
+				var skipLine = ['Actions', 'Traits', 'Legendary Actions'].some((keyword) =>
+					toParse[i].startsWith(keyword)
+				);
+				if (!skipLine) {
+					var splitAction: string[] = toParse[i].split('.');
+					var description: string = splitAction.slice(1, splitAction.length).join('.');
+					actions.push(new Action(0, splitAction[0], description));
+				}
+			}
+
+			if (toParse[i].includes('Challenge')) {
+				startReached = true;
+			}
+		}
+
+		return actions;
 	}
 }
