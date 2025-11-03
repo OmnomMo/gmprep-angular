@@ -2,6 +2,11 @@
 
 .movementForm {
 	display: flex;
+	flex-wrap: wrap;
+}
+
+.movementEntry {
+	display: flex;
 }
 
 .speedInput {

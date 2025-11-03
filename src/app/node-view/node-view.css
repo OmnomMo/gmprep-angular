@@ -10,6 +10,7 @@
 
 .sizeTypeAlignment {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-content: center;
 	flex-direction: row;

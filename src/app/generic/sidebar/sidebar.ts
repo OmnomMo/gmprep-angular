@@ -10,7 +10,7 @@ import { MouseTracker } from '../../utils/mouse-tracker';
 export class Sidebar {
 	isLeftSide = input.required<boolean>();
 	width = signal<number>(400);
-	min_width = 200;
+	min_width = 250;
 	max_width = 800;
 
 	draggingHandle: boolean = false;
