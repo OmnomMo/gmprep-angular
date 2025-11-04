@@ -21,31 +21,37 @@ export class NodeFilter {
 		this.filterSettings = new NodeFilterSettings(mapService);
 	}
 
-	toggleActive() {
-		console.log('toggle filter active');
-		if (!this.filterActive()) {
-			this.filterActive.set(true);
+	clickedFilterIcon() {
+		if (this.filterActive()) {
+			this.filterSettings = new NodeFilterSettings(this.mapService);
+			this.updateFilters();
+			this.filterVisible.set(false);
 		} else {
-			this.filterActive.set(false);
+			this.filterVisible.set(!this.filterVisible());
 		}
 	}
 
 	toggleFilterByCreatures() {
 		this.filterSettings.filterByCreatures = !this.filterSettings.filterByCreatures;
-		this.onSettingsChanged.emit(this.filterSettings);
+		this.updateFilters();
 	}
 
 	toggleFilterByLocations() {
 		this.filterSettings.filterByLocations = !this.filterSettings.filterByLocations;
-		this.onSettingsChanged.emit(this.filterSettings);
+		this.updateFilters();
 	}
 	toggleFilterByMapNodes() {
 		this.filterSettings.filterByMapNodes = !this.filterSettings.filterByMapNodes;
-		this.onSettingsChanged.emit(this.filterSettings);
+		this.updateFilters();
 	}
 
 	setFilterString(string: string) {
 		this.filterSettings.filterString = string;
+		this.updateFilters();
+	}
+
+	updateFilters() {
+		this.filterActive.set(this.filterSettings.areFiltersActive());
 		this.onSettingsChanged.emit(this.filterSettings);
 	}
 }
@@ -83,5 +89,14 @@ export class NodeFilterSettings {
 		}
 
 		return filteredNodes;
+	}
+
+	areFiltersActive(): boolean {
+		return (
+			this.filterByCreatures ||
+			this.filterByLocations ||
+			this.filterByMapNodes ||
+			this.filterString != ''
+		);
 	}
 }
