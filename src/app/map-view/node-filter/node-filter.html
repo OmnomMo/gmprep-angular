@@ -7,7 +7,7 @@
 	@if (filterVisible()) {
 		<img class="filterButton" src="/icons/arrow_down.png" (click)="filterVisible.set(false)" />
 		<div class="filterContainer">
-			<input class="formInput" type="text" (input)="setFilterString($event.target.value)"/>
+			<input class="formInput" type="text" (input)="setFilterString($event.target.value)" />
 			<div class="filterButtons">
 				<img
 					src="/icons/character_icon.png"
@@ -32,6 +32,20 @@
 					"
 					(click)="toggleFilterByMapNodes()"
 				/>
+			</div>
+			<div class="tagsContainer">
+				@for (tag of possibleTags(); track tag) {
+					<div
+						[class]="
+							filterSettings.filterByTags.has(tag)
+								? 'tagDisplay active'
+								: 'tagDisplay'
+						"
+						(click)="toggleTag(tag)"
+					>
+						{{ tag }}
+					</div>
+				}
 			</div>
 		</div>
 	} @else {

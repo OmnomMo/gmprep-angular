@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { FormBase } from '../form-base';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -9,5 +9,5 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './inline-name-form.css'
 })
 export class InlineNameForm extends FormBase{
-
+	overrideEdit = input<boolean>(false);
 }

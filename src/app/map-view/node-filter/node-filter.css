@@ -19,3 +19,12 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.tagDisplay{
+	cursor: pointer;
+}
+
+.active{
+	background-color: greenyellow;
+	color: black;
+}

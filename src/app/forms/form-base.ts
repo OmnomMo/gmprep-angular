@@ -71,4 +71,12 @@ export class FormBase {
 			this.stopEditing();
 		}
 	}
+
+	getControlValue() : string {
+		return this.formGroup().get(this.controlName())?.value;
+	}
+
+	setControlValue(newValue : string) {
+		this.formGroup().get(this.controlName())!.setValue(newValue);
+	}
 }

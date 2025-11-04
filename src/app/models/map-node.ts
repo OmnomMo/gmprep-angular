@@ -10,6 +10,7 @@ export class GmNode {
 		public locationInfo: LocationInfo | null = null,
 		public secrets: Secret[] = [],
 		public links: NodeLink[] = [],
+		public tags: string = '',
 	) {}
 
 

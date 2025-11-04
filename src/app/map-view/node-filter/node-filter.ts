@@ -1,7 +1,9 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, output, Signal, signal } from '@angular/core';
 import { GmNode } from '../../models/map-node';
 import { filter } from 'rxjs';
 import { MapService } from '../../map-service';
+import { TagService } from '../../tag-service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-node-filter',
@@ -12,18 +14,44 @@ import { MapService } from '../../map-service';
 export class NodeFilter {
 	filterActive = signal<boolean>(false);
 	filterVisible = signal<boolean>(false);
+	possibleTags = signal<string[]>([]);
 
 	onSettingsChanged = output<NodeFilterSettings>();
 
 	filterSettings: NodeFilterSettings;
 
-	constructor(private mapService: MapService) {
-		this.filterSettings = new NodeFilterSettings(mapService);
+	constructor(
+		private mapService: MapService,
+		protected tagService: TagService,
+	) {
+		this.filterSettings = new NodeFilterSettings(mapService, tagService);
+
+		tagService.tags$.subscribe({
+			next: tags => {
+				this.possibleTags.set(Array.from(tags));
+				//remove all filters for tags that don't exist anymore
+				this.filterSettings.filterByTags.forEach(item => {
+					if (!tags.has(item)) {
+						this.filterSettings.filterByTags.delete(item);
+					}
+				})
+			}
+		})
+	}
+
+	
+	toggleTag(tag : string) {
+		if (this.filterSettings.filterByTags.has(tag)) {
+			this.filterSettings.filterByTags.delete(tag);
+		} else {
+			this.filterSettings.filterByTags.add(tag);
+		}
+		this.updateFilters();
 	}
 
 	clickedFilterIcon() {
 		if (this.filterActive()) {
-			this.filterSettings = new NodeFilterSettings(this.mapService);
+			this.filterSettings = new NodeFilterSettings(this.mapService, this.tagService);
 			this.updateFilters();
 			this.filterVisible.set(false);
 		} else {
@@ -57,13 +85,15 @@ export class NodeFilter {
 }
 
 export class NodeFilterSettings {
-	constructor(private mapService: MapService) {}
+	constructor(private mapService: MapService, private tagService : TagService) {}
 
 	filterByCreatures: boolean = false;
 	filterByLocations: boolean = false;
 	filterByMapNodes: boolean = false;
 
 	filterString: string = '';
+
+	filterByTags: Set<string> = new Set<string>();
 
 	applyFilters(toFilter: GmNode[]): GmNode[] {
 		var filteredNodes: GmNode[] = Object.assign([], toFilter);
@@ -86,6 +116,15 @@ export class NodeFilterSettings {
 			filteredNodes = filteredNodes.filter((node) =>
 				node.name.toLowerCase().includes(this.filterString.toLowerCase()),
 			);
+		}
+
+		if (this.filterByTags.size > 0) {
+			filteredNodes = filteredNodes.filter((node) => {
+				var nodeTags : string[] = this.tagService.getTags(node.tags);
+				//check if node tags include all tags that are filtered for.
+				var filterTagArray : string[] = Array.from(this.filterByTags);
+				return filterTagArray.every(filterTag => nodeTags.includes(filterTag));
+			})
 		}
 
 		return filteredNodes;

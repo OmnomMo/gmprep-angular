@@ -1,0 +1,32 @@
+@if (editMode() || formGroup().get(controlName())!.value.length > 0) {
+	<div class="nodePanel">
+		<div>Tags:</div>
+		<div class="tagsContainer">
+			@for (tag of getTags(); track tag) {
+				<div class="tagDisplay">
+					<div>{{ tag }}</div>
+					<img
+						src="/icons/delete_icon.png"
+						(click)="removeTag(tag)"
+						class="tagDeleteButton"
+					/>
+				</div>
+			}
+			@if (!addingTag()) {
+				<img
+					src="/icons/plus_icon.png"
+					(click)="addingTag.set(true)"
+					class="tagAddButton"
+				/>
+			} @else {
+				<input
+					type="text"
+					class="formInput"
+					(change)="onAddTagSubmit($event.target.value)"
+					(blur)="addingTag.set(false)"
+					(keydown)="onKeyDown($event)"
+				/>
+			}
+		</div>
+	</div>
+}

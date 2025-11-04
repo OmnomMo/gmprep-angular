@@ -31,23 +31,25 @@ import { UserEvents } from '../utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImportService } from '../import-service';
 import { createUrlTreeFromSnapshot } from '@angular/router';
+import { TagsForm } from "../forms/tags-form/tags-form";
 
 @Component({
 	selector: 'app-node-view',
 	imports: [
-		NameFormComponent,
-		ReactiveFormsModule,
-		MultilineFormComponent,
-		PortraiticonFormComponent,
-		StringSelector,
-		StatsForm,
-		MovementForm,
-		MultiStringSelector,
-		NodeFormArray,
-		ActionForm,
-		SkillForm,
-		SecretForm,
-	],
+    NameFormComponent,
+    ReactiveFormsModule,
+    MultilineFormComponent,
+    PortraiticonFormComponent,
+    StringSelector,
+    StatsForm,
+    MovementForm,
+    MultiStringSelector,
+    NodeFormArray,
+    ActionForm,
+    SkillForm,
+    SecretForm,
+    TagsForm
+],
 	templateUrl: './node-view.html',
 	styleUrl: './node-view.css',
 })
@@ -200,6 +202,7 @@ export class NodeView implements OnChanges {
 			creatureInfo: creatureInfoGroup,
 			locationInfo: locationInfoGroup,
 			secrets: this.formBuilder.array([]),
+			tags: this.node().tags ?? "",
 		});
 
 		var secretsFormArray: FormArray = this.nodeForm.get('secrets') as FormArray;

@@ -1,0 +1,16 @@
+@import '../forms.css';
+
+
+.tagDisplay > * {
+	align-self: center;
+}
+
+.tagDeleteButton{
+	filter:opacity(50%);
+	scale: 80%;
+	margin-left: 0.5rem;
+}
+
+.tagAddButton{
+	align-self: center;
+}
