@@ -1,6 +1,7 @@
 <app-sidebar [isLeftSide]="true">
 	<ul class="nodeList">
-		@for (gmNode of nodes(); track gmNode) {
+		<app-node-filter (onSettingsChanged)="setActiveFilter($event)"/>
+		@for (gmNode of filteredNodes(); track gmNode) {
 			<app-node-icon [node]="gmNode" />
 		}
 		<img src="/icons/add_icon.png" class="addButton" (click)="createNewNode()" />

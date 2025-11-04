@@ -1,0 +1,21 @@
+@import '../../forms/forms.css';
+
+.filterButton {
+	margin: 0.2em;
+	padding: 0.3em;
+}
+
+.filterButton.active {
+	background-color: rgb(59, 82, 24);
+}
+
+.filterPanel{
+	margin: 0.5rem;
+	padding: 0.5rem;
+	background-color: rgba(115, 199, 100, 0.103);
+}
+
+.filterContainer{
+	display: flex;
+	flex-direction: column;
+}

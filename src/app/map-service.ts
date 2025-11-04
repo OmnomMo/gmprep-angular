@@ -147,6 +147,10 @@ export class MapService {
 		return this.mapNodesLoaded.getValue();
 	}
 
+	getMapNodes() : MapNode[] {
+		return this.mapNodes.getValue();
+	}
+
 	invalidateMapNodes() {
 		this.mapNodesLoaded.next(false);
 		this.mapNodes.next([]);

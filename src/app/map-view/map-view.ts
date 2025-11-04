@@ -1,4 +1,4 @@
-import { Component, OnDestroy, signal, Signal } from '@angular/core';
+import { Component, effect, OnDestroy, signal, Signal } from '@angular/core';
 import { MapBackground } from './map-background/map-background';
 import { AuthService } from '../auth';
 import { CampaignService } from '../campaign-service';
@@ -11,10 +11,11 @@ import { MapService } from '../map-service';
 import { Subscription } from 'rxjs';
 import { Sidebar } from '../generic/sidebar/sidebar';
 import { NodeView } from '../node-view/node-view';
+import { NodeFilter, NodeFilterSettings } from "./node-filter/node-filter";
 
 @Component({
 	selector: 'app-map',
-	imports: [MapBackground, NodeIcon, DraggedNode, Sidebar, NodeView],
+	imports: [MapBackground, NodeIcon, DraggedNode, Sidebar, NodeView, NodeFilter],
 	templateUrl: './map-view.html',
 	styleUrl: './map-view.css',
 })
@@ -22,7 +23,9 @@ export class MapView implements OnDestroy {
 	nodes: Signal<GmNode[] | undefined>;
 	selectedNode: Signal<GmNode | null | undefined>;
 	draggedNode = signal<GmNode | null>(null);
+	filteredNodes = signal<GmNode[] | undefined>(undefined);
 
+	activeFilter : NodeFilterSettings | null = null;
 	nodeDroppedSubscription: Subscription;
 	nodeDraggedSubscription: Subscription;
 
@@ -45,6 +48,22 @@ export class MapView implements OnDestroy {
 				this.draggedNode.set(node);
 			},
 		});
+
+		effect(() => {
+			this.setActiveFilter(this.activeFilter);
+		});
+	}
+
+
+	setActiveFilter(filter : NodeFilterSettings | null) {
+		this.activeFilter = filter;
+		if (filter == null || filter == undefined) {
+			console.log("No node filter. all nodes visible")
+			this.filteredNodes.set(this.nodes()!);
+			return;
+		}
+		console.log("Applying node filter.")
+		this.filteredNodes.set(filter!.applyFilters(this.nodes()!));
 	}
 
 	ngOnDestroy(): void {

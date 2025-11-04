@@ -1,0 +1,40 @@
+<div class="filterPanel">
+	<img
+		src="/icons/filter_icon.png"
+		[class]="filterActive() ? 'filterButton active' : 'filterButton'"
+		(click)="toggleActive()"
+	/>
+	@if (filterVisible()) {
+		<img class="filterButton" src="/icons/arrow_down.png" (click)="filterVisible.set(false)" />
+		<div class="filterContainer">
+			<input class="formInput" type="text" (input)="setFilterString($event.target.value)"/>
+			<div class="filterButtons">
+				<img
+					src="/icons/character_icon.png"
+					[class]="
+						filterSettings.filterByCreatures ? 'filterButton active' : 'filterButton'
+					"
+					(click)="toggleFilterByCreatures()"
+				/>
+				<img
+					src="/icons/location_icon.png"
+					class="filterButton"
+					[class]="
+						filterSettings.filterByLocations ? 'filterButton active' : 'filterButton'
+					"
+					(click)="toggleFilterByLocations()"
+				/>
+				<img
+					src="/icons/map_icon.png"
+					class="filterButton"
+					[class]="
+						filterSettings.filterByMapNodes ? 'filterButton active' : 'filterButton'
+					"
+					(click)="toggleFilterByMapNodes()"
+				/>
+			</div>
+		</div>
+	} @else {
+		<img class="filterButton" src="/icons/arrow_right.png" (click)="filterVisible.set(true)" />
+	}
+</div>
