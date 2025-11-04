@@ -19,9 +19,9 @@ export class NameFormComponent extends FormBase{
 
 	getDisplayClass() : string {
 		if (this.header()) {
-			return "nameDisplay header";
+			return "header";
 		}
-		return "nameDisplay";
+		return "";
 	}
 }
 

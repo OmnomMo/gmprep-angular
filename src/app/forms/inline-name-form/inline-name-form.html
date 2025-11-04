@@ -1,6 +1,6 @@
 <div class="inlineNameForm" [formGroup]="formGroup()" (click)="startEditing()">
 	@if (editing()) {
-		<input type="text" class="inlineNameInput" [formControlName]="controlName()" />
+		<input type="text" class="inlineNameInput formInput" [formControlName]="controlName()" />
 	} @else {
 		<div class="inlineNameDisplay">{{ formGroup().get(controlName())!.value }}</div>
 	}

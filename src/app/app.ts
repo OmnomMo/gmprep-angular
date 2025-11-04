@@ -1,4 +1,4 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, Signal, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth';
@@ -7,6 +7,7 @@ import { MapService } from './map-service';
 import { CampaignService } from './campaign-service';
 import { MouseTracker } from './utils/mouse-tracker';
 import { UserEvents } from './utils/user-events';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-root',
@@ -22,28 +23,25 @@ export class App {
 		private mouseTracker : MouseTracker,
 		private keyboardEvents: UserEvents
 	) {
-		var _self = this;
-		authService.authState$.subscribe({
-			next(state) {
-				var test : boolean = state as boolean
-				_self.loginStateChanged(test);
-			}
-		})
-		authService.user$.subscribe({
-			next(user) {
-				_self.user.set(user);
-			}
-		})
+		this.loggedIn = toSignal(authService.authState$);
+		this.user = toSignal(authService.user$);
 	}
 
 	protected readonly title = signal('gmprep');
-	navButtonState = signal('disabled-link');
-	loggedIn = signal(false);
-	user = signal<GMUser | null>(null);
+	loggedIn : Signal<boolean | undefined>;
+	user : Signal<GMUser | null | undefined>;
 
 	@HostListener('document:keypress', ['$event'])
 	handleKeyboardEvent(event: KeyboardEvent) {
 		this.keyboardEvents.fireKeyboardEvent(event);
+	}
+
+	getNavButtonState() {
+		if (this.loggedIn()) {
+			return ('navElement linkEnabled');
+		} else {
+			return('navElement linkDisabled');
+		}
 	}
 
 	onMouseMove(e : MouseEvent) {
@@ -54,15 +52,6 @@ export class App {
 		this.mouseTracker.callMouseUp(e);
 	}
 
-	loginStateChanged(state : boolean) {
-		if (state) {
-			this.navButtonState.set('enabled-link');
-			this.loggedIn.set(true);
-		} else {
-			this.navButtonState.set('disabled-link');
-			this.loggedIn.set(false);
-		}
-	}
 
 	logout() {
 		this.authService.logout();

@@ -2,7 +2,7 @@
 	<div class="stat">
 		<label for="hpStatInput" class="statLabel" type="text">HP:</label>
 		@if (editing()) {
-			<input id="hpStatInput" class="statInput" type="text" formControlName="hp" autofocus />
+			<input id="hpStatInput" class="statInput formInput" type="text" formControlName="hp" autofocus />
 		} @else {
 			<div class="statDisplay" (click)="startEditing()">
 				{{ formGroup().get('hp')!.value }}
@@ -12,7 +12,7 @@
 	<div class="stat">
 		<label for="acStatInput" class="statLabel" type="text">AC:</label>
 		@if (editing()) {
-			<input id="acStatInput" class="statInput" type="text" formControlName="ac" />
+			<input id="acStatInput" class="statInput formInput" type="text" formControlName="ac" />
 		} @else {
 			<div class="statDisplay" (click)="startEditing()">
 				{{ formGroup().get('ac')!.value }}
@@ -25,7 +25,7 @@
 			@if (editing()) {
 				<input
 					[id]="stat + 'statInput'"
-					class="statInput"
+					class="statInput formInput"
 					type="text"
 					[formControlName]="stat"
 				/>

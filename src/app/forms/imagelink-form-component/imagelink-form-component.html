@@ -1,6 +1,6 @@
 <form class="imagelinkFormComponent" [formGroup]="formGroup()">
 	<label for="imagelinkFormInput">{{label()}}:</label><br>
-	<input type="text" id="imagelinkFormInput" [formControlName]="controlName()">
+	<input class="formInput imageLinkFormInput" type="text" id="imagelinkFormInput" [formControlName]="controlName()">
 	@if (formGroup().controls[controlName()].value != '') {
 		<br>
 		<img [src]="formGroup().controls[controlName()].value" alt="Image Preview" width="512px">

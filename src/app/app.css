@@ -10,14 +10,15 @@ nav {
 	background-color: rgb(39, 39, 39);
 }
 
-.nav-buttons {
+.navButtonContainer {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	align-content: center;
 	width: 100%;
 }
 
-nav .user-display {
+nav .userDisplay {
 	margin: 1em;
 	width: 100%;
 }
@@ -26,29 +27,29 @@ nav .user-display {
 	color: red;
 }
 
-.nav-buttons .navElement {
+.navElement {
 	padding: 1em;
 	color: White;
 	text-decoration: none;
 
 }
 
-.nav-buttons .navButton {
+.navButton {
 	margin-left: 3em;
 }
 
-.nav-buttons .active {
+.navElement.active {
 	background-color: cyan;
 	color: black;
 }
 
-.nav-buttons .disabled-link {
+.navElement.linkDisabled {
 	color: rgba(158, 158, 158, 0.425);
 	pointer-events: none;
 	cursor: default;
 }
 
-.nav-buttons .loginElement {
+.loginElement {
 	margin-left: 3em
 }
 

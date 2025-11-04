@@ -13,6 +13,7 @@ export class FormBase {
 	editMode = input<boolean>(true);
 	onChange = output<void>();
 	editing = signal<boolean>(false);
+	alwaysEdit = input<boolean>(false);
 
 	userEvents = inject(UserEvents);
 	mapService = inject(MapService);

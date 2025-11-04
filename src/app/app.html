@@ -1,36 +1,49 @@
 <main class="main">
-	<div (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)" >
+	<div (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)">
 		<nav>
 			@if (user() != null) {
-			<p class="user-display">Logged in as: {{user()!.name}} </p>
+				<p class="userDisplay">Logged in as: {{ user()!.name }}</p>
 			} @else {
-			<p></p>
+				<p></p>
 			}
-			<div class="nav-buttons">
-				<a routerLink="/campaignselection" routerLinkActive="active" [class]="navButtonState()"
-					class="navElement" ariaCurrentWhenActive="page">
+			<div class="navButtonContainer">
+				<a
+					routerLink="/campaignselection"
+					routerLinkActive="active"
+					[class]="getNavButtonState()"
+					ariaCurrentWhenActive="page"
+				>
 					Select Campaign
 				</a>
-				<a routerLink="/mapselection" routerLinkActive="active" [class]="navButtonState()" class="navElement"
-					ariaCurrentWhenActive="page">
+				<a
+					routerLink="/mapselection"
+					routerLinkActive="active"
+					[class]="getNavButtonState()"
+					ariaCurrentWhenActive="page"
+				>
 					Select Map
 				</a>
-				<a routerLink="/map" routerLinkActive="active" [class]="navButtonState()" ariaCurrentWhenActive="page"
-					class="navElement">
+				<a
+					routerLink="/map"
+					routerLinkActive="active"
+					[class]="getNavButtonState()"
+					ariaCurrentWhenActive="page"
+				>
 					Map
 				</a>
 				@if (loggedIn()) {
-				<button (click)="logout()" class="navButton">
-					Log Out
-				</button>
+					<button (click)="logout()" class="navButton">Log Out</button>
 				} @else {
-				<a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
-					class="navElement loginElement">
-					Login
-				</a>
+					<a
+						routerLink="/login"
+						routerLinkActive="active"
+						ariaCurrentWhenActive="page"
+						class="navElement loginElement"
+					>
+						Login
+					</a>
 				}
 			</div>
-
 		</nav>
 		<div class="content">
 			<router-outlet />

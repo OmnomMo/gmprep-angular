@@ -1,9 +1,17 @@
 @import '../forms.css';
 
-.nameFormInput{
+.nameFormContainer {
 	display: flex;
+	padding: 0.2rem;
 	flex-direction: row;
 	margin-top: 0.5em;
+}
+
+.header {
+	font-weight: bold;
+	font-size: x-large;
+	text-align: center;
+	flex-grow: 1;
 }
 
 .nameFormInput > * {
@@ -13,12 +21,9 @@
 .nameFormInput > *:first-child {
 	flex-grow: 1;
 	overflow: hidden;
-	text-overflow:ellipsis;
+	text-overflow: ellipsis;
 }
 
-.nameDisplay.header {
-	font-size: x-large;
-	text-align: center;
-	font-weight: bold;
+.nameFormDisplay {
+	padding: 0.2rem;
 }
-

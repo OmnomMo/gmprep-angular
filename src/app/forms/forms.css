@@ -23,3 +23,9 @@ input {
 	height: 1.5rem;
 	margin-left: auto;
 }
+
+.formInput {
+	background-color: rgba(235, 235, 235, 0.158);
+	border: 0;
+	color: white;
+}

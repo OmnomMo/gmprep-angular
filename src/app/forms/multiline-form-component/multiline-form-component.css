@@ -18,12 +18,14 @@
 }
 
 .multilineFormInput {
-	margin-top: 0.5em;
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+
 }
 
 .multilineFormDisplay {
+	margin-top: 0.5rem;
 	padding: 0.5rem;
-	margin: 0.5rem;
 	background-color: rgba(37, 40, 48, 0.37);
 	white-space: pre-line;
 	color: rgb(196, 196, 196);

@@ -2,23 +2,25 @@
 	@if (label().length > 0) {
 		<label for="nameFormInput">{{ label() }}:</label><br />
 	}
-	@if (editing()) {
-		<div class="nameFormInput">
+	<div class="nameFormContainer">
+		@if (editing() || alwaysEdit()) {
 			<input
-				[class]="getDisplayClass()"
-				id="nameFormInput>"
+				[class]="'formInput nameFormInput ' + getDisplayClass()"
+				id="nameFormInput"
 				type="text"
 				[formControlName]="controlName()"
 				autofocus
 			/>
-			<img src="/icons/check_icon.png" class="iconButton" (click)="stopEditing()" />
-		</div>
-	} @else {
-		<div class="nameFormInput">
-			<div [class]="getDisplayClass()" (click)="startEditing()">{{ getValue() }}</div>
+			@if (!alwaysEdit()) {
+				<img src="/icons/check_icon.png" class="iconButton" (click)="stopEditing()" />
+			}
+		} @else {
+			<div [class]="'nameFormDisplay ' + getDisplayClass()" (click)="startEditing()">
+				{{ getValue() }}
+			</div>
 			@if (editMode()) {
 				<img src="/icons/wrench_icon.png" class="iconButton" (click)="startEditing()" />
 			}
-		</div>
-	}
+		}
+	</div>
 </form>

@@ -9,6 +9,7 @@
 				controlName="name"
 				[formGroup]="createMapForm"
 				formId="mapName"
+				[alwaysEdit]="true"
 			/>
 			@if (name?.invalid && (name?.dirty || name?.touched)) {
 				<div class="formAlert">Name is required.</div>
@@ -18,6 +19,8 @@
 				controlName="description"
 				[formGroup]="createMapForm"
 				formId="mapDescription"
+				[alwaysEdit]="true"
+				[cols]="50"
 			/>
 			<app-imagelink-form-component
 				label="Map Image"

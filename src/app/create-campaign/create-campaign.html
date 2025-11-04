@@ -8,6 +8,7 @@
 				controlName="name"
 				[formGroup]="createCampaignForm"
 				formId="campaignName"
+				[alwaysEdit]="true"
 			/>
 			@if (name?.invalid && (name?.dirty || name?.touched)) {
 				<div class="formAlert">Name is required.</div>
@@ -17,6 +18,8 @@
 				controlName="description"
 				[formGroup]="createCampaignForm"
 				formId="campaignDescription"
+				[alwaysEdit]="true"
+				[cols]="50"
 			/>
 			<app-imagelink-form-component
 				label="Campaign Image"

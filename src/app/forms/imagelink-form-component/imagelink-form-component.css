@@ -1,1 +1,6 @@
 @import '../forms.css';
+
+
+.imageLinkFormInput{
+	padding: 0.2rem;
+}
