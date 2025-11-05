@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/login/login.css"],
+  "sourcesContent": [".loginPage {\r\n\tleft:0%;\r\n\ttop: 0%;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tposition:fixed;\r\n\tbackground-image: url('/BGMap_blurred.jpg');\r\n\twidth: 100%;\r\n\theight: 100%;\r\n}"],
+  "mappings": "AAAA,CAAC,UACA,KAAK,GACL,IAAK,GACL,QAAS,KACT,YAAa,OACb,gBAAiB,OACjB,SAAS,MACT,iBAAkB,wBAClB,MAAO,KACP,OAAQ,IACT",
+  "names": []
+}

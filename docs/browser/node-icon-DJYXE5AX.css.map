@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/map-view/node-icon/node-icon.css"],
+  "sourcesContent": [".nodeIconSidebar {\r\n\tbackground-color: rgba(252, 252, 252, 0.075);\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\talign-items: center;\r\n\tmargin: 0.3em;\r\n\tpadding: 0.5em;\r\n\tlist-style-type: none;\r\n\tuser-select: none;\r\n}\r\n.nodeIconSidebar:hover {\r\n\tbackground-color: rgb(33, 30, 43);\r\n}\r\n\r\n.nodeIconSidebar > img {\r\n\tmax-width: 52px;\r\n\tfilter: brightness(85%);\r\n}\r\n\r\n.nodeIconSidebar:hover > img {\r\n\tfilter: brightness(100%);\r\n}\r\n\r\n.nodeIconSidebar > p {\r\n\tmargin-left: 2em;\r\n}\r\n\r\n.nodeIconName {\r\n\ttext-overflow: ellipsis;\r\n\toverflow: hidden;\r\n\twhite-space: nowrap;\r\n}\r\n"],
+  "mappings": "AAAA,CAAC,gBACA,iBAAkB,UAClB,QAAS,KACT,eAAgB,IAChB,YAAa,OAJd,OAKS,KALT,QAMU,KACT,gBAAiB,KACjB,oBAAa,KAAb,YAAa,IACd,CACA,CAVC,eAUe,OACf,iBAAkB,OACnB,CAEA,CAdC,eAcgB,CAAE,IAClB,UAAW,KACX,OAAQ,WAAW,IACpB,CAEA,CAnBC,eAmBe,MAAO,CAAE,IACxB,OAAQ,WAAW,KACpB,CAEA,CAvBC,eAuBgB,CAAE,EAClB,YAAa,GACd,CAEA,CAAC,aACA,cAAe,SACf,SAAU,OACV,YAAa,MACd",
+  "names": []
+}

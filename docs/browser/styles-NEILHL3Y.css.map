@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/styles.css"],
+  "sourcesContent": ["/* You can add global styles to this file, and also import other style files */\r\nbody {\r\n\tbackground-color: black;\r\n\tcolor: white;\r\n\tpadding: 0;\r\n\tmargin: 0;\r\n\r\n\theight: 100%;\r\n\toverflow: hidden;\r\n}\r\n"],
+  "mappings": "AACA,KACC,iBAAkB,KAClB,MAAO,KAHR,QAIU,EAJV,OAKS,EAER,OAAQ,KACR,SAAU,MACX",
+  "names": []
+}

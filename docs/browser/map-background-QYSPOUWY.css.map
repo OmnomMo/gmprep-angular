@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/map-view/map-background/map-background.css"],
+  "sourcesContent": [".mapBackgroundContainer {\r\n\tposition: fixed;\r\n\ttop: 0%;\r\n\tleft: 0%;\r\n\tbottom: 0%;\r\n\tright: 0%;\r\n\tbackground-color: rgb(0, 0, 0);\r\n\tclip-path: fill-box;\r\n}\r\n\r\n\r\n.mapScrollContainer {\r\n\tpointer-events: none;\r\n\tsize: 100% 100%;\r\n\tmax-height: 100%;\r\n\tmax-width: 100%;\r\n\ttransform-origin: 0px 0px;\r\n}\r\n\r\n.mapBackground {\r\n\tpointer-events:all;\r\n\tuser-select: none;\r\n\twidth: 100%;\r\n\tposition: relative;\r\n}\r\n\r\n.mapIcon{\r\n\tz-index: 10;\r\n\tpointer-events: all;\r\n\tposition: absolute;\r\n\tleft: 0px;\r\n\ttop: 0px;\r\n}\r\n"],
+  "mappings": "AAAA,CAAC,uBACA,SAAU,MACV,MAAK,GAIL,iBAAkB,KAClB,UAAW,QACZ,CAGA,CAAC,mBACA,eAAgB,KAChB,KAAM,KAAK,KACX,WAAY,KACZ,UAAW,KACX,iBAAkB,IAAI,GACvB,CAEA,CAAC,cACA,eAAe,IACf,oBAAa,KAAb,YAAa,KACb,MAAO,KACP,SAAU,QACX,CAEA,CAAC,QACA,QAAS,GACT,eAAgB,IAChB,SAAU,SACV,KAAM,EACN,IAAK,CACN",
+  "names": []
+}

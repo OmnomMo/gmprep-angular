@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/big-button/big-button.css"],
+  "sourcesContent": ["\r\n.bigButton {\r\n\tz-index: 0;\r\n\tposition: relative;\r\n\tbackground-size: cover;\r\n\tbackground-position: 50%;\r\n\twidth: 14em;\r\n\theight: 20em;\r\n\tpadding: 1em;\r\n\tmargin: 2em;\r\n\tlist-style-type: none;\r\n\tcursor: pointer;\r\n}\r\n\r\n\r\n.bigButtonFill {\r\n\tz-index: -1;\r\n\tpointer-events: none;\r\n\tposition: absolute;\r\n\tleft: 0%;\r\n\tright: 0%;\r\n\ttop: 0%;\r\n\tbottom: 0%;\r\n\tbackdrop-filter: blur(2px);\r\n\tbackground-color: rgba(0, 0, 0, 0.534);\r\n}\r\n\r\n\r\n.subButtonContainer {\r\n\tposition: absolute;\r\n\tbottom: 0%;\r\n\tright: 0%;\r\n\tmargin: 0.2em;\r\n}\r\n\r\n.subButton {\r\n\tbackground-color: rgba(0, 0, 0, 0.712);\r\n\tborder: 0px;\r\n\tmargin: 0.4em;\r\n\tpadding:1em;\r\n\tcursor: pointer;\r\n}\r\n\r\n"],
+  "mappings": "AACA,CAAC,UACA,QAAS,EACT,SAAU,SACV,gBAAiB,MACjB,oBAAqB,IACrB,MAAO,KACP,OAAQ,KAPT,QAQU,IARV,OASS,IACR,gBAAiB,KACjB,OAAQ,OACT,CAGA,CAAC,cACA,QAAS,GACT,eAAgB,KAChB,SAAU,SACV,MAEK,GAEL,wBAAiB,KAAK,KAAtB,gBAAiB,KAAK,KACtB,iBAAkB,KACnB,CAGA,CAAC,mBACA,SAAU,SACV,OAAQ,GACR,MAAO,GA/BR,OAgCS,IACT,CAEA,CAAC,UACA,iBAAkB,UAClB,OAAQ,IArCT,OAsCS,KAtCT,QAuCS,IACR,OAAQ,OACT",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/forms/string-selector/string-selector.css"],
+  "sourcesContent": [".stringSelector {\r\n\tmargin: 0.5em;\r\n\tpadding: 0.4em;\r\n\tbackground: rgb(36, 51, 73);\r\n\tborder: none;\r\n\tcolor: white;\r\n\tborder-radius: 2px;\r\n\tappearance: none;\r\n\twidth: 8em;\r\n\ttext-align: center;\r\n}\r\n"],
+  "mappings": "AAAA,CAAC,eAAD,OACS,KADT,QAEU,KACT,WAAY,QACZ,OAAQ,KACR,MAAO,KALR,cAMgB,IACf,WAAY,KACZ,MAAO,IACP,WAAY,MACb",
+  "names": []
+}
