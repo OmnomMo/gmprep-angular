@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { GMUser } from './models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
+import { UrlBuilder } from './utils/url-builder';
 
 @Injectable({
 	providedIn: 'root',
@@ -17,7 +18,10 @@ export class AuthService {
 	private user = new BehaviorSubject<GMUser | null>(null);
 	user$ = this.user.asObservable();
 
-	constructor(private http: HttpClient) {}
+	constructor(
+		private http: HttpClient,
+		private urlBuilder: UrlBuilder,
+	) {}
 
 	setAuthenticated(token: string, user: GMUser) {
 		this.user.next(user);
@@ -82,7 +86,7 @@ export class AuthService {
 	}
 
 	login(token: string) {
-		this.http.post(`http://localhost:5140/Users/login/${token}`, {}).subscribe({
+		this.http.post(this.urlBuilder.buildUrl(["users", "login", token]), {}).subscribe({
 			next: (response) => {
 				console.log('Login Success!');
 				this.setAuthenticated(token, response as GMUser);
@@ -112,13 +116,13 @@ export class AuthService {
 			var exp: number | undefined = payload.exp;
 
 			console.log(`login token expires in ${exp! - now} seconds`);
-			var isExpired: boolean = now > exp!; 
-			
+			var isExpired: boolean = now > exp!;
+
 			//HACK: For now we just dont let the token expire to be fixed
 			isExpired = false;
 
 			if (isExpired) {
-			//token expired, initialize sign in
+				//token expired, initialize sign in
 				return false;
 			} else {
 				var user: GMUser | null = this.retrieveUser();
