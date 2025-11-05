@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/map-view/map-view.css"],
+  "sourcesContent": [".nodeList{\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tpadding: 0;\r\n\tmax-height: 100%;\r\n\toverflow-y: auto;\r\n}\r\n\r\n.addButton{\r\n\tsize: 4rem 4rem;\r\n\tmin-width: 4rem;\r\n\tmin-height: 4rem;\r\n\tbackground-color: rgba(252, 252, 252, 0.075);\r\n\tborder-radius: 0.3rem;\r\n\tcursor: pointer;\r\n\tmargin: 1rem;\r\n\talign-self: center;\r\n}\r\n\r\n.addButton:hover {\r\n\tscale: 110%;\r\n\tbackground-color: rgb(33, 30, 43);\r\n}"],
+  "mappings": "AAAA,CAAC,SACA,QAAS,KACT,eAAgB,OAFjB,QAGU,EACT,WAAY,KACZ,WAAY,IACb,CAEA,CAAC,UACA,KAAM,KAAK,KACX,UAAW,KACX,WAAY,KACZ,iBAAkB,UAZnB,cAagB,MACf,OAAQ,QAdT,OAeS,KACR,WAAY,MACb,CAEA,CAXC,SAWS,OACT,MAAO,KACP,iBAAkB,OACnB",
+  "names": []
+}

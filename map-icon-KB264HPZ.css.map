@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/map-view/map-icon/map-icon.css"],
+  "sourcesContent": [".mapIcon{\r\n\tfilter: drop-shadow(black 0.2em 0.2em 4px);\r\n\tuser-select: none;\r\n}"],
+  "mappings": "AAAA,CAAC,QACA,OAAQ,YAAY,MAAM,KAAM,KAAM,KACtC,oBAAa,KAAb,YAAa,IACd",
+  "names": []
+}

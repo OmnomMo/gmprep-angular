@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/forms/icon-selector/selectable-icon/selectable-icon.css"],
+  "sourcesContent": [".selectableIcon{\r\n\tpadding: 0.2em;\r\n\tuser-select: false;\r\n\t-moz-user-select: false;\r\n\tfilter: brightness(80%);\r\n\tcursor: pointer;\r\n}\r\n\r\n.selected{\r\n\tbackground-color: rgb(6, 60, 121);\r\n\tfilter: brightness(100%);\r\n}"],
+  "mappings": "AAAA,CAAC,eAAD,QACU,KACT,oBAAa,MAAb,YAAa,MACb,iBAAkB,MAClB,OAAQ,WAAW,KACnB,OAAQ,OACT,CAEA,CAAC,SACA,iBAAkB,QAClB,OAAQ,WAAW,KACpB",
+  "names": []
+}

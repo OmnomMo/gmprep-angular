@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/forms/action-form/action-form.css"],
+  "sourcesContent": [".actionForm{\r\n\tbackground-color: rgba(17, 21, 22, 0.589);\r\n\tpadding: 0.5rem;\r\n\tpadding-top: 0.2rem;\r\n\tpadding-bottom: 0.2rem;\r\n\tmargin-top: 0.5rem;;\r\n}\r\n\r\n.actionFormName{\r\n\tfont-weight: bold;\r\n}"],
+  "mappings": "AAAA,CAAC,WACA,iBAAkB,UADnB,QAGc,MADJ,MAGT,WAAY,KACb,CAEA,CAAC,eACA,YAAa,GACd",
+  "names": []
+}

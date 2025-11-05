@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/map-view/dragged-node/dragged-node.css"],
+  "sourcesContent": [".draggedNode{\r\n\tpointer-events: none;\r\n\tuser-select: none;\r\n\tposition: absolute;\r\n\tz-index: 100;\r\n\tmax-width: 64px;\r\n\tmax-height: 64px;\r\n\tfilter: drop-shadow(black 0.5em 0.5em 4px);\r\n}"],
+  "mappings": "AAAA,CAAC,YACA,eAAgB,KAChB,oBAAa,KAAb,YAAa,KACb,SAAU,SACV,QAAS,IACT,UAAW,KACX,WAAY,KACZ,OAAQ,YAAY,MAAM,KAAM,KAAM,IACvC",
+  "names": []
+}
