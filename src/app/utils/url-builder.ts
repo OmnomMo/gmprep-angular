@@ -12,7 +12,8 @@ export class UrlBuilder {
 	}
 
 	private getUrlBase(): string {
-		if (isDevMode()) {
+		console.log("ORIGIN: " + document.location.origin);
+		if (document.location.origin.includes("localhost")) {
 			return this.localUrl;
 		} else {
 			return this.remoteUrl;
