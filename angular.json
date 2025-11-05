@@ -25,7 +25,7 @@
 						"styles": [
 							"src/styles.css"
 						],
-						"baseHref": "https://omnommo.github.io/gmprep-angular/",
+						"baseHref": "omnommo.github.io/gmprep-angular/",
 						"outputPath": "./docs/"
 					},
 					"configurations": {
