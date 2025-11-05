@@ -5,7 +5,7 @@ import { Injectable, isDevMode } from '@angular/core';
 })
 export class UrlBuilder {
 	private localUrl: string = `http://localhost:5140/`;
-	private remoteUrl: string = 'https://gmprep-server.fly.dev';
+	private remoteUrl: string = 'https://gmprep-server.fly.dev/';
 
 	public buildUrl(route: string[]): string {
 		return this.getUrlBase() + route.join('/');
