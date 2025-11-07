@@ -56,10 +56,11 @@ export class GoogleSignInComponent implements AfterViewInit {
 	initializeGoogleSignIn() {
 
 		console.log("initialize google signin");
+		var self = this;
 
 		google.accounts.id.initialize({
 			client_id: '22535597810-ml4s14qa3sq76doaohsjkf3r1vjpv1jo.apps.googleusercontent.com',
-			callback: (response: any) => this.handleCredentialResponse(response)
+			callback: (response: any) => self.handleCredentialResponse(response)
 		});
 
 		google.accounts.id.renderButton(
