@@ -8,6 +8,7 @@ import { CampaignService } from './campaign-service';
 import { MouseTracker } from './utils/mouse-tracker';
 import { UserEvents } from './utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { VersionService } from './utilities/version-service';
 
 @Component({
 	selector: 'app-root',
@@ -21,7 +22,8 @@ export class App {
 		protected authService : AuthService,
 		private router: Router,
 		private mouseTracker : MouseTracker,
-		private keyboardEvents: UserEvents
+		private keyboardEvents: UserEvents,
+		protected versionService : VersionService
 	) {
 		this.loggedIn = toSignal(authService.authState$);
 		this.user = toSignal(authService.user$);
