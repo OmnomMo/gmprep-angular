@@ -1,11 +1,11 @@
-<div class="filterPanel">
+<div class="filterPanel" (click)="filterVisible.set(true)">
 	<img
 		src="/icons/filter_icon.png"
 		[class]="filterActive() ? 'filterButton active' : 'filterButton'"
-		(click)="clickedFilterIcon()"
+		(click)="clickedFilterIcon($event)"
 	/>
 	@if (filterVisible()) {
-		<img class="filterButton" src="/icons/arrow_down.png" (click)="filterVisible.set(false)" />
+		<img class="filterButton" src="/icons/arrow_down.png" (click)="toggleFilterViewOff($event)" />
 		<div class="filterContainer">
 			<input class="formInput" type="text" (input)="setFilterString($event.target.value)" />
 			<div class="filterButtons">

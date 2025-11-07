@@ -1,11 +1,28 @@
 @import '../../app.css';
 
-.sidebar{
+@keyframes slideInRight {
+	from {
+		right: -30rem;
+	}
+	to {
+		right: 0rem;
+	}
+}
+@keyframes slideInLeft {
+	from {
+		left: -30rem;
+	}
+	to {
+		left: 0rem;
+	}
+}
+
+.sidebar {
 	z-index: 5;
 	position: absolute;
 	overflow-y: hidden;
-	top:0px;
-	bottom:0px;
+	top: 0px;
+	bottom: 0px;
 	width: 512px;
 	background-color: rgba(0, 0, 0, 0.822);
 	backdrop-filter: blur(10px);
@@ -13,30 +30,36 @@
 	padding-top: 5em;
 }
 
-.sidebarLeft{
-	left:0px;
-	padding-right: 24px;
+.sidebarLeft {
+	animation: slideInLeft;
+	animation-duration: 0.5s;
+	animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+	left: 0px;
+	padding-right: 14px;
 }
 
-.sidebarRight{
+.sidebarRight {
+	animation: slideInRight;
+	animation-duration: 0.5s;
+	animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 	right: 0px;
-	padding-left: 24px;
+	padding-left: 14px;
 }
 
-.sidebarHandle{
+.sidebarHandle {
 	position: absolute;
 	overflow-y: hidden;
 	top: 0px;
 	bottom: 0px;
-	width: 10px;
+	width: 4px;
 	background-color: rgba(245, 245, 220, 0.137);
-	cursor:ew-resize;
+	cursor: ew-resize;
 }
 
-.sidebarHandleLeft{
+.sidebarHandleLeft {
 	left: 0px;
 }
 
-.sidebarHandleRight{
+.sidebarHandleRight {
 	right: 0px;
 }

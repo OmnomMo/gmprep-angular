@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, ElementRef, input, output, signal, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserEvents } from '../../utils/user-events';
 import { FormBase } from '../form-base';
@@ -14,4 +14,5 @@ export class MultilineFormComponent extends FormBase {
 	standalone = input<boolean>(false);
 	lines = input<number>(7);
 	cols = input<number>(30);
+
 }

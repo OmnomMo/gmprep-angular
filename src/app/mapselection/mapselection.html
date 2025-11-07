@@ -1,20 +1,24 @@
-<div class="MapSelection">
-	@if (!mapsLoaded()) {
-		<p>Loading maps...</p>
-	} @else {
-		<ul class="mapButtonParent">
-			@for (map of maps(); track map) {
-				<app-big-button 
-					[title]="map.name"
-					[id]="map.id"
-					[description]="map.description"
-					[backgroundImageStyle]="getMapImageStyle(map.id)"
-					(onClick)="mapSelected(map.id)"
-					(onEdit)="mapEdited(map.id)"
-					(onDelete)="mapDeleted(map.id)"
-				/>
-			}
-		<li class="addButtonBig" (click)="startCreateMap()"><img src="icons/plus_icon.png" /></li>
-		</ul>
-	}
+<div class="mapSelectionBackground" [style]="getBackgroundImageStyle()">
+	<div class="mapSelection">
+		@if (!mapsLoaded()) {
+			<p>Loading maps...</p>
+		} @else {
+			<ul class="mapButtonParent">
+				@for (map of maps(); track map) {
+					<app-big-button
+						[title]="map.name"
+						[id]="map.id"
+						[description]="map.description"
+						[backgroundImageStyle]="getMapImageStyle(map.id)"
+						(onClick)="mapSelected(map.id)"
+						(onEdit)="mapEdited(map.id)"
+						(onDelete)="mapDeleted(map.id)"
+					/>
+				}
+				<li class="addButtonBig" (click)="startCreateMap()">
+					<img src="icons/plus_icon.png" />
+				</li>
+			</ul>
+		}
+	</div>
 </div>

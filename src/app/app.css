@@ -57,13 +57,16 @@ nav .userDisplay {
 	align-self: center;
 	display: flex;
 	align-content: center;
-	background-color: grey;
+	background-color: rgb(21, 37, 36);
 	width: 4em;
 	height: 4em;
 	cursor: pointer;
 	padding: 1em;
 	margin: 2em;
+	margin-left: 4rem;
 	list-style-type: none;
+	border-radius: 0.5rem;
+	box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.616);
 	
 }
 

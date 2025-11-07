@@ -49,7 +49,8 @@ export class NodeFilter {
 		this.updateFilters();
 	}
 
-	clickedFilterIcon() {
+	clickedFilterIcon(e: MouseEvent) {
+		e.stopPropagation();
 		if (this.filterActive()) {
 			this.filterSettings = new NodeFilterSettings(this.mapService, this.tagService);
 			this.updateFilters();
@@ -57,6 +58,11 @@ export class NodeFilter {
 		} else {
 			this.filterVisible.set(!this.filterVisible());
 		}
+	}
+
+	toggleFilterViewOff(e: MouseEvent) {
+		e.stopPropagation();
+		this.filterVisible.set(false);
 	}
 
 	toggleFilterByCreatures() {

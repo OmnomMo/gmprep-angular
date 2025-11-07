@@ -54,6 +54,10 @@ export class MapSelection {
 		return `background-image: url(${link})`;
 	}
 
+	getBackgroundImageStyle() : string{
+		return `background-image: url(${this.campaignService.getSelectedCampaign()?.imageLink})`;
+	}
+
 	mapEdited(id: number) {
 		var map : GMMap | null = this.mapService.getMap(id);
 		if (map == null) {

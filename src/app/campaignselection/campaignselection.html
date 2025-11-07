@@ -1,24 +1,24 @@
-<div class="CampaignSelection">
-
-	@if (!campaignsLoaded()) {
-	<div class="Loading">Loading Campaigns...</div>
-	} @else {
-	<ul class="campaignButtonParent">
-		@for(campaign of campaigns(); track campaign) {
-			<app-big-button 
-				[id]="campaign.id"
-				[title]="campaign.name"
-				[description]="campaign.description"
-				[backgroundImageStyle]="getImageStyle(campaign)"
-				(onClick)="campaignSelected(campaign.id)"
-				(onEdit)="campaignEdited(campaign.id)"
-				(onDelete)="campaignDeleted(campaign.id)"
-			/>
+<div class="campaignSelectionBackground">
+	<div class="campaignSelection">
+		@if (!campaignsLoaded()) {
+			<div class="Loading">Loading Campaigns...</div>
+		} @else {
+			<ul class="campaignButtonParent">
+				@for (campaign of campaigns(); track campaign) {
+					<app-big-button
+						[id]="campaign.id"
+						[title]="campaign.name"
+						[description]="campaign.description"
+						[backgroundImageStyle]="getImageStyle(campaign)"
+						(onClick)="campaignSelected(campaign.id)"
+						(onEdit)="campaignEdited(campaign.id)"
+						(onDelete)="campaignDeleted(campaign.id)"
+					/>
+				}
+				<li class="addButtonBig" (click)="createCampaign()">
+					<img src="icons/plus_icon.png" />
+				</li>
+			</ul>
 		}
-		<li class="addButtonBig" (click)="createCampaign()"><img src="icons/plus_icon.png" /></li>
-
-	</ul>
-	}
-
-
+	</div>
 </div>

@@ -22,6 +22,7 @@ export class FormBase {
 		this.userEvents.keyboardEvent$.subscribe({
 			next: (e) => {
 				if (this.editing() && e.key == 'Enter' && !e.getModifierState('Shift')) {
+					e.preventDefault();
 					this.stopEditing();
 				}
 			},
