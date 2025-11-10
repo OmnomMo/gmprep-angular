@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/forms/icon-selector/icon-selector.css"],
+  "sourcesContent": [".modalOverlay {\r\n\tposition: fixed;\r\n\tz-index: 100;\r\n\ttop: 0;\r\n\tleft: 6px;\r\n\tright: 0;\r\n\tbottom: 0;\r\n\tbackground-color: rgba(0, 0, 0, 0.822);\r\n\tbackdrop-filter: blur(6px);\r\n\tdisplay: flex;\r\n\tjustify-content: center;\r\n\talign-items: center;\r\n\tmax-height: 100%;\r\n\tpadding-right: 2rem;\r\n}\r\n\r\n.modalContent{\r\n\tbackground-color: rgba(61, 61, 61, 0.11);\r\n\tpadding: 1.5em;\r\n\tmax-height: 70%;\r\n\ttext-align: center;\r\n}\r\n\r\n.defaultIconsGrid{\r\n\tmax-height: 20em;\r\n\toverflow-y: scroll;\r\n}\r\n\r\n.iconFilters > * {\r\n\tmargin:0.1em;\r\n\tpadding: 0.2em;\r\n}\r\n\r\n.iconFilters > .selected{\r\n\tbackground-color: rgb(18, 58, 104);\r\n}"],
+  "mappings": "AAAA,CAAC,aACA,SAAU,MACV,QAAS,IACT,MAAK,EAEE,EACC,EAFF,IAGN,iBAAkB,UAClB,wBAAiB,KAAK,KAAtB,gBAAiB,KAAK,KACtB,QAAS,KACT,gBAAiB,OACjB,YAAa,OACb,WAAY,KACZ,cAAe,IAChB,CAEA,CAAC,aACA,iBAAkB,UAjBnB,QAkBU,MACT,WAAY,IACZ,WAAY,MACb,CAEA,CAAC,iBACA,WAAY,KACZ,WAAY,MACb,CAEA,CAAC,WAAY,CAAE,EA5Bf,OA6BQ,KA7BR,QA8BU,IACV,CAEA,CALC,WAKY,CAAE,CAAC,SACf,iBAAkB,OACnB",
+  "names": []
+}
