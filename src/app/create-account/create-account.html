@@ -1,0 +1,34 @@
+<div class="createAccountPage">
+	<form
+		class="createAccountForm"
+		[formGroup]="createAccountForm"
+		(ngSubmit)="(onCreateAccountSubmit())"
+	>
+		<label for="username">Username:</label>
+		<input type="text" formControlName="userName" name="createAccountUsername" />
+		@if (
+			createAccountForm.get('userName')?.invalid && createAccountForm.get('userName')?.dirty
+		) {
+			<div class="errorMsg">Username required.</div>
+		} @else {
+			<div class="spacer"></div>
+		}
+		<label for="email">Email:</label>
+		<input type="email" formControlName="email" name="createAccountEmail" />
+		@if (createAccountForm.get('email')?.invalid && createAccountForm.get('email')?.dirty) {
+			<div class="errorMsg">Email not valid.</div>
+		} @else {
+			<div class="spacer"></div>
+		}
+		<label for="password">Password:</label>
+		<input type="password" formControlName="password" name="createAccountPassword" />
+		@if (
+			createAccountForm.get('password')?.invalid && createAccountForm.get('password')?.dirty
+		) {
+			<div class="errorMsg">Password must be at least 4 digits.</div>
+		} @else {
+			<div class="spacer"></div>
+		}
+		<button type="submit" [disabled]="!createAccountForm.valid">Create Account</button>
+	</form>
+</div>

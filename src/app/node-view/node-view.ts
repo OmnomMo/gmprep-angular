@@ -62,10 +62,10 @@ export class NodeView implements OnChanges {
 	isLocation = signal<boolean>(false);
 	editMode: Signal<boolean | undefined>;
 
-	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
-	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
-	@ViewChild('savingThrowsForm') savingThrowsForm: NodeFormArray | undefined;
-	@ViewChild('secretsForm') secretsForm: NodeFormArray | undefined;
+//	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
+//	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
+//	@ViewChild('savingThrowsForm') savingThrowsForm: NodeFormArray | undefined;
+//	@ViewChild('secretsForm') secretsForm: NodeFormArray | undefined;
 
 	protected defaultAction = {
 		name: 'Name',
@@ -280,7 +280,6 @@ export class NodeView implements OnChanges {
 	deleteNode() {
 		if (confirm('Are you sure you want to delete this node? This cannot be undone.')) {
 			this.nodeService.deleteNode(
-				this.auth.getUserToken(),
 				this.campaignService.getSelectedCampaign()!.id,
 				this.node(),
 			);
@@ -303,7 +302,6 @@ export class NodeView implements OnChanges {
 		var submittedNode: GmNode = node ?? this.getNodeFromForm();
 
 		this.nodeService.updateNode(
-			this.auth.getUserToken(),
 			this.campaignService.getSelectedCampaign()!.id!,
 			submittedNode,
 		);

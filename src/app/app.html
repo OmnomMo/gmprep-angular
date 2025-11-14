@@ -31,7 +31,7 @@
 				>
 					Map
 				</a>
-				@if (loggedIn()) {
+				@if (user() != null) {
 					<button (click)="logout()" class="navButton">Log Out</button>
 				} @else {
 					<a

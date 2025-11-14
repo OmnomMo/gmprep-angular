@@ -39,7 +39,7 @@ export class MapIcon {
 		if (!this.mousePressed) {
 			return;
 		}
-		this.mapService.startDragMapNode(this.auth.getUserToken(), this.node());
+		this.mapService.startDragMapNode(this.node());
 		this.mousePressed = false;
 	}
 

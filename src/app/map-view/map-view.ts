@@ -77,7 +77,6 @@ export class MapView implements OnDestroy {
 	createNewNode() {
 
 		this.nodeService.createNode(
-			this.auth.getUserToken(),
 			this.campaignService.getSelectedCampaign()!.id,
 			new GmNode(0, "New Node"),
 		);

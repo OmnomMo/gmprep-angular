@@ -85,7 +85,7 @@ export class CreateMap {
 
 		this.submitting.set(true);
 
-		this.mapService.updateMap(this.auth.getUserToken(), this.campaignService.getSelectedCampaign()!, map);
+		this.mapService.updateMap(this.campaignService.getSelectedCampaign()!, map);
 		this.router.navigate(['/mapselection']);
 	}
 }

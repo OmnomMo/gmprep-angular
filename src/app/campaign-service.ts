@@ -18,12 +18,12 @@ export class CampaignService {
 		private auth: AuthService,
 	) {
 		//if we log in and the stored user is not the same as the new user
-		auth.authState$.subscribe({
-			next: (state) => {
-				if (state && auth.retrieveUser()?.email != auth.getUser()?.email) {
+		auth.user$.subscribe({
+			next: (user) => {
+				if (user != auth.retrieveUser()) {
 					console.log("User changed. Resetting selected campaign");
 					this.setSelectedCampaign(null);
-					this.requestCampaigns(auth.getUserToken());
+					this.requestCampaigns();
 				}
 			}
 		})
@@ -67,9 +67,9 @@ export class CampaignService {
 	}
 
 	//returns all campaigns of currently logged in user
-	getCampaigns(userToken: string): Observable<Campaign[]> {
+	getCampaigns(): Observable<Campaign[]> {
 		if (!this.campaignsLoaded.getValue()) {
-			this.requestCampaigns(userToken);
+			this.requestCampaigns();
 		}
 
 		return this.campaigns$;
@@ -87,16 +87,14 @@ export class CampaignService {
 		return null;
 	}
 
-	updateCampaign(userToken: string, campaign: Campaign) {
+	updateCampaign(campaign: Campaign) {
 		console.log(`updating campaign: ${campaign}`);
 
-		if (userToken == '') {
-			throw new Error('Cannot update Campaign, usertoken not valid');
-		}
 
 		var request: Observable<Object> = this.http.post(
-			this.urlBuilder.buildUrl(['campaigns', 'create', userToken]),
+			this.urlBuilder.buildUrl(['campaigns', 'create']),
 			campaign,
+			{withCredentials: true},
 		);
 		request.subscribe({
 			next: () => {
@@ -108,16 +106,13 @@ export class CampaignService {
 		});
 	}
 
-	deleteCampaign(userToken: string, id: number) {
+	deleteCampaign(id: number) {
 		console.log(`deleting campaign: ${id}`);
 
-		if (userToken == '') {
-			throw new Error('Cannot delete campaign, usertoken not valid');
-		}
-
 		var request: Observable<Object> = this.http.post(
-			this.urlBuilder.buildUrl(['campaigns', 'delete', id.toString(), userToken]),
+			this.urlBuilder.buildUrl(['campaigns', 'delete', id.toString()]),
 			{},
+			{withCredentials: true},
 		);
 
 		request.subscribe({
@@ -143,19 +138,22 @@ export class CampaignService {
 
 	//request campaign info from backend
 	//updates observable class member if returned.
-	private requestCampaigns(userToken: string) {
+	private requestCampaigns() {
 		console.log('Requesting campaigns');
 		this.campaignsLoaded.next(false);
 
-		if (userToken == '') {
-			throw new Error('Cannot request campaigns, usertoken not valid');
-		}
-		this.cachedUrl = this.urlBuilder.buildUrl(['campaigns', userToken]);
+		
+		this.cachedUrl = this.urlBuilder.buildUrl(['campaigns']);
 		this.requestCampaignsWithUrl(this.cachedUrl);
 	}
 
 	private requestCampaignsWithUrl(url: string) {
-		this.http.get(url).subscribe({
+		this.http.get(url, {
+			withCredentials: true,
+			params: {
+				useCookies: true,
+			}
+		}).subscribe({
 			next: (response) => {
 				this.campaignsLoaded.next(true);
 				this.campaigns.next(response as Campaign[]);

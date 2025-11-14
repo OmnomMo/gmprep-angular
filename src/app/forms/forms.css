@@ -45,4 +45,11 @@ input {
 	align-content: center;
 }
 
+.spacer {
+	min-height: 1em;
+}
+
+.errorMsg {
+	color: rgb(255, 112, 112);
+}
 

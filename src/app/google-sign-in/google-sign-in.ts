@@ -15,29 +15,29 @@ export class GoogleSignInComponent implements AfterViewInit {
 
 	ngAfterViewInit(): void {
 
-		console.log("checking for stored login token")
-		var userToken : string = this.authService.retrieveUserToken()
-		
-		
-		if (userToken == "") {
-			console.log("did not find token, initialize google login")
-			this.initializeGoogleSignIn();
-		} else {
-
-			var payload : JwtPayload = jwtDecode(userToken);
-
-			var now : number = Math.round((new Date()).getTime() / 1000);
-			var exp : number | undefined = payload.exp;
-
-			console.log(`login token expires in ${exp! - now} seconds`);
-
-			//token expired, initialize sign in
-			if (now > exp!) {
-				this.waitForGoogle(this.initializeGoogleSignIn);
-			} else {
-				this.authService.login(userToken)
-			}
-		}
+//		console.log("checking for stored login token")
+//		var userToken : string = this.authService.retrieveUserToken()
+//		
+//		
+//		if (userToken == "") {
+//			console.log("did not find token, initialize google login")
+//			this.initializeGoogleSignIn();
+//		} else {
+//
+//			var payload : JwtPayload = jwtDecode(userToken);
+//
+//			var now : number = Math.round((new Date()).getTime() / 1000);
+//			var exp : number | undefined = payload.exp;
+//
+//			console.log(`login token expires in ${exp! - now} seconds`);
+//
+//			//token expired, initialize sign in
+//			if (now > exp!) {
+//				this.waitForGoogle(this.initializeGoogleSignIn);
+//			} else {
+//				this.authService.login(userToken)
+//			}
+//		}
 	}
 
 	//sometimes google is not defined when we load the page. 
@@ -79,7 +79,8 @@ export class GoogleSignInComponent implements AfterViewInit {
 		console.log('Encoded JWT ID token: ' + response.credential);
 		const userToken = response.credential;
 
-		this.authService.login(userToken);
+		//TODO: make login work with new System
+		//this.authService.login(userToken);
 	}
 
 }

@@ -31,14 +31,13 @@ export class NodeService {
 	nodeDeleted = new Subject<number>();
 	nodeDeleted$ = this.nodeDeleted.asObservable();
 
-	requestNodes(userToken: string, campaignId: number): Observable<GmNode[]> {
+	requestNodes(campaignId: number): Observable<GmNode[]> {
 		console.log('Requesting nodes');
-		if (userToken == '') {
-			throw new Error('User not authenticated');
-		}
 
 		this.http
-			.get(this.urlBuilder.buildUrl(['nodes', 'all', campaignId.toString(), userToken]))
+			.get(this.urlBuilder.buildUrl(['nodes', 'all', campaignId.toString()]), {
+				withCredentials: true,
+			})
 			.subscribe({
 				next: (value) => {
 					console.log('received nodes:');
@@ -72,7 +71,7 @@ export class NodeService {
 		var node = new Subject<GmNode | null>();
 		var node$ = node.asObservable();
 
-		this.http.get(this.urlBuilder.buildUrl(['nodes', nodeId, userToken])).subscribe({
+		this.http.get(this.urlBuilder.buildUrl(['nodes', nodeId, userToken]), {withCredentials: true}).subscribe({
 			next: (value) => {
 				console.log(`received node ${nodeId}.`);
 				console.log(value);
@@ -87,7 +86,7 @@ export class NodeService {
 		return node$;
 	}
 
-	copyNodeValues(from : GmNode, to : GmNode) {
+	copyNodeValues(from: GmNode, to: GmNode) {
 		to.name = from.name;
 		to.description = from.description;
 		to.mapIconPath = from.mapIconPath;
@@ -99,18 +98,11 @@ export class NodeService {
 		to.links = from.links;
 	}
 
-	updateNode(userToken: string, campaignId: number, node: GmNode) {
-		if (userToken == '') {
-			return;
-		}
-
+	updateNode(campaignId: number, node: GmNode) {
 		this.nodeUpdated.next(node);
 
 		this.http
-			.post(
-				this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString(), userToken]),
-				node,
-			)
+			.post(this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString()]), node, {withCredentials: true})
 			.subscribe({
 				next: () => {
 					console.log('node successfully updated');
@@ -133,16 +125,9 @@ export class NodeService {
 			});
 	}
 
-	createNode(userToken: string, campaignId: number, node: GmNode) {
-		if (userToken == '') {
-			return;
-		}
-
+	createNode(campaignId: number, node: GmNode) {
 		this.http
-			.post(
-				this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString(), userToken]),
-				node,
-			)
+			.post(this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString()]), node, {withCredentials: true})
 			.subscribe({
 				next: (newNode) => {
 					var newNodes: GmNode[] = Object.assign([], this.nodes.value);
@@ -157,12 +142,12 @@ export class NodeService {
 			});
 	}
 
-	deleteNode(userToken: string, campaignId: number, node: GmNode) {
-		this.http.post(this.urlBuilder.buildUrl(['nodes', 'delete', userToken]), node).subscribe({
+	deleteNode(campaignId: number, node: GmNode) {
+		this.http.post(this.urlBuilder.buildUrl(['nodes', 'delete']), node, {withCredentials: true}).subscribe({
 			next: (result) => {
 				console.log('Node successfully deleted');
 				this.nodeDeleted.next(node.id);
-				this.requestNodes(userToken, campaignId);
+				this.requestNodes(campaignId);
 			},
 			error: (e) => {
 				console.error('Error deleting node');

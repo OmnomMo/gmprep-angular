@@ -66,7 +66,7 @@ export class MapGuard implements CanActivate {
 			self.checkSelectedMapSet(self);
 		} else {
 			console.log("maps not loaded. requesting maps.");
-			self.mapService.getMaps(self.authService.getUserToken(), self.campaignService.getSelectedCampaign()!)
+			self.mapService.getMaps(self.campaignService.getSelectedCampaign()!)
 				.subscribe({
 					next: (maps) => {
 						if (maps.length > 0) {

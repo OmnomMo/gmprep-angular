@@ -80,7 +80,7 @@ export class CreateCampaign implements OnDestroy{
 
 		this.submitting.set(true);
 
-		this.campaignService.updateCampaign(this.auth.getUserToken(), campaign);
+		this.campaignService.updateCampaign(campaign);
 		this.router.navigate(['/campaignselection']);
 	}
 

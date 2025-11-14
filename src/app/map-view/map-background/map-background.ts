@@ -46,7 +46,7 @@ export class MapBackground implements OnDestroy {
 
 		this.selectedMap = toSignal(mapService.getSelectedMapObserver());
 		this.nodes = toSignal(mapService.mapNodes$);
-		nodeService.requestNodes(auth.getUserToken(), campaignService.getSelectedCampaign()!.id)
+		nodeService.requestNodes(campaignService.getSelectedCampaign()!.id)
 
 		this.mapNodeDroppedSubscription = this.mapService.mapNodeDropped$.subscribe({
 			next: info => { this.onMapNodeDropped(info); }
@@ -82,7 +82,7 @@ export class MapBackground implements OnDestroy {
 			target.className == "mapIcon" ||
 			target.className == "mapBackground") {
 			var newMapNode: MapNode = new MapNode(0, info.node, targetX, targetY);
-			this.mapService.createMapNode(this.auth.getUserToken(), this.mapService.getSelectedMap()!, newMapNode)
+			this.mapService.createMapNode(this.mapService.getSelectedMap()!, newMapNode)
 		}
 	}
 

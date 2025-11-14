@@ -25,12 +25,10 @@ export class App {
 		private keyboardEvents: UserEvents,
 		protected versionService : VersionService
 	) {
-		this.loggedIn = toSignal(authService.authState$);
 		this.user = toSignal(authService.user$);
 	}
 
 	protected readonly title = signal('gmprep');
-	loggedIn : Signal<boolean | undefined>;
 	user : Signal<GMUser | null | undefined>;
 
 	@HostListener('document:keypress', ['$event'])
@@ -39,7 +37,7 @@ export class App {
 	}
 
 	getNavButtonState() {
-		if (this.loggedIn()) {
+		if (this.user() != null) {
 			return ('navElement linkEnabled');
 		} else {
 			return('navElement linkDisabled');

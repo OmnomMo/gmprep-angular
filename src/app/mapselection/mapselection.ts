@@ -36,7 +36,7 @@ export class MapSelection {
 			throw new Error("Current campaign is null. Should not be possible here.")
 		}
 
-		this.maps = toSignal(mapService.getMaps(auth.getUserToken(), campaignService.getSelectedCampaign()!));
+		this.maps = toSignal(mapService.getMaps(campaignService.getSelectedCampaign()!));
 
 	}
 
@@ -69,7 +69,7 @@ export class MapSelection {
 
 	mapDeleted(id: number) {
 		console.log("Deleting map: " + id);
-		this.mapService.deleteMap(this.auth.getUserToken(), id)
+		this.mapService.deleteMap(id)
 	}
 
 	mapSelected(id: number) {

@@ -8,6 +8,7 @@ import { CampaignGuard } from './campaign-guard';
 import { CreateCampaign } from './create-campaign/create-campaign';
 import { CreateMap } from './create-map/create-map';
 import { MapGuard } from './map-guard';
+import { CreateAccount } from './create-account/create-account';
 
 
 //current setup for multiple guards that depend on each other:
@@ -48,6 +49,11 @@ export const routes: Routes = [
 		title: 'Map Creator',
 		component: CreateMap,
 		canActivate: [CampaignGuard],
+	},
+	{
+		path: 'createaccount',
+		title: 'New Account',
+		component: CreateAccount,
 	},
 	{
 		path: '**',

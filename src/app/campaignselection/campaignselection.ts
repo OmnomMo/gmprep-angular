@@ -24,7 +24,7 @@ export class CampaignSelection {
 		public router : Router,
 	) {
 		this.campaignsLoaded = toSignal(campaignService.getCampaignsLoaded());
-		this.campaigns = toSignal(campaignService.getCampaigns(auth.getUserToken()));
+		this.campaigns = toSignal(campaignService.getCampaigns());
 	}
 
 	getImageStyle(campaign : Campaign): string {
@@ -38,7 +38,7 @@ export class CampaignSelection {
 	}
 
 	campaignDeleted(id: number) {
-		this.campaignService.deleteCampaign(this.auth.getUserToken(), id)
+		this.campaignService.deleteCampaign(id)
 	}
 
 	createCampaign() {

@@ -57,7 +57,7 @@ export class CampaignGuard implements CanActivate {
 			console.log("campaigns loaded")
 			self.checkLoadedCampaigns(self);
 		} else {
-			self.campaignService.getCampaigns(self.auth.getUserToken()).subscribe({
+			self.campaignService.getCampaigns().subscribe({
 				next: () => {
 					if (self.campaignService.areCampaignsLoaded()) {
 						self.checkLoadedCampaigns(self);
