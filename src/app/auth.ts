@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
 import { GMUser } from './models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase } from '@angular/common/http';
@@ -23,6 +23,7 @@ export class AuthService {
 
 	setAuthenticated( user: GMUser) {
 		this.user.next(user);
+		this.storeUser();
 		console.log('set authenticated');
 	}
 
@@ -48,6 +49,7 @@ export class AuthService {
 			});
 
 		this.user.next(null);
+		this.storeUser();
 		//		console.log('Logging out. Deleting session token.');
 		//		document.cookie = `userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 		//		this.authState.next(false);
@@ -74,6 +76,11 @@ export class AuthService {
 
 
 	isAuthenticated(): boolean {
+
+		if (this.user.value == null) {
+			this.user.next(this.retrieveUser());
+		}
+
 		return (this.user.value != null);
 		
 	}
@@ -163,5 +170,27 @@ export class AuthService {
 
 	getUser(): GMUser | null {
 		return this.user.value;
+	}
+
+	updatePassword(passwordData: object) : Observable<string | null> {
+
+		var errorMsg = new Subject<string | null>;
+
+		this.http.post(this.urlBuilder.buildUrl(["changepassword"]), passwordData, {
+			withCredentials: true,
+		}).subscribe({
+			next: () => {
+				console.log("Password change success.");
+				errorMsg.next(null);
+			},
+			error: e => {
+				var error = e as HttpErrorResponse
+				console.error("Password change error");
+				console.error(error.statusText);
+				errorMsg.next(error.statusText);
+			}
+		})
+
+		return errorMsg.asObservable().pipe(first());
 	}
 }

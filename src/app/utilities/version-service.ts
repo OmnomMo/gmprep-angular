@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class VersionService {
 	version : number = 0;
-	subVersion : number = 2;
+	subVersion : number = 3;
 
 	getVersionString () : string {
 		var host: string = "vercel";

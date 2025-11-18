@@ -9,7 +9,7 @@
 		>
 			<label for="email">Email:</label>
 			<div class="inputContainer">
-				<input type="email" formControlName="email" name="createAccountEmail" />
+				<input type="email" formControlName="email" id="createAccountEmail" />
 				@if (createAccountForm.get('email')?.pending) {
 					<img class="inlineLoadingIcon" src="/icons/loading_icon.png" />
 				}
@@ -25,37 +25,21 @@
 			}
 			<div class="spacer"></div>
 			<label for="createAccountPassword">Password:</label>
-			<input type="password" formControlName="password" name="createAccountPassword" />
+			<input type="password" formControlName="password" id="createAccountPassword" />
 			<div class="spacer"></div>
-			@if (!getPasswordControl().valid) {
-				@if (getPasswordControl().hasError('minlength')) {
-					<div class="errorMsg">Password must be 6 digits or more.</div>
-				}
-				@if (getPasswordControl().hasError('patternMatch')) {
-					<div class="errorMsg">Password must include:</div>
-					<ul class="errorMsg">
-						@if (getPasswordControl().hasError('noUpperCase')) {
-							<li>uppercase letter</li>
-						}
-						@if (getPasswordControl().hasError('noLowerCase')) {
-							<li>lowercase letter</li>
-						}
-						@if (getPasswordControl().hasError('noNumber')) {
-							<li>number</li>
-						}
-						@if (getPasswordControl().hasError('noSpecial')) {
-							<li>special symbol (except : and ;)</li>
-						}
-					</ul>
-				}
-			}
+			<app-password-validation-messages [passwordControl]="getPasswordControl()" />
 			<label for="createAccountPasswordRep">Repeat Password:</label>
 			<input type="password" formControlName="passwordRep" name="createAccountPasswordRep" />
 			<div class="spacer"></div>
 			@if (createAccountForm.hasError('passwordMatchError')) {
 				<div class="errorMsg">Passwords must match!</div>
 			}
-			<button type="submit" [disabled]="!createAccountForm.valid && !createAccountForm.pending">Create Account</button>
+			<button
+				type="submit"
+				[disabled]="!createAccountForm.valid && !createAccountForm.pending"
+			>
+				Create Account
+			</button>
 		</form>
 	}
 </div>

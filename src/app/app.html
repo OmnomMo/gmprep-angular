@@ -8,6 +8,14 @@
 			}
 			<div class="navButtonContainer">
 				<a
+					routerLink="/edituser"
+					routerLinkActive="active"
+					[class]="getNavButtonState()"
+					ariaCurrentWhenActive="page"
+				>
+					Profile
+				</a>
+				<a
 					routerLink="/campaignselection"
 					routerLinkActive="active"
 					[class]="getNavButtonState()"

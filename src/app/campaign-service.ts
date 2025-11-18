@@ -159,7 +159,9 @@ export class CampaignService {
 				this.campaigns.next(response as Campaign[]);
 			},
 			error: (e) => {
-				throw new Error(e);
+				console.error("Fetching capmaigns failed");
+				console.error(e);
+				this.auth.logout();
 			},
 		});
 	}
