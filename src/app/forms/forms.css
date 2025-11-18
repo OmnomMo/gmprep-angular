@@ -53,3 +53,17 @@ input {
 	color: rgb(255, 112, 112);
 }
 
+@keyframes spin {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
+.inlineLoadingIcon {
+	max-height: 1rem;
+	max-width: 1rem;
+	display: inline;
+	margin-left: 0.5rem;
+	animation-name: spin;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}

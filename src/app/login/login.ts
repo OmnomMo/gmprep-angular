@@ -20,19 +20,18 @@ export class Login {
 	formBuilder = inject(FormBuilder);
 
 	loginForm = this.formBuilder.group({
-		email: ["", [Validators.required]],
-		password: ["", Validators.required],
+		email: ['', [Validators.required]],
+		password: ['', [Validators.required]],
 	});
 
-	loginWithCredentials () {
-		console.log("Trying to log in with credentials");
+	loginWithCredentials() {
+		console.log('Trying to log in with credentials');
 		this.authService.authenticateWithCredentials(this.loginForm.value);
 	}
 
 	logoutTest() {
 		this.authService.logout();
 	}
-
 
 	checkForLogin() {
 		var _self = this;

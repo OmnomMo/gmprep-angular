@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { GMUser } from './models/user';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { UrlBuilder } from './utils/url-builder';
 
 @Injectable({
@@ -12,6 +12,9 @@ export class AuthService {
 
 	private user = new BehaviorSubject<GMUser | null>(null);
 	user$ = this.user.asObservable();
+
+	private authError = new Subject<HttpErrorResponse>;
+	authError$ = this.authError.asObservable();
 
 	constructor(
 		private http: HttpClient,
@@ -75,6 +78,36 @@ export class AuthService {
 		
 	}
 
+	isUserNameTaken(username : string): Observable<boolean> {
+		var taken = new Subject<boolean>();
+
+		this.http.get(this.urlBuilder.buildUrl(["checkusername", username])).subscribe({
+			next: () => {
+				taken.next(false);
+			},
+			error: () => {
+				taken.next(true);
+			}
+		})
+
+		return taken.asObservable();
+	}
+
+	isEmailTaken(email : string): Observable<boolean> {
+		var taken = new Subject<boolean>();
+
+		this.http.get(this.urlBuilder.buildUrl(["checkemail", email])).subscribe({
+			next: () => {
+				taken.next(false);
+			},
+			error: () => {
+				taken.next(true);
+			}
+		});
+
+		return taken.asObservable();
+	}
+
 	authenticateWithCredentials(loginData: object) {
 		console.log(loginData);
 		this.http
@@ -91,6 +124,7 @@ export class AuthService {
 				},
 				error: (e) => {
 					console.log('Failed login: ' + e);
+					this.authError.next(e);
 				},
 			});
 	}
@@ -108,6 +142,7 @@ export class AuthService {
 			},
 			error: e => {
 				console.error("Error fetching user: " + e);
+				this.authError.next(e);
 			}
 		})
 	}
@@ -116,11 +151,12 @@ export class AuthService {
 		this.http.post(this.urlBuilder.buildUrl(['register']), accountData).subscribe({
 			next: () => {
 				console.log('Create account success.');
-				this.fetchUserInfo();
+				this.authenticateWithCredentials(accountData);
 			},
-			error: (e) => {
+			error: (e : HttpErrorResponse) => {
 				console.error('Create account error: ');
 				console.error(e);
+				this.authError.next(e);
 			},
 		});
 	}

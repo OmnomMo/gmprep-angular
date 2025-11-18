@@ -1,34 +1,61 @@
 <div class="createAccountPage">
-	<form
-		class="createAccountForm"
-		[formGroup]="createAccountForm"
-		(ngSubmit)="(onCreateAccountSubmit())"
-	>
-		<label for="username">Username:</label>
-		<input type="text" formControlName="userName" name="createAccountUsername" />
-		@if (
-			createAccountForm.get('userName')?.invalid && createAccountForm.get('userName')?.dirty
-		) {
-			<div class="errorMsg">Username required.</div>
-		} @else {
+	@if (creatingAccount()) {
+		<div class="creatingAccountForm">Creating Account...</div>
+	} @else {
+		<form
+			class="createAccountForm"
+			[formGroup]="createAccountForm"
+			(ngSubmit)="onCreateAccountSubmit()"
+		>
+			<label for="email">Email:</label>
+			<div class="inputContainer">
+				<input type="email" formControlName="email" name="createAccountEmail" />
+				@if (createAccountForm.get('email')?.pending) {
+					<img class="inlineLoadingIcon" src="/icons/loading_icon.png" />
+				}
+			</div>
 			<div class="spacer"></div>
-		}
-		<label for="email">Email:</label>
-		<input type="email" formControlName="email" name="createAccountEmail" />
-		@if (createAccountForm.get('email')?.invalid && createAccountForm.get('email')?.dirty) {
-			<div class="errorMsg">Email not valid.</div>
-		} @else {
+			@if (createAccountForm.get('email')?.invalid && createAccountForm.get('email')?.dirty) {
+				@if (createAccountForm.get('email')!.hasError('required')) {
+					<div class="errorMsg">Email required.</div>
+				}
+				@if (createAccountForm.get('email')!.hasError('uniqueEmail')) {
+					<div class="errorMsg">Email already in use.</div>
+				}
+			}
 			<div class="spacer"></div>
-		}
-		<label for="password">Password:</label>
-		<input type="password" formControlName="password" name="createAccountPassword" />
-		@if (
-			createAccountForm.get('password')?.invalid && createAccountForm.get('password')?.dirty
-		) {
-			<div class="errorMsg">Password must be at least 4 digits.</div>
-		} @else {
+			<label for="createAccountPassword">Password:</label>
+			<input type="password" formControlName="password" name="createAccountPassword" />
 			<div class="spacer"></div>
-		}
-		<button type="submit" [disabled]="!createAccountForm.valid">Create Account</button>
-	</form>
+			@if (!getPasswordControl().valid) {
+				@if (getPasswordControl().hasError('minlength')) {
+					<div class="errorMsg">Password must be 6 digits or more.</div>
+				}
+				@if (getPasswordControl().hasError('patternMatch')) {
+					<div class="errorMsg">Password must include:</div>
+					<ul class="errorMsg">
+						@if (getPasswordControl().hasError('noUpperCase')) {
+							<li>uppercase letter</li>
+						}
+						@if (getPasswordControl().hasError('noLowerCase')) {
+							<li>lowercase letter</li>
+						}
+						@if (getPasswordControl().hasError('noNumber')) {
+							<li>number</li>
+						}
+						@if (getPasswordControl().hasError('noSpecial')) {
+							<li>special symbol (except : and ;)</li>
+						}
+					</ul>
+				}
+			}
+			<label for="createAccountPasswordRep">Repeat Password:</label>
+			<input type="password" formControlName="passwordRep" name="createAccountPasswordRep" />
+			<div class="spacer"></div>
+			@if (createAccountForm.hasError('passwordMatchError')) {
+				<div class="errorMsg">Passwords must match!</div>
+			}
+			<button type="submit" [disabled]="!createAccountForm.valid && !createAccountForm.pending">Create Account</button>
+		</form>
+	}
 </div>

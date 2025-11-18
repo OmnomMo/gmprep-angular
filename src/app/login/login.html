@@ -2,24 +2,25 @@
 	<form class="loginForm" [formGroup]="loginForm" (ngSubmit)="loginWithCredentials()">
 		<label for="loginEmail">Email:</label>
 		<input type="email" formControlName="email" name="loginEmail" />
-		@if (loginForm.get("email")?.invalid && loginForm.get("email")?.dirty) {
+		@if (loginForm.get('email')?.invalid && loginForm.get('email')?.dirty) {
 			<div class="errorMsg">Email not valid.</div>
 		} @else {
 			<div class="spacer"></div>
 		}
 		<label for="loginPassword">Password:</label>
 		<input type="password" formControlName="password" name="loginPassword" />
-		@if (loginForm.get("password")?.invalid && loginForm.get("password")?.dirty) {
-			<div class="errorMsg">Password required.</div>
+		@if (loginForm.get('password')?.invalid && loginForm.get('password')?.dirty) {
+			@if (loginForm.get('password')?.hasError('required')) {
+				<div class="errorMsg">Please enter a password.</div>
+			}
 		} @else {
 			<div class="spacer"></div>
 		}
 		<div>
-		<button type="submit" [disabled]="!loginForm.valid">Login</button>
-		<a href="/createaccount">New Account</a>
+			<button type="submit" [disabled]="!loginForm.valid">Login</button>
+			<a href="/createaccount">New Account</a>
 		</div>
 	</form>
 	<button (click)="logoutTest()">Logout Test</button>
-	<div class="thirdPartyLogins">
-	</div>
+	<div class="thirdPartyLogins"></div>
 </div>

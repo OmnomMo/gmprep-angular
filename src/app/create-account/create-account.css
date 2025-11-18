@@ -16,3 +16,8 @@
 	flex-direction: column;
 	justify-content: center;
 }
+
+.inputContainer {
+	display: flex;
+	align-items: center;
+}
