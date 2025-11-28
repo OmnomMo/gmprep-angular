@@ -28,7 +28,6 @@ export class StringSelector extends FormBase{
 			[this.controlName()]: target.value,
 		})
 
-		this.stopEditing();
 		this.onChange.emit();
 	}
 }

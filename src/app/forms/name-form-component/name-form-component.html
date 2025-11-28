@@ -3,24 +3,19 @@
 		<label for="nameFormInput">{{ label() }}:</label><br />
 	}
 	<div class="nameFormContainer">
-		@if (editing() || alwaysEdit()) {
+		@if (editMode() || alwaysEdit()) {
 			<input
 				[class]="'formInput nameFormInput ' + getDisplayClass()"
 				id="nameFormInput"
 				type="text"
 				[formControlName]="controlName()"
-				autofocus
+				(blur)="onChange.emit()"
 			/>
-			@if (!alwaysEdit()) {
-				<img src="/icons/check_icon.png" class="iconButton" (click)="stopEditing()" />
-			}
+			
 		} @else {
-			<div [class]="'nameFormDisplay ' + getDisplayClass()" (click)="startEditing()">
+			<div [class]="'nameFormDisplay ' + getDisplayClass()">
 				{{ getValue() }}
 			</div>
-			@if (editMode()) {
-				<img src="/icons/wrench_icon.png" class="iconButton" (click)="startEditing()" />
-			}
 		}
 	</div>
 </form>

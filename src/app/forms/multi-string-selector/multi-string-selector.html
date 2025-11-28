@@ -2,28 +2,13 @@
 	<div class="multiStringSelector nodePanel">
 		<div class="multiStringHeader">
 			@if (label() != '') {
-				<div class="multiStringLabel" (click)="toggleEditing()">{{ label() }}:</div>
+				<div class="multiStringLabel">{{ label() }}:</div>
 			} @else {
 				<div class="multiStringLabel"></div>
 			}
-			@if (editing()) {
-				<img
-					class="multiStringEditIcon iconButton"
-					src="icons/check_icon.png"
-					(click)="stopEditing()"
-				/>
-			} @else {
-				@if (editMode()) {
-					<img
-						class="multiStringEditIcon iconButton"
-						src="icons/wrench_icon.png"
-						(click)="startEditing()"
-					/>
-				}
-			}
 		</div>
 		<div class="multiLineContainer">
-			@if (editing()) {
+			@if (editMode()) {
 				@for (option of options(); track option) {
 					<button [class]="getOptionButtonClass(option)" (click)="toggleOption(option)">
 						{{ option }}
@@ -31,7 +16,7 @@
 				}
 			} @else {
 				@for (selected of selectedStrings(); track selected) {
-					<div class="multiStringDisplay" (click)="startEditing()">{{ selected }}</div>
+					<div class="multiStringDisplay">{{ selected }}</div>
 				}
 			}
 		</div>

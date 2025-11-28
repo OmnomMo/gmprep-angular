@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import CustomValidators from '../utils/custom-validators';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PasswordValidationMessages } from "../create-account/password-validation-messages/password-validation-messages";
 import { AuthService } from '../auth';
+import { CampaignService } from '../campaign-service';
 
 @Component({
   selector: 'app-edit-user',
@@ -13,7 +14,9 @@ import { AuthService } from '../auth';
 export class EditUser {
 	customValidators = inject(CustomValidators);
 	formBuilder = inject(FormBuilder);
+	campaignService = inject(CampaignService);
 	auth = inject(AuthService);
+	legacyDataImportSuccess = signal<boolean>(false);
 
 	changePasswordForm = this.formBuilder.group({
 		oldPassword: ['', [Validators.required]],
@@ -21,6 +24,10 @@ export class EditUser {
 		passwordRep: ['', [Validators.required]],
 	}, {
 		validator: this.customValidators.passwordRepeatValidator(),
+	});
+
+	legacyImportForm = this.formBuilder.group({
+		legacyEmail: ['', [Validators.required]],
 	})
 
 	getPasswordControl() : FormControl {
@@ -46,6 +53,19 @@ export class EditUser {
 				}
 			}
 		);
+	}
+
+	onLegacyImportSubmit() {
+		this.auth.importLegacyData(this.legacyImportForm.get('legacyEmail')!.value!).subscribe(
+			error => {
+				if (!error) {
+					this.legacyDataImportSuccess.set(true);
+					this.campaignService.requestCampaigns();
+				} else {
+					alert("Error when importing legacy data! \n" + error);
+				}
+			}
+		)
 	}
 
 }

@@ -1,33 +1,33 @@
 <div class="movementForm nodePanel" [formGroup]="formGroup()">
 	<div class="movementEntry">
-		<img src="/icons/walk_icon.png" (click)="startEditing()" />
-		@if (editing()) {
-			<input type="text" class="speedInput formInput" formControlName="speed" />
+		<img src="/icons/walk_icon.png"/>
+		@if (editMode()) {
+			<input type="text" class="speedInput formInput" formControlName="speed" (blur)="onChange.emit()"/>
 		} @else {
-			<div class="speedDisplay" (click)="startEditing()">
+			<div class="speedDisplay">
 				{{ formGroup().get('speed')?.value }}
 			</div>
 		}
 	</div>
 	<div class="movementEntry">
-		@if (editing() || showSwimming()) {
-			<img src="/icons/swim_icon.png" (click)="startEditing()" />
-			@if (editing()) {
-				<input type="text" class="speedInput formInput" formControlName="speedSwimming" />
+		@if (editMode() || showSwimming()) {
+			<img src="/icons/swim_icon.png"/>
+			@if (editMode()) {
+				<input type="text" class="speedInput formInput" formControlName="speedSwimming" (blur)="onChange.emit()"/>
 			} @else {
-				<div class="speedDisplay" (click)="startEditing()">
+				<div class="speedDisplay">
 					{{ formGroup().get('speedSwimming')?.value }}
 				</div>
 			}
 		}
 	</div>
 	<div class="movementEntry">
-		@if (editing() || showFlying()) {
-			<img src="/icons/fly_icon.png" (click)="startEditing()" />
-			@if (editing()) {
-				<input type="text" class="speedInput formInput" formControlName="speedFlying" />
+		@if (editMode() || showFlying()) {
+			<img src="/icons/fly_icon.png"/>
+			@if (editMode()) {
+				<input type="text" class="speedInput formInput" formControlName="speedFlying" (blur)="onChange.emit()"/>
 			} @else {
-				<div class="speedDisplay" (click)="startEditing()">
+				<div class="speedDisplay">
 					{{ formGroup().get('speedFlying')?.value }}
 				</div>
 			}

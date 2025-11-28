@@ -7,43 +7,24 @@
 						<label for="multilineFormInput">{{ label() }}:</label>
 					}
 
-					@if (editing() || alwaysEdit()) {
+					@if (editMode() || alwaysEdit()) {
 						<textarea
 							id="multilineFormInput"
 							class="formInput multilineFormInput"
 							[rows]="lines()"
 							[cols]="cols()"
 							[formControlName]="controlName()"
-							autofocus
+							(blur)="onChange.emit()"
 						></textarea>
 					} @else {
 						<div
 							class="multilineFormDisplay"
-							(click)="startEditing()"
 							tabindex="0"
-							(focus)="startEditing()"
 						>
 							{{ formGroup().controls[controlName()].value }}
 						</div>
 					}
 				</div>
-				@if (!alwaysEdit()) {
-					@if (editing()) {
-						<img
-							src="/icons/check_icon.png"
-							(click)="stopEditing()"
-							class="iconButton"
-						/>
-					} @else {
-						@if (editMode()) {
-							<img
-								src="/icons/wrench_icon.png"
-								(click)="startEditing()"
-								class="iconButton"
-							/>
-						}
-					}
-				}
 			</div>
 		</form>
 	</div>

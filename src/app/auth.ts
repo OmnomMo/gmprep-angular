@@ -67,6 +67,7 @@ export class AuthService {
 	retrieveUser(): GMUser | null {
 		console.log('retrieving user from local storage');
 		var user: GMUser | undefined = JSON.parse(window.localStorage.getItem('User') ?? '');
+		console.log(user);
 		if (user === undefined) {
 			return null;
 		}
@@ -190,6 +191,24 @@ export class AuthService {
 				errorMsg.next(error.statusText);
 			}
 		})
+
+		return errorMsg.asObservable().pipe(first());
+	}
+
+	importLegacyData(legacyEmail : string) : Observable<string | null> {
+		var errorMsg = new Subject<string | null>;
+		this.http.post(this.urlBuilder.buildUrl(["users", "importLegacyData", legacyEmail]), {}, {
+			withCredentials: true,
+		}).subscribe({
+			next: () => {
+				console.log("Legacy Data imported");
+				errorMsg.next(null);
+			},
+			error: (e) => {
+				console.error("Legacy Data could not be imported");
+				errorMsg.next(e.message)
+			}
+		});
 
 		return errorMsg.asObservable().pipe(first());
 	}

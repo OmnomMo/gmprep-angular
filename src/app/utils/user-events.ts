@@ -8,8 +8,6 @@ export class UserEvents {
 	keyboardEvent = new Subject<KeyboardEvent>();
 	keyboardEvent$ = this.keyboardEvent.asObservable();
 
-	nodeFormEditingStartEvent = new Subject<string>();
-	nodeFormEditingStartEvent$ = this.nodeFormEditingStartEvent.asObservable();
 
 	editMode = new BehaviorSubject<boolean>(false);
 	editMode$ = this.editMode.asObservable();
@@ -22,7 +20,4 @@ export class UserEvents {
 		this.keyboardEvent.next(e);
 	}
 
-	fireNodeFormEditingStartEvent(formControlName : string) {
-		this.nodeFormEditingStartEvent.next(formControlName);
-	}
 }

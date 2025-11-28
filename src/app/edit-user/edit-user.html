@@ -12,9 +12,20 @@
 	<div class="inputContainer">
 		<label for="newPasswordRepeat">Repeat new password:</label>
 		<input id="newPasswordRepeat" type="password" formControlName="passwordRep" />
-		@if(getPasswordRepControl().dirty && changePasswordForm.hasError('passwordMatchError')) {
+		@if (getPasswordRepControl().dirty && changePasswordForm.hasError('passwordMatchError')) {
 			<div class="errorMsg">Passwords must match!</div>
 		}
 	</div>
 	<button type="submit" [disabled]="changePasswordForm.invalid">Submit</button>
+</form>
+<form [formGroup]="legacyImportForm" (ngSubmit)="onLegacyImportSubmit()">
+	<h3>Import from legacy account</h3>
+	@if (legacyDataImportSuccess()) {
+		<p>Legacy Data imported!</p>
+	}
+	<div class="inputContainer">
+		<label for="legacyEmail">Previous Username:</label>
+		<input id="legacyEmail" type="text" formControlName="legacyEmail" />
+	</div>
+	<button type="submit" [disabled]="legacyImportForm.invalid">Import</button>
 </form>

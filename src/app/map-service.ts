@@ -76,6 +76,9 @@ export class MapService {
 	private selectedNode = new BehaviorSubject<GmNode | null>(null);
 	selectedNode$ = this.selectedNode.asObservable();
 
+	private nodeDeselected = new Subject<GmNode | null>;
+	nodeDeselected$ = this.nodeDeselected.asObservable();
+
 	private selectedMap = new BehaviorSubject<GMMap | null>(null);
 	selectedMap$ = this.selectedMap.asObservable();
 
@@ -89,6 +92,7 @@ export class MapService {
 	cachedUrl: string = '';
 
 	setSelectedNode(node: GmNode | null) {
+		this.nodeDeselected.next(this.getSelectedNode());
 		console.log('Set selected node');
 		console.log(node);
 		this.selectedNode.next(node);

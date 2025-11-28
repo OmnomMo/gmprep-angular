@@ -32,6 +32,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ImportService } from '../import-service';
 import { createUrlTreeFromSnapshot } from '@angular/router';
 import { TagsForm } from "../forms/tags-form/tags-form";
+import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-node-view',
@@ -62,11 +63,9 @@ export class NodeView implements OnChanges {
 	isLocation = signal<boolean>(false);
 	editMode: Signal<boolean | undefined>;
 
-//	@ViewChild('actionsForm') actionsForm: NodeFormArray | undefined;
-//	@ViewChild('skillsForm') skillsForm: NodeFormArray | undefined;
-//	@ViewChild('savingThrowsForm') savingThrowsForm: NodeFormArray | undefined;
-//	@ViewChild('secretsForm') secretsForm: NodeFormArray | undefined;
+	nodeUpdateSubscription : Subscription | null | undefined;
 
+	
 	protected defaultAction = {
 		name: 'Name',
 		description: 'Description',
@@ -98,14 +97,24 @@ export class NodeView implements OnChanges {
 		protected gmNodeOptions: GmNodeOptions,
 	) {
 		this.editMode = toSignal<boolean>(userEvents.editMode$);
+		this.mapService.nodeDeselected$.subscribe( node => {
+			if (node != null) {
+				console.log("Node deselected. Submitting")
+				this.submitNode();
+			}
+		});
 	}
 
 	onControlSubmit() {
-		this.submitNode();
+		//this.submitNode();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		this.nodeUpdateSubscription?.unsubscribe
 		this.buildForm();
+		this.nodeUpdateSubscription = this.nodeForm?.valueChanges.pipe(debounceTime(800)).subscribe(() => {
+			this.submitNode();
+		});
 	}
 
 	buildForm() {

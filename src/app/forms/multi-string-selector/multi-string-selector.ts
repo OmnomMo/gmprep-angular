@@ -24,6 +24,7 @@ export class MultiStringSelector extends FormBase implements OnChanges{
 		} else {
 			this.selectedStrings().add(option);
 		}
+		this.updateFormControl()
 	}
 
 	getOptionButtonClass(option: string) : string {
@@ -34,13 +35,6 @@ export class MultiStringSelector extends FormBase implements OnChanges{
 		}
 	}
 
-	override startEditing(): void {
-		if (this.editing()) {
-			return;
-		}
-		this.initializeFromFormControl();
-		super.startEditing();
-	}
 
 	initializeFromFormControl() {
 		var control : FormControl = this.formGroup().get(this.controlName()) as FormControl;
@@ -53,16 +47,9 @@ export class MultiStringSelector extends FormBase implements OnChanges{
 		this.selectedStrings.set(new Set<string>(selected));
 	}
 
-	override stopEditing(): void {
-		if (!this.editing()) {
-			return;
-		}
-		this.updateFormControl();
-		super.stopEditing();
-	}
-
 	updateFormControl() {
 		var control : FormControl = this.formGroup().get(this.controlName()) as FormControl;
 		control.setValue(Array.from(this.selectedStrings()));
+		this.onChange.emit();
 	}
 }

@@ -1,36 +1,51 @@
-<div class="statsForm nodePanel" [formGroup]="formGroup()" tabindex="0" (focus)="startEditing()">
+<div class="statsForm nodePanel" [formGroup]="formGroup()">
 	<div class="stat">
 		<label for="hpStatInput" class="statLabel" type="text">HP:</label>
-		@if (editing()) {
-			<input id="hpStatInput" class="statInput formInput" type="text" formControlName="hp" autofocus />
+		@if (editMode()) {
+			<input
+				id="hpStatInput"
+				class="statInput formInput"
+				type="text"
+				formControlName="hp"
+				(blur)="onChange.emit()"
+			/>
 		} @else {
-			<div class="statDisplay" (click)="startEditing()">
+			<div class="statDisplay">
 				{{ formGroup().get('hp')!.value }}
 			</div>
 		}
 	</div>
 	<div class="stat">
 		<label for="acStatInput" class="statLabel" type="text">AC:</label>
-		@if (editing()) {
-			<input id="acStatInput" class="statInput formInput" type="text" formControlName="ac" />
+		@if (editMode()) {
+			<input
+				id="acStatInput"
+				class="statInput formInput"
+				type="text"
+				formControlName="ac"
+				(blur)="onChange.emit()"
+			/>
 		} @else {
-			<div class="statDisplay" (click)="startEditing()">
+			<div class="statDisplay">
 				{{ formGroup().get('ac')!.value }}
 			</div>
 		}
 	</div>
 	@for (stat of nodeOptions.stats; track stat) {
 		<div class="stat">
-			<label [for]="stat + 'statInput'" class="statLabel" type="text">{{ stat.toUpperCase() }}:</label>
-			@if (editing()) {
+			<label [for]="stat + 'statInput'" class="statLabel" type="text"
+				>{{ stat.toUpperCase() }}:</label
+			>
+			@if (editMode()) {
 				<input
 					[id]="stat + 'statInput'"
 					class="statInput formInput"
 					type="text"
 					[formControlName]="stat"
+					(blur)="onChange.emit()"
 				/>
 			} @else {
-				<div class="statDisplay" (click)="startEditing()">
+				<div class="statDisplay">
 					{{ formGroup().get(stat)!.value }}
 				</div>
 			}

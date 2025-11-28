@@ -20,7 +20,7 @@ export class CampaignService {
 		//if we log in and the stored user is not the same as the new user
 		auth.user$.subscribe({
 			next: (user) => {
-				if (user != auth.retrieveUser()) {
+				if (user != null && user?.id != auth.retrieveUser()?.id) {
 					console.log("User changed. Resetting selected campaign");
 					this.setSelectedCampaign(null);
 					this.requestCampaigns();
@@ -138,7 +138,7 @@ export class CampaignService {
 
 	//request campaign info from backend
 	//updates observable class member if returned.
-	private requestCampaigns() {
+	requestCampaigns() {
 		console.log('Requesting campaigns');
 		this.campaignsLoaded.next(false);
 

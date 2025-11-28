@@ -1,6 +1,6 @@
-<div class="inlineNameForm" [formGroup]="formGroup()" (click)="startEditing()">
-	@if (editing() || overrideEdit()) {
-		<input type="text" class="inlineNameInput formInput" [formControlName]="controlName()" />
+<div class="inlineNameForm" [formGroup]="formGroup()">
+	@if (editMode() || overrideEdit()) {
+		<input type="text" class="inlineNameInput formInput" [formControlName]="controlName()" (blur)="onChange.emit()"/>
 	} @else {
 		<div class="inlineNameDisplay">{{ formGroup().get(controlName())!.value }}</div>
 	}
