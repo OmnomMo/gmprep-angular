@@ -24,6 +24,7 @@ export class MapService {
 		campaignService.selectedCampaign$.subscribe({
 			next: (campaign) => {
 				if (campaign != null) {
+					this.selectedNode.next(null);
 					this.invalidateMaps(true);
 				}
 			},
@@ -31,12 +32,14 @@ export class MapService {
 		auth.user$.subscribe({
 			next: (user) => {
 				if (user == null) {
+					this.selectedNode.next(null);
 					this.invalidateMaps(true);
 				}
 			},
 		});
 		this.selectedMap$.subscribe({
 			next: () => {
+				this.selectedNode.next(null);
 				this.invalidateMapNodes();
 			},
 		});
