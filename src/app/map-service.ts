@@ -186,18 +186,23 @@ export class MapService {
 		});
 	}
 
-	createMapNode(map: GMMap, mapNode: MapNode) {
+	createMapNode(map: GMMap, mapNode: MapNode) : Observable<MapNode | null> {
 		var url: string = this.urlBuilder.buildUrl(['nodes', 'createmapnode', map.id.toString()]);
+		var newMapNode = new Subject<MapNode | null>();
 
-		this.http.post(url, mapNode, { withCredentials: true }).subscribe({
-			next: () => {
+		this.http.post<MapNode>(url, mapNode, { withCredentials: true }).subscribe({
+			next: result => {
 				console.log('Map Node added');
 				this.invalidateMapNodes();
+				newMapNode.next(result)
 			},
 			error: (e) => {
+				newMapNode.next(null)
 				throw new Error('Could not add map node: ' + e);
 			},
 		});
+
+		return newMapNode
 	}
 
 	deleteMapNode(mapNode: MapNode) {

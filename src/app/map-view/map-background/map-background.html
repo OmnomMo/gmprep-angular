@@ -29,7 +29,8 @@
 					[posX]="contextPosX"
 					[posY]="contextPosY"
 					(contextClosed)="mapContextClosed()"
-					(mapNodeAdded)="mapNodeAdded()"
+					(mapNodeAdded)="emptyMapNodeAdded()"
+					(mapNodePasted)="mapNodeAdded($event)"
 				/>
 			}
 		</div>

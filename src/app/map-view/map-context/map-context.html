@@ -1,8 +1,17 @@
-<div class="mapContext" [style]="getContainerPosStyle()">
+<div
+	class="mapContext"
+	[style]="getContainerPosStyle()"
+	(click)="$event.stopPropagation()"
+	(mousedown)="$event.stopPropagation()"
+	(mouseup)="$event.stopPropagation()"
+>
 	<div class="mapContextHeader">
 		<img src="/icons/close_icon.png" (click)="contextClosed.emit()" />
 	</div>
 	<div class="addMapNodeButton" (click)="mapNodeAdded.emit()">
 		<img src="/icons/add_icon.png" />
+	</div>
+	<div class="addMapNodeButton" (click)="tryPasteMapNode()">
+		<img src="/icons/copy_icon.png" />
 	</div>
 </div>

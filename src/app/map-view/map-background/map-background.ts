@@ -79,17 +79,31 @@ export class MapBackground implements OnDestroy {
 		this.showMapContext.set(false);
 	}
 
-	mapNodeAdded() {
+	emptyMapNodeAdded() {
+		this.mapNodeAdded(new GmNode(0, 'New Node'));
+	}
+
+	mapNodeAdded(newNode: GmNode) {
 		console.log('map node added');
-		this.showMapContext.set(false);
 		this.nodeService
-			.createNode(this.campaignService.getSelectedCampaign()!.id, new GmNode(0, 'New Node'))
+			.createNode(this.campaignService.getSelectedCampaign()!.id, newNode)
 			.subscribe((node) => {
 				if (node != null) {
-					this.mapService.createMapNode(
-						this.mapService.getSelectedMap()!,
-						new MapNode(0, node, this.mapMousePosX / this.widthFactor(), this.mapMousePosY / this.widthFactor()),
-					);
+					this.mapService
+						.createMapNode(
+							this.mapService.getSelectedMap()!,
+							new MapNode(
+								0,
+								node,
+								this.mapMousePosX / this.widthFactor(),
+								this.mapMousePosY / this.widthFactor(),
+							),
+						)
+						.subscribe((mapNode) => {
+							if (mapNode != null) {
+								this.showMapContext.set(false);
+							}
+						});
 				}
 			});
 	}
