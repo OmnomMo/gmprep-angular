@@ -6,8 +6,6 @@ import {
 	Signal,
 	signal,
 	SimpleChanges,
-	ViewChild,
-	viewChild,
 } from '@angular/core';
 import { CreatureInfo, GmNode, LocationInfo } from '../models/map-node';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -30,7 +28,6 @@ import { MapService } from '../map-service';
 import { UserEvents } from '../utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ImportService } from '../import-service';
-import { createUrlTreeFromSnapshot } from '@angular/router';
 import { TagsForm } from "../forms/tags-form/tags-form";
 import { debounceTime, Subscription } from 'rxjs';
 
@@ -97,22 +94,13 @@ export class NodeView implements OnChanges {
 		protected gmNodeOptions: GmNodeOptions,
 	) {
 		this.editMode = toSignal<boolean>(userEvents.editMode$);
-		this.mapService.nodeDeselected$.subscribe( node => {
-			if (node != null) {
-				console.log("Node deselected. Submitting")
-				this.submitNode();
-			}
-		});
 	}
 
-	onControlSubmit() {
-		//this.submitNode();
-	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.nodeUpdateSubscription?.unsubscribe
 		this.buildForm();
-		this.nodeUpdateSubscription = this.nodeForm?.valueChanges.pipe(debounceTime(800)).subscribe(() => {
+		this.nodeUpdateSubscription = this.nodeForm?.valueChanges.pipe(debounceTime(1000)).subscribe(() => {
 			this.submitNode();
 		});
 	}

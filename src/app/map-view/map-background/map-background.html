@@ -1,18 +1,39 @@
 @if (selectedMap() != null && selectedMap != undefined) {
-<div class="mapBackgroundContainer" (mousemove)="onMouseMove($event)" (mousedown)="onMouseDown($event)"
-	(mouseup)="onMouseUp($event)" (mouseleave)="onMouseUp($event)" (wheel)="onMouseWheel($event)">
-
-	<div class="mapScrollContainer" [style]="mapTransformStyle()">
-		<img [src]="imgSrc" class="mapBackground" draggable="false" (load)="onMapLoaded($event)"
-			(mousemove)="setLocalMapMousePos($event)" />
-		@for (mapNode of nodes(); track mapNode) {
-		<app-map-icon [node]="mapNode" class="mapIcon" [style]="getNodePositionStyle(mapNode)"
-			[widthFactor]="widthFactor()" />
-		}
+	<div
+		class="mapBackgroundContainer"
+		(mousemove)="onMouseMove($event)"
+		(mousedown)="onMouseDown($event)"
+		(mouseup)="onMouseUp($event)"
+		(mouseleave)="onMouseUp($event)"
+		(wheel)="onMouseWheel($event)"
+		(contextmenu)="onRightClick($event)"
+	>
+		<div class="mapScrollContainer" [style]="mapTransformStyle()">
+			<img
+				[src]="imgSrc"
+				class="mapBackground"
+				draggable="false"
+				(load)="onMapLoaded($event)"
+				(mousemove)="setLocalMapMousePos($event)"
+			/>
+			@for (mapNode of nodes(); track mapNode) {
+				<app-map-icon
+					[node]="mapNode"
+					class="mapIcon"
+					[style]="getNodePositionStyle(mapNode)"
+					[widthFactor]="widthFactor()"
+				/>
+			}
+			@if (showMapContext()) {
+				<app-map-context
+					[posX]="contextPosX"
+					[posY]="contextPosY"
+					(contextClosed)="mapContextClosed()"
+					(mapNodeAdded)="mapNodeAdded()"
+				/>
+			}
+		</div>
 	</div>
-
-
-</div>
 } @else {
-<p>map load error</p>
+	<p>map load error</p>
 }

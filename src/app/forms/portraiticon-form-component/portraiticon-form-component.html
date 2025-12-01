@@ -1,7 +1,8 @@
 <div class="portraitForm">
 	@if (showSelector()) {
 		<app-icon-selector
-			[node]="node()"
+			[iconPath]="iconPath()"
+			[iconSize]="iconSize()"
 			(onClosed)="closeSelector()"
 			(onSelected)="onSelected($event)"
 		/>

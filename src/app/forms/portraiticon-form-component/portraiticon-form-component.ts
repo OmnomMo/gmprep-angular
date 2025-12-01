@@ -12,7 +12,8 @@ import { FormBase } from '../form-base';
 })
 export class PortraiticonFormComponent extends FormBase{
 	controlNameSize = input.required<string>();
-	node = input.required<GmNode>();
+	iconPath = input.required<string>();
+	iconSize = input.required<string>();
 
 	showSelector = signal<boolean>(false);
 

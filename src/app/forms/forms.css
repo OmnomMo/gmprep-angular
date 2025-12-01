@@ -49,6 +49,13 @@ input {
 	min-height: 1em;
 }
 
+.spinner {
+	animation: spin;
+	animation-timing-function: linear;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}
+
 .errorMsg {
 	color: rgb(255, 112, 112);
 }

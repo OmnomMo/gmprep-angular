@@ -15,7 +15,8 @@ export class IconSelector {
 	onSelected = output<{iconPath : string, iconSize : string}>();
 	onClosed = output<void>();
 
-	node = input.required<GmNode>();
+	iconPath = input.required<string>();
+	iconSize = input.required<string>();
 	selectedIcon = signal<string>("");
 	selectedSize = signal<string>("");
 
@@ -64,7 +65,7 @@ export class IconSelector {
 		if (this.selectedSize() != "") {
 			return this.selectedSize();
 		} else {
-			return this.node().mapIconSize;
+			return this.iconSize();
 		}
 	}
 
@@ -77,8 +78,8 @@ export class IconSelector {
 	submit(e: PointerEvent) {
 		e.stopPropagation();
 		//if user selectes icon/size, return newly selected ones. Else return previously set ones.
-		var icon = this.selectedIcon() != "" ? this.selectedIcon() : this.node().mapIconPath;
-		var size = this.selectedSize() != "" ? this.selectedSize() : this.node().mapIconSize; 
+		var icon = this.selectedIcon() != "" ? this.selectedIcon() : this.iconPath();
+		var size = this.selectedSize() != "" ? this.selectedSize() : this.iconSize(); 
 		this.onSelected.emit({iconPath: icon, iconSize: size});
 	}
 }

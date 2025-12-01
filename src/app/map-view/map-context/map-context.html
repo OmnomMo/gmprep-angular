@@ -1,0 +1,8 @@
+<div class="mapContext" [style]="getContainerPosStyle()">
+	<div class="mapContextHeader">
+		<img src="/icons/close_icon.png" (click)="contextClosed.emit()" />
+	</div>
+	<div class="addMapNodeButton" (click)="mapNodeAdded.emit()">
+		<img src="/icons/add_icon.png" />
+	</div>
+</div>

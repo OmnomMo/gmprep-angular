@@ -1,26 +1,34 @@
 <div class="loginPage">
-	<form class="loginForm" [formGroup]="loginForm" (ngSubmit)="loginWithCredentials()">
-		<label for="loginEmail">Email:</label>
-		<input type="email" formControlName="email" name="loginEmail" />
-		@if (loginForm.get('email')?.invalid && loginForm.get('email')?.dirty) {
-			<div class="errorMsg">Email not valid.</div>
-		} @else {
-			<div class="spacer"></div>
-		}
-		<label for="loginPassword">Password:</label>
-		<input type="password" formControlName="password" name="loginPassword" />
-		@if (loginForm.get('password')?.invalid && loginForm.get('password')?.dirty) {
-			@if (loginForm.get('password')?.hasError('required')) {
-				<div class="errorMsg">Please enter a password.</div>
-			}
-		} @else {
-			<div class="spacer"></div>
-		}
+	@if (loggingIn()) {
 		<div>
-			<button type="submit" [disabled]="!loginForm.valid">Login</button>
-			<a href="/createaccount">New Account</a>
+			<img class="spinner" src="/icons/loading_icon.png" />
 		</div>
-	</form>
-	<button (click)="logoutTest()">Logout Test</button>
-	<div class="thirdPartyLogins"></div>
+	} @else {
+		<form class="loginForm" [formGroup]="loginForm" (ngSubmit)="loginWithCredentials()">
+			@if (loginError() != '') {
+				<div class="errorMsg">{{ loginError() }}</div>
+			}
+			<label for="loginEmail">Email:</label>
+			<input type="email" formControlName="email" name="loginEmail" />
+			@if (loginForm.get('email')?.invalid && loginForm.get('email')?.dirty) {
+				<div class="errorMsg">Email not valid.</div>
+			} @else {
+				<div class="spacer"></div>
+			}
+			<label for="loginPassword">Password:</label>
+			<input type="password" formControlName="password" name="loginPassword" />
+			@if (loginForm.get('password')?.invalid && loginForm.get('password')?.dirty) {
+				@if (loginForm.get('password')?.hasError('required')) {
+					<div class="errorMsg">Please enter a password.</div>
+				}
+			} @else {
+				<div class="spacer"></div>
+			}
+			<div class="loginBottomBar">
+				<button type="submit" [disabled]="!loginForm.valid">Login</button>
+				<a href="/createaccount">New Account</a>
+			</div>
+		</form>
+		<div class="thirdPartyLogins"></div>
+	}
 </div>

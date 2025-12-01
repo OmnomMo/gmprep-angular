@@ -125,7 +125,9 @@ export class NodeService {
 			});
 	}
 
-	createNode(campaignId: number, node: GmNode) {
+	createNode(campaignId: number, node: GmNode) : Observable<GmNode | null> {
+
+		var createdNode = new Subject<GmNode |null >();
 		this.http
 			.post(this.urlBuilder.buildUrl(['nodes', 'update', campaignId.toString()]), node, {withCredentials: true})
 			.subscribe({
@@ -135,11 +137,15 @@ export class NodeService {
 					this.nodes.next(newNodes);
 					this.nodesLoaded.next(true);
 					this.nodeCreated.next(newNode as GmNode);
+					createdNode.next(newNode as GmNode);
 				},
 				error: (e) => {
 					console.error('Error creating node ' + e);
+					createdNode.next(null);
 				},
 			});
+
+		return createdNode.asObservable().pipe(first());
 	}
 
 	deleteNode(campaignId: number, node: GmNode) {

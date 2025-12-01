@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,9 +15,19 @@ export class Login {
 		private authService: AuthService,
 	) {
 		this.checkForLogin();
+		this.authService.authError$.subscribe({
+			next: e => {
+				if (e != null) {
+					this.loggingIn.set(false)
+					this.loginError.set("Could not log in");
+				}
+			}
+		});
 	}
 
 	formBuilder = inject(FormBuilder);
+	loggingIn = signal<boolean>(false);
+	loginError = signal<string>("");
 
 	loginForm = this.formBuilder.group({
 		email: ['', [Validators.required]],
@@ -27,10 +37,7 @@ export class Login {
 	loginWithCredentials() {
 		console.log('Trying to log in with credentials');
 		this.authService.authenticateWithCredentials(this.loginForm.value);
-	}
-
-	logoutTest() {
-		this.authService.logout();
+		this.loggingIn.set(true);
 	}
 
 	checkForLogin() {

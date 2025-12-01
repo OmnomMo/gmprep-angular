@@ -23,3 +23,11 @@
 	flex-direction: column;
 	background-color: rgba(37, 37, 37, 0.295);
 }
+
+.loginBottomBar {
+	display: flex;
+}
+
+.loginBottomBar > *:last-child {
+	margin-left: auto;
+}

@@ -28,16 +28,15 @@
 			controlName="mapIconPath"
 			controlNameSize="mapIconSize"
 			[formGroup]="nodeForm"
-			[node]="node()"
+			[iconPath]="nodeForm.get('mapIconPath')!.value"
+			[iconSize]="nodeForm.get('mapIconSize')!.value"
 			[editMode]="editMode()!"
-			(onChange)="onControlSubmit()"
 			formId="mapIconForm"
 		/>
 		<app-name-form-component
 			label=""
 			controlName="name"
 			[formGroup]="nodeForm!"
-			(onChange)="onControlSubmit()"
 			[header]="true"
 			[editMode]="editMode()!"
 			formId="nameForm"
@@ -51,7 +50,6 @@
 					[options]="gmNodeOptions.sizes"
 					[selected]="node().creatureInfo!.size"
 					[editMode]="editMode()!"
-					(onChange)="onControlSubmit()"
 					formId="creatureSizeForm"
 				/>
 				<app-string-selector
@@ -61,7 +59,6 @@
 					[options]="gmNodeOptions.creatureTypes"
 					[selected]="node().creatureInfo!.creatureType"
 					[editMode]="editMode()!"
-					(onChange)="onControlSubmit()"
 					formId="creatureTypeForm"
 				/>
 				<app-string-selector
@@ -71,7 +68,6 @@
 					[options]="gmNodeOptions.alignments"
 					[selected]="node().creatureInfo!.alignment"
 					[editMode]="editMode()!"
-					(onChange)="onControlSubmit()"
 					formId="creatureAlignmentForm"
 				/>
 			</div>
@@ -82,7 +78,6 @@
 			[formGroup]="nodeForm!"
 			[editMode]="editMode()!"
 			[standalone]="true"
-			(onChange)="onControlSubmit()"
 			formId="descriptionForm"
 		/>
 		@if (isCreature()) {
@@ -90,14 +85,12 @@
 				[formGroup]="getSubFormGroup('creatureInfo')"
 				[editMode]="editMode()!"
 				controlName="statsForm"
-				(onChange)="onControlSubmit()"
 				formId="statsForm"
 			/>
 			<app-movement-form
 				[formGroup]="getSubFormGroup('creatureInfo')"
 				[editMode]="editMode()!"
 				controlName="movementForm"
-				(onChange)="onControlSubmit()"
 				formId="movementForm"
 			/>
 			<app-multi-string-selector
@@ -106,7 +99,6 @@
 				[editMode]="editMode()!"
 				label="Damage Immunities"
 				[options]="gmNodeOptions.damageTypes"
-				(onChange)="onControlSubmit()"
 				formId="damageImmunitiesForm"
 			/>
 
@@ -116,7 +108,6 @@
 				[editMode]="editMode()!"
 				label="Damage Resistances"
 				[options]="gmNodeOptions.damageTypes"
-				(onChange)="onControlSubmit()"
 				formId="damageResistancesForm"
 			/>
 			<app-multi-string-selector
@@ -125,7 +116,6 @@
 				[editMode]="editMode()!"
 				label="Damage Vulnerabilities"
 				[options]="gmNodeOptions.damageTypes"
-				(onChange)="onControlSubmit()"
 				formId="damageVulnerabilitiesForm"
 			/>
 			<app-multi-string-selector
@@ -134,7 +124,6 @@
 				[editMode]="editMode()!"
 				label="Condition Immunities"
 				[options]="gmNodeOptions.conditions"
-				(onChange)="onControlSubmit()"
 				formId="conditionImmunitiesForm"
 			/>
 			<app-node-form-array
@@ -144,7 +133,6 @@
 				[editMode]="editMode()!"
 				[defaultControls]="defaultSkill"
 				label="Skills"
-				(onChange)="onControlSubmit()"
 			>
 				@for (
 					formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'skills');
@@ -155,7 +143,6 @@
 						[formGroup]="formGroup"
 						[editMode]="editMode()!"
 						formId="skillsForm"
-						(onChange)="onControlSubmit()"
 						(onRemove)="skillsForm.removeEntry(formGroup)"
 					/>
 				}
@@ -167,7 +154,6 @@
 				[editMode]="editMode()!"
 				[defaultControls]="defaultSavingThrow"
 				label="Saving Throws"
-				(onChange)="onControlSubmit()"
 			>
 				@for (
 					formGroup of getFormArrayGroups(
@@ -182,7 +168,6 @@
 						[editMode]="editMode()!"
 						[abilitiesMode]="true"
 						formId="savingThrowsForm"
-						(onChange)="onControlSubmit()"
 						(onRemove)="savingThrowsForm.removeEntry(formGroup)"
 					/>
 				}
@@ -194,7 +179,6 @@
 				[editMode]="editMode()!"
 				[defaultControls]="defaultAction"
 				label="Actions"
-				(onChange)="onControlSubmit()"
 			>
 				@for (
 					formGroup of getFormArrayGroups(getSubFormGroup('creatureInfo'), 'actions');
@@ -205,7 +189,6 @@
 						[formGroup]="formGroup"
 						[editMode]="editMode()!"
 						[index]="$index"
-						(onChange)="onControlSubmit()"
 						(onRemove)="actionsForm.removeEntry(formGroup)"
 						formId="actionsForm"
 					/>
@@ -218,7 +201,6 @@
 				formId="senses"
 				[standalone]="true"
 				label="Senses"
-				(onChange)="onControlSubmit()"
 			/>
 			<app-multiline-form-component
 				controlName="languages"
@@ -227,7 +209,6 @@
 				[standalone]="true"
 				formId="languages"
 				label="Languages"
-				(onChange)="onControlSubmit()"
 			/>
 		}
 		@if (isLocation()) {
@@ -238,7 +219,6 @@
 				[standalone]="true"
 				formId="population"
 				label="Population"
-				(onChange)="onControlSubmit()"
 			/>
 		}
 		<app-node-form-array
@@ -248,7 +228,6 @@
 			[editMode]="editMode()!"
 			[defaultControls]="defaultSecret"
 			label="Secrets"
-			(onChange)="onControlSubmit()"
 		>
 			@for (formGroup of getFormArrayGroups(nodeForm, 'secrets'); track formGroup) {
 				<app-secret-form
@@ -256,7 +235,6 @@
 					[formGroup]="formGroup"
 					[editMode]="editMode()!"
 					formId="secretsForm"
-					(onChange)="onControlSubmit()"
 					(onDelete)="secretsForm!.removeEntry(formGroup)"
 				/>
 			}
@@ -266,7 +244,6 @@
 			[formGroup]="nodeForm"
 			formId="tags"
 			[editMode]="editMode()!"
-			(onChange)="onControlSubmit()"
 		/>
 		<button class="deleteButton" (click)="deleteNode()">Delete!</button>
 	</div>

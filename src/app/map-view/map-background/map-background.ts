@@ -9,18 +9,18 @@ import { NodeService } from '../../node-service';
 import { GmNode, MapNode } from '../../models/map-node';
 import { MapIcon } from '../map-icon/map-icon';
 import { min, Subscription } from 'rxjs';
+import { MapContext } from '../map-context/map-context';
 
 @Component({
 	selector: 'app-map-background',
-	imports: [MapIcon],
+	imports: [MapIcon, MapContext],
 	templateUrl: './map-background.html',
-	styleUrl: './map-background.css'
+	styleUrl: './map-background.css',
 })
 export class MapBackground implements OnDestroy {
-
 	selectedMap: Signal<GMMap | null | undefined>;
 	nodes: Signal<MapNode[] | undefined>;
-	mapTransformStyle = signal<string>("");
+	mapTransformStyle = signal<string>('');
 	offsetX: number = 0;
 	offsetY: number = 0;
 	zoom: number = 1;
@@ -34,6 +34,10 @@ export class MapBackground implements OnDestroy {
 	startY: number = 0;
 	mapWidth: number = 0;
 
+	showMapContext = signal<boolean>(false);
+	contextPosX: number = 0;
+	contextPosY: number = 0;
+
 	mapNodeDroppedSubscription: Subscription;
 
 	constructor(
@@ -43,15 +47,15 @@ export class MapBackground implements OnDestroy {
 		private auth: AuthService,
 		private router: Router,
 	) {
-
 		this.selectedMap = toSignal(mapService.getSelectedMapObserver());
 		this.nodes = toSignal(mapService.mapNodes$);
-		nodeService.requestNodes(campaignService.getSelectedCampaign()!.id)
+		nodeService.requestNodes(campaignService.getSelectedCampaign()!.id);
 
 		this.mapNodeDroppedSubscription = this.mapService.mapNodeDropped$.subscribe({
-			next: info => { this.onMapNodeDropped(info); }
+			next: (info) => {
+				this.onMapNodeDropped(info);
+			},
 		});
-
 	}
 
 	//#region Global Events
@@ -71,28 +75,43 @@ export class MapBackground implements OnDestroy {
 		this.computeWidthFactor();
 	}
 
-	onMapNodeDropped(info: NodeDropInfo) {
+	mapContextClosed() {
+		this.showMapContext.set(false);
+	}
 
+	mapNodeAdded() {
+		console.log('map node added');
+		this.showMapContext.set(false);
+		this.nodeService
+			.createNode(this.campaignService.getSelectedCampaign()!.id, new GmNode(0, 'New Node'))
+			.subscribe((node) => {
+				if (node != null) {
+					this.mapService.createMapNode(
+						this.mapService.getSelectedMap()!,
+						new MapNode(0, node, this.mapMousePosX / this.widthFactor(), this.mapMousePosY / this.widthFactor()),
+					);
+				}
+			});
+	}
+
+	onMapNodeDropped(info: NodeDropInfo) {
 		var target: HTMLElement | null = info.e.target as HTMLElement;
 
 		var targetX: number = this.mapMousePosX / this.widthFactor();
 		var targetY: number = this.mapMousePosY / this.widthFactor();
 
-		if (
-			target.className == "mapIcon" ||
-			target.className == "mapBackground") {
+		if (target.className == 'mapIcon' || target.className == 'mapBackground') {
 			var newMapNode: MapNode = new MapNode(0, info.node, targetX, targetY);
-			this.mapService.createMapNode(this.mapService.getSelectedMap()!, newMapNode)
+			this.mapService.createMapNode(this.mapService.getSelectedMap()!, newMapNode);
 		}
 	}
 
 	//#endregion
 
-
 	//#region HTML getters
 	get imgSrc(): string {
 		var src: string | undefined = this.selectedMap()?.externalImageUrl;
-		if (src == undefined || src == "") {
+		if (src == undefined || src == '') {
 			src = '/empty_map.jpg';
 		}
 		return src!;
@@ -100,13 +119,11 @@ export class MapBackground implements OnDestroy {
 	getNodePositionStyle(mapNode: MapNode): string {
 		var posX: number = mapNode.locationX * this.widthFactor();
 		var posY: number = mapNode.locationY * this.widthFactor();
-		posX -= parseFloat(mapNode.node.mapIconSize) / 2 * this.widthFactor();
-		posY -= parseFloat(mapNode.node.mapIconSize) / 2 * this.widthFactor();
+		posX -= (parseFloat(mapNode.node.mapIconSize) / 2) * this.widthFactor();
+		posY -= (parseFloat(mapNode.node.mapIconSize) / 2) * this.widthFactor();
 		return `left: ${posX}px; top: ${posY}px;`;
 	}
 	//#endregion
-
-
 
 	//#region Mouseevents
 
@@ -114,10 +131,8 @@ export class MapBackground implements OnDestroy {
 		this.mouseDown = true;
 		this.startX = e.clientX - this.offsetX;
 		this.startY = e.clientY - this.offsetY;
-
 		//console.log("mouse down!");
 	}
-
 
 	setLocalMapMousePos(e: MouseEvent) {
 		this.mapMousePosX = e.offsetX;
@@ -130,7 +145,15 @@ export class MapBackground implements OnDestroy {
 		}
 
 		this.mouseDown = false;
+		this.showMapContext.set(false);
+	}
 
+	onRightClick(e: PointerEvent) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		this.contextPosX = this.mapMousePosX;
+		this.contextPosY = this.mapMousePosY;
+		this.showMapContext.set(true);
 	}
 
 	onMouseMove(e: MouseEvent) {
@@ -149,7 +172,7 @@ export class MapBackground implements OnDestroy {
 		var xs = (e.clientX - this.offsetX) / this.zoom;
 		var ys = (e.clientY - this.offsetY) / this.zoom;
 
-		(e.deltaY < 0) ? (this.zoom *= 1.1) : (this.zoom /= 1.1);
+		e.deltaY < 0 ? (this.zoom *= 1.1) : (this.zoom /= 1.1);
 		this.zoom = Math.min(3, Math.max(this.zoom, 0.5));
 
 		//apply offsets scaled with new zoom
@@ -160,15 +183,16 @@ export class MapBackground implements OnDestroy {
 	}
 
 	setTransformStyle() {
-		this.mapTransformStyle.set(`transform: translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.zoom});`)
+		this.mapTransformStyle.set(
+			`transform: translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.zoom});`,
+		);
 	}
 
 	//#endregion
 	//#region Utils
 	computeWidthFactor() {
-
 		this.widthFactor.set(window.innerWidth / this.mapWidth);
-		console.log("Width factor set: " + this.widthFactor())
+		console.log('Width factor set: ' + this.widthFactor());
 	}
 
 	//#endregion
