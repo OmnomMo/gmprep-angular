@@ -1,0 +1,13 @@
+<div class="bestiaryHeader">
+	<img class="bestiaryCloseBtn" src="/icons/close_icon.png" (click)="closeBestiary.emit(null)"/>
+</div>
+<form class="bestiaryFilterRow" [formGroup]="filterForm">
+	<label for="bestiaryFilter"><img src="/icons/filter_icon.png" /></label>
+	<input type="text" id="bestiaryFilter" formControlName="filter" />
+</form>
+<div>
+	@for (entry of getFilteredEntries(); track entry) {
+		<div class="bestiaryButton" (click)="closeBestiary.emit(entry)">{{ entry.name }}</div>
+	}
+</div>
+

@@ -1,10 +1,21 @@
 <app-sidebar [isLeftSide]="true">
 	<ul class="nodeList">
-		<app-node-filter (onSettingsChanged)="setActiveFilter($event)"/>
-		@for (gmNode of filteredNodes(); track gmNode) {
-			<app-node-icon [node]="gmNode" />
+		@if (showBestiary()) {
+			<app-bestiary-window (closeBestiary)="onBestiaryClosed($event)"/>
+		} @else {
+			<app-node-filter (onSettingsChanged)="setActiveFilter($event)" />
+			@for (gmNode of filteredNodes(); track gmNode) {
+				<app-node-icon [node]="gmNode" />
+			}
+			<div class="nodeListButtonRow">
+				<img src="/icons/add_icon.png" class="addButton" (click)="createNewNode()" />
+				<img
+					src="/icons/book_icon.png"
+					class="addButton"
+					(click)="showBestiary.set(true)"
+				/>
+			</div>
 		}
-		<img src="/icons/add_icon.png" class="addButton" (click)="createNewNode()" />
 	</ul>
 </app-sidebar>
 @if (selectedNode() != null) {

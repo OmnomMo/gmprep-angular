@@ -12,16 +12,18 @@ import { Subscription } from 'rxjs';
 import { Sidebar } from '../generic/sidebar/sidebar';
 import { NodeView } from '../node-view/node-view';
 import { NodeFilter, NodeFilterSettings } from "./node-filter/node-filter";
+import { BestiaryWindow } from "../bestiary/bestiary-window/bestiary-window";
 
 @Component({
 	selector: 'app-map',
-	imports: [MapBackground, NodeIcon, DraggedNode, Sidebar, NodeView, NodeFilter],
+	imports: [MapBackground, NodeIcon, DraggedNode, Sidebar, NodeView, NodeFilter, BestiaryWindow],
 	templateUrl: './map-view.html',
 	styleUrl: './map-view.css',
 })
 export class MapView implements OnDestroy {
 	nodes: Signal<GmNode[] | undefined>;
 	selectedNode: Signal<GmNode | null | undefined>;
+	showBestiary = signal<boolean>(false);
 	draggedNode = signal<GmNode | null>(null);
 	filteredNodes = signal<GmNode[] | undefined>(undefined);
 
@@ -81,5 +83,16 @@ export class MapView implements OnDestroy {
 			new GmNode(0, "New Node"),
 		);
 
+	}
+
+	onBestiaryClosed(selected: GmNode | null) {
+		console.log(selected);
+		this.showBestiary.set(false);
+		if (selected != null) {
+			this.nodeService.createNode(
+				this.campaignService.getSelectedCampaign()!.id,
+				selected!
+			);
+		}
 	}
 }

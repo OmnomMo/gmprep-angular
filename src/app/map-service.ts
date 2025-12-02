@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, first, Observable, Subject, Subscription } from 'rxjs';
 import { GMMap } from './models/map';
 import { AuthService } from './auth';
 import { CampaignService } from './campaign-service';
@@ -202,7 +202,7 @@ export class MapService {
 			},
 		});
 
-		return newMapNode
+		return newMapNode.asObservable().pipe(first());
 	}
 
 	deleteMapNode(mapNode: MapNode) {

@@ -1,14 +1,13 @@
-import { Component, HostListener, Signal, signal } from '@angular/core';
+import { Component, HostListener, inject, Signal, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth';
 import { GMUser } from './models/user';
-import { MapService } from './map-service';
-import { CampaignService } from './campaign-service';
 import { MouseTracker } from './utils/mouse-tracker';
 import { UserEvents } from './utils/user-events';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { VersionService } from './utilities/version-service';
+import { Bestiary } from './bestiary/bestiary';
 
 @Component({
 	selector: 'app-root',
@@ -30,6 +29,7 @@ export class App {
 
 	protected readonly title = signal('gmprep');
 	user : Signal<GMUser | null | undefined>;
+	bestiary = inject(Bestiary)
 
 	@HostListener('document:keypress', ['$event'])
 	handleKeyboardEvent(event: KeyboardEvent) {

@@ -6,6 +6,12 @@
 	overflow-y: auto;
 }
 
+.nodeListButtonRow {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
 .addButton{
 	size: 4rem 4rem;
 	min-width: 4rem;

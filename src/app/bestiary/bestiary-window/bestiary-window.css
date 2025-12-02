@@ -1,0 +1,27 @@
+.bestiaryFilterRow {
+	display: flex;
+	align-content: center;
+}
+
+.bestiaryHeader {
+	cursor: pointer;
+	position:sticky;
+	top: 0px;
+	display: flex;
+	justify-content: right;
+}
+
+.bestiaryCloseBtn {
+	padding: 0.4rem;
+	background-color: rgb(104, 28, 0);
+	border-radius: 0.4rem;
+	margin: 0.3rem;
+}
+
+.bestiaryButton {
+	padding: 0.5rem;
+	background-color: rgb(41, 41, 41);
+	margin: 0.3rem;
+	cursor: pointer;
+	border-radius: 0.4rem;
+}
